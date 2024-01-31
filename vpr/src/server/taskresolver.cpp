@@ -73,12 +73,12 @@ bool TaskResolver::update(ezgl::application* app)
     for (auto& task: m_tasks) {
         if (!task.isFinished()) {
             switch(task.cmd()) {
-                case CMD_GET_PATH_LIST_ID: {
+                case comm::CMD_GET_PATH_LIST_ID: {
                     processGetPathListTask(app, task);
                     has_processed_task = true;
                     break;
                 } 
-                case CMD_DRAW_PATH_ID: {
+                case comm::CMD_DRAW_PATH_ID: {
                     processDrawCriticalPathTask(app, task);
                     has_processed_task = true;
                     break;
@@ -92,20 +92,20 @@ bool TaskResolver::update(ezgl::application* app)
 
 void TaskResolver::processGetPathListTask(ezgl::application* app, Task& task)
 {
-    TelegramOptions options{task.options(), {OPTION_PATH_NUM, OPTION_PATH_TYPE, OPTION_DETAILS_LEVEL, OPTION_IS_FLOAT_ROUTING}};
+    TelegramOptions options{task.options(), {comm::OPTION_PATH_NUM, comm::OPTION_PATH_TYPE, comm::OPTION_DETAILS_LEVEL, comm::OPTION_IS_FLOAT_ROUTING}};
     if (!options.hasErrors()) {
         ServerContext& server_ctx = g_vpr_ctx.mutable_server(); // shortcut
 
-        server_ctx.set_crit_path_index(-1); // reset selection if path list options has changed
+        server_ctx.set_crit_path_elements(std::map<std::size_t, std::set<std::size_t>>{}); // reset selection if path list options has changed
 
         // read options
-        const int nCriticalPathNum = options.getInt(OPTION_PATH_NUM, 1);
-        const std::string pathType = options.getString(OPTION_PATH_TYPE);
-        const std::string detailsLevel = options.getString(OPTION_DETAILS_LEVEL);
-        const bool isFlat = options.getBool(OPTION_IS_FLOAT_ROUTING, false);
+        const int nCriticalPathNum = options.getInt(comm::OPTION_PATH_NUM, 1);
+        const std::string pathType = options.getString(comm::OPTION_PATH_TYPE);
+        const std::string detailsLevel = options.getString(comm::OPTION_DETAILS_LEVEL);
+        const bool isFlat = options.getBool(comm::OPTION_IS_FLOAT_ROUTING, false);
 
         // calculate critical path depending on options and store result in server context
-        CritPathsResult crit_paths_result = calcCriticalPath(pathType, nCriticalPathNum, getDetailsLevelEnum(detailsLevel), isFlat);
+        CritPathsResult crit_paths_result = calcCriticalPath(pathType, nCriticalPathNum, getDetailsLevelEnum(detailsLevel), isFlat, /*usePathElementSeparator*/true);
 
         // setup context
         server_ctx.set_path_type(pathType);
@@ -129,33 +129,26 @@ void TaskResolver::processGetPathListTask(ezgl::application* app, Task& task)
 
 void TaskResolver::processDrawCriticalPathTask(ezgl::application* app, Task& task)
 {
-    TelegramOptions options{task.options(), {OPTION_PATH_INDEX, OPTION_HIGHTLIGHT_MODE}};
+    TelegramOptions options{task.options(), {comm::OPTION_PATH_ELEMENTS, comm::OPTION_HIGHTLIGHT_MODE, comm::OPTION_DRAW_PATH_CONTOUR}};
     if (!options.hasErrors()) {
         ServerContext& server_ctx = g_vpr_ctx.mutable_server(); // shortcut
 
-        const int pathIndex = options.getInt(OPTION_PATH_INDEX, -1);
-        const std::string highLightMode = options.getString(OPTION_HIGHTLIGHT_MODE);
+        const std::map<std::size_t, std::set<std::size_t>> path_elements = options.getMapOfSets(comm::OPTION_PATH_ELEMENTS);
+        const std::string highLightMode = options.getString(comm::OPTION_HIGHTLIGHT_MODE);
+        const bool drawPathContour = options.getBool(comm::OPTION_DRAW_PATH_CONTOUR, false);
 
-        if (pathIndex == -1) {
-            server_ctx.set_crit_path_index(-1); // clear selection
+        // set critical path elements to render
+        server_ctx.set_crit_path_elements(path_elements);
+        server_ctx.set_draw_crit_path_contour(drawPathContour);
+
+        // update gtk UI
+        GtkComboBox* toggle_crit_path = GTK_COMBO_BOX(app->get_object("ToggleCritPath"));
+        gint highLightModeIndex = get_item_index_by_text(toggle_crit_path, highLightMode.c_str());
+        if (highLightModeIndex != -1) {
+            gtk_combo_box_set_active(toggle_crit_path, highLightModeIndex);
             task.success();
-        } else if ((pathIndex >= 0) && (pathIndex < static_cast<int>(server_ctx.crit_paths().size()))) {
-            // set critical path index for rendering
-            server_ctx.set_crit_path_index(pathIndex);
-
-            // update gtk UI
-            GtkComboBox* toggle_crit_path = GTK_COMBO_BOX(app->get_object("ToggleCritPath"));
-            gint highLightModeIndex = get_item_index_by_text(toggle_crit_path, highLightMode.c_str());
-            if (highLightModeIndex != -1) {
-                gtk_combo_box_set_active(toggle_crit_path, highLightModeIndex);
-                task.success();
-            } else {
-                std::string msg{"cannot find ToggleCritPath qcombobox index for item " + highLightMode};
-                std::cerr << msg << std::endl;
-                task.fail(msg);
-            }                        
         } else {
-            std::string msg{"selectedIndex=" + std::to_string(pathIndex) + " is out of range [0-" + std::to_string(static_cast<int>(server_ctx.crit_paths().size())-1) + "]"};
+            std::string msg{"cannot find ToggleCritPath qcombobox index for item " + highLightMode};
             std::cerr << msg << std::endl;
             task.fail(msg);
         }

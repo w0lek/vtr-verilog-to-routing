@@ -3,6 +3,8 @@
 #include <unordered_map>
 #include <memory>
 #include <vector>
+#include <map>
+#include <set>
 #include <mutex>
 
 #include "vpr_types.h"
@@ -583,8 +585,11 @@ class ServerContext : public Context {
     void set_path_type(const std::string& path_type) { path_type_ = path_type; }
     const std::string& path_type() const { return path_type_; }
 
-    void set_crit_path_index(int crit_path_index) { crit_path_index_ = crit_path_index; }
-    int crit_path_index() const { return crit_path_index_; }
+    void set_crit_path_elements(std::map<std::size_t, std::set<std::size_t>> crit_path_element_indexes) { crit_path_element_indexes_ = crit_path_element_indexes; }
+    std::map<std::size_t, std::set<std::size_t>> crit_path_element_indexes() const { return crit_path_element_indexes_; }
+
+    void set_draw_crit_path_contour(bool draw_crit_path_contour) { draw_crit_path_contour_ = draw_crit_path_contour; }
+    bool draw_crit_path_contour() const { return draw_crit_path_contour_; }
 
   private:
     server::GateIO gate_io_;
@@ -616,11 +621,14 @@ class ServerContext : public Context {
     std::string path_type_ = "setup";
 
     /**
-     * @brief Stores the last selected critical path index.
+     * @brief Stores the selected critical path elements.
      *
-     * This value is used to render the selected critical path upon client request.
+     * This value is used to render the selected critical path elements upon client request.
+     * The std::map key plays role of path index, where the element indexes are stored as std::set.
      */
-    int crit_path_index_ = 0;
+    std::map<std::size_t, std::set<std::size_t>> crit_path_element_indexes_;
+
+    bool draw_crit_path_contour_ = false;
 };
 
 /**

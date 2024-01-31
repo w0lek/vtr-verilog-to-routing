@@ -89,9 +89,12 @@ void draw_crit_path(ezgl::renderer* g);
  * b) during routing, critical path is shown by both flylines and routed net connections.
  */
 void draw_concrete_crit_path(const tatum::TimingPath& path, ezgl::renderer* g);
+void draw_concrete_crit_path_DEBUG(const tatum::TimingPath& path, ezgl::renderer* g);
+
+void draw_crit_path_elements(const std::vector<tatum::TimingPath>& paths, const std::map<std::size_t, std::set<std::size_t>>& indexes, ezgl::renderer* g);
 
 /* Draws critical path shown as flylines. Takes in start and end coordinates, time delay, & renderer.*/
-void draw_flyline_timing_edge(ezgl::point2d start, ezgl::point2d end, float incr_delay, ezgl::renderer* g);
+void draw_flyline_timing_edge(ezgl::point2d start, ezgl::point2d end, float incr_delay, ezgl::renderer* g, bool skipDrawDelays=false);
 
 /* Draws critical path shown by both flylines and routed net connections. Takes in start and end nodes,
  * time delay, colour, & renderer.
@@ -100,7 +103,8 @@ void draw_routed_timing_edge(tatum::NodeId start_tnode,
                              tatum::NodeId end_tnode,
                              float incr_delay,
                              ezgl::color color,
-                             ezgl::renderer* g);
+                             ezgl::renderer* g,
+                             bool skipDrawDelays=false);
 
 /* Collects all the drawing locations associated with the timing edge between start and end.
  * Only traces interconnect edges in detail, and treats all others as flylines.

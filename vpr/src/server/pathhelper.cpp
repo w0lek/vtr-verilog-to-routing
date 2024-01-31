@@ -23,7 +23,7 @@ namespace {
 /** 
  * @brief helper function to calculate the setup critical path with specified parameters.
  */
-CritPathsResult generate_setup_timing_report(const SetupTimingInfo& timing_info, const AnalysisDelayCalculator& delay_calc, const t_analysis_opts& analysis_opts, bool is_flat) {
+CritPathsResult generate_setup_timing_report(const SetupTimingInfo& timing_info, const AnalysisDelayCalculator& delay_calc, const t_analysis_opts& analysis_opts, bool is_flat, bool usePathElementSeparator) {
     auto& timing_ctx = g_vpr_ctx.timing();
     auto& atom_ctx = g_vpr_ctx.atom();
 
@@ -34,14 +34,14 @@ CritPathsResult generate_setup_timing_report(const SetupTimingInfo& timing_info,
 
     std::vector<tatum::TimingPath> paths;
     std::stringstream ss;
-    timing_reporter.report_timing_setup(paths, ss, *timing_info.setup_analyzer(), analysis_opts.timing_report_npaths);
+    timing_reporter.report_timing_setup(paths, ss, *timing_info.setup_analyzer(), analysis_opts.timing_report_npaths, usePathElementSeparator);
     return CritPathsResult{paths, ss.str()};
 }
 
 /** 
  * @brief helper function to calculate the hold critical path with specified parameters.
  */
-CritPathsResult generate_hold_timing_report(const HoldTimingInfo& timing_info, const AnalysisDelayCalculator& delay_calc, const t_analysis_opts& analysis_opts, bool is_flat) {
+CritPathsResult generate_hold_timing_report(const HoldTimingInfo& timing_info, const AnalysisDelayCalculator& delay_calc, const t_analysis_opts& analysis_opts, bool is_flat, bool usePathElementSeparator) {
     auto& timing_ctx = g_vpr_ctx.timing();
     auto& atom_ctx = g_vpr_ctx.atom();
 
@@ -52,7 +52,7 @@ CritPathsResult generate_hold_timing_report(const HoldTimingInfo& timing_info, c
 
     std::vector<tatum::TimingPath> paths;
     std::stringstream ss;
-    timing_reporter.report_timing_hold(paths, ss, *timing_info.hold_analyzer(), analysis_opts.timing_report_npaths);
+    timing_reporter.report_timing_hold(paths, ss, *timing_info.hold_analyzer(), analysis_opts.timing_report_npaths, usePathElementSeparator);
     return CritPathsResult{paths, ss.str()};
 }
 
@@ -61,7 +61,7 @@ CritPathsResult generate_hold_timing_report(const HoldTimingInfo& timing_info, c
 /** 
  * @brief Unified helper function to calculate the critical path with specified parameters.
  */
-CritPathsResult calcCriticalPath(const std::string& type, int critPathNum, e_timing_report_detail detailsLevel, bool is_flat_routing) 
+CritPathsResult calcCriticalPath(const std::string& type, int critPathNum, e_timing_report_detail detailsLevel, bool is_flat_routing, bool usePathElementSeparator) 
 {
     // shortcuts
     auto& atom_ctx = g_vpr_ctx.atom();
@@ -86,9 +86,9 @@ CritPathsResult calcCriticalPath(const std::string& type, int critPathNum, e_tim
     analysis_opt.timing_report_npaths = critPathNum;
 
     if (type == "setup") {
-        return generate_setup_timing_report(*timing_info, *analysis_delay_calc, analysis_opt, is_flat_routing);
+        return generate_setup_timing_report(*timing_info, *analysis_delay_calc, analysis_opt, is_flat_routing, usePathElementSeparator);
     } else if (type == "hold") {
-        return generate_hold_timing_report(*timing_info, *analysis_delay_calc, analysis_opt, is_flat_routing);
+        return generate_hold_timing_report(*timing_info, *analysis_delay_calc, analysis_opt, is_flat_routing, usePathElementSeparator);
     }
     return CritPathsResult{std::vector<tatum::TimingPath>(), ""};
 }
