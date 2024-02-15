@@ -26,22 +26,22 @@ public:
     int tasksNum() const { return m_tasks.size(); }
 
     /* add tasks to process */
-    void addTask(Task);
-    void addTasks(const std::vector<Task>&);
+    void addTask(TaskPtr&);
+    void addTasks(std::vector<TaskPtr>&);
 
     /* process tasks */
     bool update(ezgl::application*);
 
     /* extract finished tasks */
-    void takeFinished(std::vector<Task>&);
+    void takeFinished(std::vector<TaskPtr>&);
 
-    const std::vector<Task>& tasks() const { return m_tasks; }
+    const std::vector<TaskPtr>& tasks() const { return m_tasks; }
 
 private:
-    std::vector<Task> m_tasks;
+    std::vector<TaskPtr> m_tasks;
 
-    void processGetPathListTask(ezgl::application*, Task&);
-    void processDrawCriticalPathTask(ezgl::application*, Task&);
+    void processGetPathListTask(ezgl::application*, const TaskPtr&);
+    void processDrawCriticalPathTask(ezgl::application*, const TaskPtr&);
 
     e_timing_report_detail getDetailsLevelEnum(const std::string& pathDetailsLevelStr) const;
 };

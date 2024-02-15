@@ -1,48 +1,50 @@
 #include "taskresolver.h"
 
+#include "commconstants.h"
 #include "globals.h"
 #include "pathhelper.h"
 #include "telegramoptions.h"
 #include "telegramparser.h"
 #include "gtkcomboboxhelper.h"
+
 #include <ezgl/application.hpp>
 
 namespace server {
 
-void TaskResolver::addTask(Task task)
+void TaskResolver::addTask(TaskPtr& newTask)
 {
-    // pre-process task before adding, where we could quickly detect failure scenario
-    for (auto& t: m_tasks) {
-        if (t.cmd() == task.cmd()) {
-            if (t.options() == task.options()) {
-                std::string msg = "similar task is already in execution, reject new task: " + t.info()+ " and waiting for old task: " + task.info() + " execution";
-                task.fail(msg);
+    // pre-process task before adding, where we could quickly detect failure scenarios
+    for (const auto& task: m_tasks) {
+        if (task->cmd() == newTask->cmd()) {
+            if (task->optionsMatch(newTask)) {
+                std::string msg = "similar task is already in execution, reject new " + task->info()+ " and waiting for old " + newTask->info() + " execution";
+                newTask->fail(msg);
             } else {
-                // case when task has same jobId but different options
-                if (task.jobId() > t.jobId()) {
-                    std::string msg = "old task: " + t.info() + " is overriden by a new task: " + task.info();
-                    t.fail(msg);
+                // handle case when task has same jobId but different options
+                if (newTask->jobId() > task->jobId()) {
+                    std::string msg = "old " + task->info() + " is overriden by a new " + newTask->info();
+                    task->fail(msg);
                 }
             }
         }
     }
 
     // add task
-    m_tasks.push_back(std::move(task));
+    m_tasks.push_back(std::move(newTask));
 }
 
-void TaskResolver::addTasks(const std::vector<Task>& tasks)
+void TaskResolver::addTasks(std::vector<TaskPtr>& tasks)
 {
-    for (const Task& task: tasks) {
+    for (TaskPtr& task: tasks) {
         addTask(task);
     }
 }
 
-void TaskResolver::takeFinished(std::vector<Task>& result)
+void TaskResolver::takeFinished(std::vector<TaskPtr>& result)
 {
     for (auto it=m_tasks.begin(); it != m_tasks.end();) {
-        Task task = *it;
-        if (task.isFinished()) {
+        TaskPtr& task = *it;
+        if (task->isFinished()) {
             result.push_back(std::move(task));
             it = m_tasks.erase(it);
         } else {
@@ -71,8 +73,8 @@ bool TaskResolver::update(ezgl::application* app)
 {
     bool has_processed_task = false;
     for (auto& task: m_tasks) {
-        if (!task.isFinished()) {
-            switch(task.cmd()) {
+        if (!task->isFinished()) {
+            switch(task->cmd()) {
                 case comm::CMD_GET_PATH_LIST_ID: {
                     processGetPathListTask(app, task);
                     has_processed_task = true;
@@ -83,6 +85,7 @@ bool TaskResolver::update(ezgl::application* app)
                     has_processed_task = true;
                     break;
                 }
+                default: break;
             }           
         }
     }
@@ -90,9 +93,9 @@ bool TaskResolver::update(ezgl::application* app)
     return has_processed_task;
 }
 
-void TaskResolver::processGetPathListTask(ezgl::application* app, Task& task)
+void TaskResolver::processGetPathListTask(ezgl::application*, const TaskPtr& task)
 {
-    TelegramOptions options{task.options(), {comm::OPTION_PATH_NUM, comm::OPTION_PATH_TYPE, comm::OPTION_DETAILS_LEVEL, comm::OPTION_IS_FLOAT_ROUTING}};
+    TelegramOptions options{task->options(), {comm::OPTION_PATH_NUM, comm::OPTION_PATH_TYPE, comm::OPTION_DETAILS_LEVEL, comm::OPTION_IS_FLOAT_ROUTING}};
     if (!options.hasErrors()) {
         ServerContext& server_ctx = g_vpr_ctx.mutable_server(); // shortcut
 
@@ -114,22 +117,22 @@ void TaskResolver::processGetPathListTask(ezgl::application* app, Task& task)
 
         if (crit_paths_result.isValid()) {
             std::string msg{crit_paths_result.report};
-            task.success(msg);
+            task->success(msg);
         } else {
             std::string msg{"Critical paths report is empty"};
             std::cerr << msg << std::endl;
-            task.fail(msg);
+            task->fail(msg);
         }
     } else {
         std::string msg{"options errors in get crit path list telegram: " + options.errorsStr()};
         std::cerr << msg << std::endl;
-        task.fail(msg);
+        task->fail(msg);
     }
 }
 
-void TaskResolver::processDrawCriticalPathTask(ezgl::application* app, Task& task)
+void TaskResolver::processDrawCriticalPathTask(ezgl::application* app, const TaskPtr& task)
 {
-    TelegramOptions options{task.options(), {comm::OPTION_PATH_ELEMENTS, comm::OPTION_HIGHTLIGHT_MODE, comm::OPTION_DRAW_PATH_CONTOUR}};
+    TelegramOptions options{task->options(), {comm::OPTION_PATH_ELEMENTS, comm::OPTION_HIGHTLIGHT_MODE, comm::OPTION_DRAW_PATH_CONTOUR}};
     if (!options.hasErrors()) {
         ServerContext& server_ctx = g_vpr_ctx.mutable_server(); // shortcut
 
@@ -146,16 +149,16 @@ void TaskResolver::processDrawCriticalPathTask(ezgl::application* app, Task& tas
         gint highLightModeIndex = get_item_index_by_text(toggle_crit_path, highLightMode.c_str());
         if (highLightModeIndex != -1) {
             gtk_combo_box_set_active(toggle_crit_path, highLightModeIndex);
-            task.success();
+            task->success();
         } else {
             std::string msg{"cannot find ToggleCritPath qcombobox index for item " + highLightMode};
             std::cerr << msg << std::endl;
-            task.fail(msg);
+            task->fail(msg);
         }
     } else {
         std::string msg{"options errors in highlight crit path telegram: " + options.errorsStr()};
         std::cerr << msg << std::endl;
-        task.fail(msg);
+        task->fail(msg);
     }
 }
 

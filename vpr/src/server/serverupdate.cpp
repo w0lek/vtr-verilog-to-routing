@@ -16,7 +16,7 @@ gboolean update(gpointer data) {
         GateIO& gate_io = g_vpr_ctx.mutable_server().mutable_gateIO();
         TaskResolver& task_resolver = g_vpr_ctx.mutable_server().mutable_task_resolver();
 
-        std::vector<Task> tasksBuff;
+        std::vector<TaskPtr> tasksBuff;
 
         gate_io.takeRecievedTasks(tasksBuff);
         task_resolver.addTasks(tasksBuff);
@@ -26,7 +26,8 @@ gboolean update(gpointer data) {
         tasksBuff.clear();
         task_resolver.takeFinished(tasksBuff);
 
-        gate_io.addSendTasks(tasksBuff);
+        gate_io.moveTasksToSendQueue(tasksBuff);
+        gate_io.printLogs();
 
         // Call the redraw method of the application if any of task was processed
         if (process_task) {

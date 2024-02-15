@@ -2,10 +2,10 @@
 #define TASK_H
 
 #include <string>
-#include <sstream>
-#include <iostream>
+#include <memory>
+#include <chrono>
 
-#include "commconstants.h"
+#include "telegramheader.h"
 
 namespace server {
 
@@ -17,62 +17,56 @@ namespace server {
  */
 class Task {
 public:
-    Task(int jobId, int cmd, const std::string& options = ""):
-        m_jobId(jobId), m_cmd(cmd), m_options(options) {}
+    Task(int jobId, int cmd, const std::string& options = "");
+
+    Task(const Task&) = delete;
+    Task& operator=(const Task&) = delete;
 
     int jobId() const { return m_jobId; }
     int cmd() const { return m_cmd; }
-    const std::string& options() const { return m_options; }
-    const std::string& result() const { return m_result; }
 
-    std::string info() const {
-        std::stringstream result;
-        result << "id=" << std::to_string(m_jobId) << ",";
-        result << "cmd=" << std::to_string(m_cmd) << ",";
-        result << "opt=" << m_options;
-        return result.str();
-    }
+    void chopNumSentBytesFromResponseBuffer(std::size_t bytesSentNum);
+
+    bool optionsMatch(const class std::unique_ptr<Task>& other);
+
+    const std::string& responseBuffer() const { return m_responseBuffer; }
 
     bool isFinished() const { return m_isFinished; }
-    bool hasError() const { return m_hasError; }
+    bool hasError() const { return !m_error.empty(); }
+    const std::string& error() const { return m_error; }
 
-    void fail(const std::string& error) {
-        std::cout << "task " << info() << " finished with error " << error << std::endl;
-        m_result = error;
-        m_isFinished = true;
-        m_hasError = true;
-    }
-    void success(const std::string& result = "") {
-        std::cout << "task " << info() << " finished with success " << result << std::endl;
-        m_result = result;
-        m_isFinished = true;
-    }
+    std::size_t origReponseBytesNum() const { return m_origReponseBytesNum; }
 
-    std::string toJsonStr() const
-    {
-        std::stringstream ss;
-        ss << "{";
+    bool isResponseFullySent() const { return m_isResponseFullySent; }
 
-        ss << "\"" << comm::KEY_JOB_ID << "\":\"" << m_jobId << "\",";
-        ss << "\"" << comm::KEY_CMD << "\":\"" << m_cmd << "\",";
-        ss << "\"" << comm::KEY_OPTIONS << "\":\"" << m_options << "\",";
-        ss << "\"" << comm::KEY_DATA << "\":\"" << m_result << "\",";
-        int status = m_hasError ? 0 : 1;
-        ss << "\"" << comm::KEY_STATUS << "\":\"" << status << "\"";
+    void fail(const std::string& error);
+    void success(const std::string& result = "");
 
-        ss << "}";
+    std::string info(bool skipDuration = false) const;
 
-        return ss.str();
-    }
+    const comm::TelegramHeader& telegramHeader() const { return m_telegramHeader; }
+
+    const std::string& options() const { return m_options; }
 
 private:
     int m_jobId = -1;
     int m_cmd = -1;
     std::string m_options;
     std::string m_result;
+    std::string m_error;
     bool m_isFinished = false;
-    bool m_hasError = false;
+    comm::TelegramHeader m_telegramHeader;
+    std::string m_responseBuffer;
+    std::size_t m_origReponseBytesNum = 0;
+    bool m_isResponseFullySent = false;
+
+    std::chrono::high_resolution_clock::time_point m_creationTime;
+
+    int64_t timeMsElapsed() const;
+
+    void bakeResponse();
 };
+using TaskPtr = std::unique_ptr<Task>;
 
 } // namespace server
 
