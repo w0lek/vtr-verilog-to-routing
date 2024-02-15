@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <cfloat>
 #include <cstring>
+#define _USE_MATH_DEFINES // ensure (non-standard) value of M_PI is brought in from math.h
 #include <cmath>
 #include <algorithm>
 #include <sstream>
