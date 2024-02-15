@@ -85,7 +85,7 @@ void Task::bakeResponse()
 
     std::optional<std::string> bodyOpt;
     uint8_t compressorId = comm::NONE_COMPRESSOR_ID;
-#ifndef DISABLE_ZLIB_TELEGRAM_DATA_FIELD_COMPRESSION
+#ifndef FORCE_DISABLE_ZLIB_TELEGRAM_COMPRESSION
     bodyOpt = tryCompress(ss.str());
     if (bodyOpt) {
         compressorId = comm::ZLIB_COMPRESSOR_ID;
