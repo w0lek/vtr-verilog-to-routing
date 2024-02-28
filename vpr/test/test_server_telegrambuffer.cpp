@@ -35,43 +35,89 @@ TEST_CASE("test_server_bytearray", "[vpr]") {
     REQUIRE(array.to_string() == "");
 }
 
-// TEST_CASE("test_server_telegrambuffer_oneOpened", "[vpr]") {
-//     comm::TelegramBuffer buff{1024};
-//     buff.append(comm::ByteArray{"111"});
-//     buff.append(comm::ByteArray{"222"});
+TEST_CASE("test_server_telegrambuffer_oneOpened", "[vpr]") {
+    comm::TelegramBuffer buff;
+    buff.append(comm::ByteArray{"111"});
+    buff.append(comm::ByteArray{"222"});
 
-//     auto frames = buff.takeTelegramFrames();
-//     REQUIRE(frames.size() == 0);
+    auto frames = buff.takeTelegramFrames();
+    REQUIRE(frames.size() == 0);
 
-//     REQUIRE(buff.data().to_string() == "111222");
-// }
+    REQUIRE(buff.data().to_string() == "111222");
+}
 
-// TEST_CASE("test_server_telegrambuffer_oneFinishedOneOpened", "[vpr]") {
-//     comm::TelegramBuffer buff{1024};
-//     buff.append(comm::ByteArray{"111\x17"});
-//     buff.append(comm::ByteArray{"222"});
+TEST_CASE("test_server_telegrambuffer_notFilledTelegramButWithPrependedRubish", "[vpr]")
+{
+    comm::TelegramBuffer tBuff;
 
-//     auto frames = buff.takeTelegramFrames();
-//     REQUIRE(frames.size() == 1);
+    const comm::ByteArray rubish{"#@!"};
+    const comm::ByteArray msgBody{"some message"};
+    const comm::TelegramHeader msgHeader{comm::TelegramHeader::constructFromData(msgBody)};
 
-//     REQUIRE(frames[0]->data.to_string() == "111");
+    tBuff.append(rubish);
+    tBuff.append(msgHeader.buffer());
 
-//     REQUIRE(buff.data().to_string() == "222");
-// }
+    auto frames = tBuff.takeTelegramFrames();
+    REQUIRE(0 == frames.size());
 
-// TEST_CASE("test_server_telegrambuffer_twoFinished", "[vpr]") {
-//     comm::TelegramBuffer buff{1024};
-//     buff.append(comm::ByteArray{"111\x17"});
-//     buff.append(comm::ByteArray{"222\x17"});
+    REQUIRE(msgHeader.buffer() == tBuff.data()); // the rubish prefix fragment will be absent here
+}
 
-//     auto frames = buff.takeTelegramFrames();
-//     REQUIRE(frames.size() == 2);
+TEST_CASE("test_server_telegrambuffer__oneFinishedOneOpened", "[vpr]")
+{
+    comm::TelegramBuffer tBuff;
 
-//     REQUIRE(frames[0]->data.to_string() == "111");
-//     REQUIRE(frames[1]->data.to_string() == "222");
+    const comm::ByteArray msgBody1{"message1"};
+    const comm::ByteArray msgBody2{"message2"};
 
-//     REQUIRE(buff.data().to_string() == "");
-// }
+    const comm::TelegramHeader msgHeader1{comm::TelegramHeader::constructFromData(msgBody1)};
+    const comm::TelegramHeader msgHeader2{comm::TelegramHeader::constructFromData(msgBody2)};
+
+    comm::ByteArray t1(msgHeader1.buffer());
+    t1.append(msgBody1);
+
+    comm::ByteArray t2(msgHeader2.buffer());
+    t2.append(msgBody2);
+    t2.resize(t2.size()-2); // drop 2 last elements
+
+    tBuff.append(t1);
+    tBuff.append(t2);
+
+    auto frames = tBuff.takeTelegramFrames();
+    REQUIRE(1 == frames.size());
+
+    REQUIRE(msgBody1 == frames[0]->data);
+
+    REQUIRE(t2 == tBuff.data());
+}
+
+TEST_CASE("test_server_telegrambuffer_twoFinished", "[vpr]")
+{
+    comm::TelegramBuffer tBuff;
+
+    const comm::ByteArray msgBody1{"message1"};
+    const comm::ByteArray msgBody2{"message2"};
+
+    const comm::TelegramHeader msgHeader1{comm::TelegramHeader::constructFromData(msgBody1)};
+    const comm::TelegramHeader msgHeader2{comm::TelegramHeader::constructFromData(msgBody2)};
+
+    comm::ByteArray t1(msgHeader1.buffer());
+    t1.append(msgBody1);
+
+    comm::ByteArray t2(msgHeader2.buffer());
+    t2.append(msgBody2);
+
+    tBuff.append(t1);
+    tBuff.append(t2);
+
+    auto frames = tBuff.takeTelegramFrames();
+    REQUIRE(2 == frames.size());
+
+    REQUIRE(msgBody1 == frames[0]->data);
+    REQUIRE(msgBody2 == frames[1]->data);
+
+    REQUIRE(comm::ByteArray{} == tBuff.data());
+}
 
 // TEST_CASE("test_server_telegrambuffer_twoCleared", "[vpr]") {
 //     comm::TelegramBuffer buff{1024};
@@ -85,5 +131,30 @@ TEST_CASE("test_server_bytearray", "[vpr]") {
 
 //     REQUIRE(buff.data().to_string() == "");
 // }
+
+
+TEST_CASE("test_server_telegrambuffer_clear", "[vpr]")
+{
+    comm::TelegramBuffer tBuff;
+
+    const comm::ByteArray msgBody1{"message1"};
+    const comm::ByteArray msgBody2{"message2"};
+
+    const comm::TelegramHeader msgHeader1{comm::TelegramHeader::constructFromData(msgBody1)};
+    const comm::TelegramHeader msgHeader2{comm::TelegramHeader::constructFromData(msgBody2)};
+
+    comm::ByteArray t1(msgHeader1.buffer());
+    t1.append(msgBody1);
+
+    comm::ByteArray t2(msgHeader2.buffer());
+    t2.append(msgBody2);
+
+    tBuff.clear();
+
+    auto frames = tBuff.takeTelegramFrames();
+    REQUIRE(0 == frames.size());
+
+    REQUIRE(comm::ByteArray{} == tBuff.data());
+}
 
 } // namespace

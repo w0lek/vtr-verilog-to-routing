@@ -1,82 +1,110 @@
-// #include "catch2/catch_test_macros.hpp"
-// #include "catch2/matchers/catch_matchers_all.hpp"
+#include "catch2/catch_test_macros.hpp"
+#include "catch2/matchers/catch_matchers_all.hpp"
 
-// #include "taskresolver.h"
-// #include <memory>
+#include "taskresolver.h"
+#include <memory>
 
-// namespace {
+namespace {
 
-// TEST_CASE("test_server_taskresolver_cmdSpamFilter", "[vpr]") {
-//     server::TaskResolver resolver;
-//     resolver.addTask(std::make_unique<server::Task>(1,1));
-//     resolver.addTask(std::make_unique<server::Task>(2,1));
-//     resolver.addTask(std::make_unique<server::Task>(3,1));
-//     resolver.addTask(std::make_unique<server::Task>(4,1));
-//     resolver.addTask(std::make_unique<server::Task>(5,1));
+TEST_CASE("test_server_taskresolver_cmdSpamFilter", "[vpr]") {
+    server::TaskResolver resolver;
 
-//     std::vector<server::TaskPtr> finished;
-//     resolver.takeFinished(finished);
+    {
+        const int cmd = 10;
+        server::TaskPtr task0 = std::make_unique<server::Task>(1,cmd);
+        server::TaskPtr task1 = std::make_unique<server::Task>(2,cmd);
+        server::TaskPtr task2 = std::make_unique<server::Task>(3,cmd);
+        server::TaskPtr task3 = std::make_unique<server::Task>(4,cmd);
+        server::TaskPtr task4 = std::make_unique<server::Task>(5,cmd);
 
-//     REQUIRE(finished.size() == 4);
+        resolver.addTask(task0);
+        resolver.addTask(task1);
+        resolver.addTask(task2);
+        resolver.addTask(task3);
+        resolver.addTask(task4);
+    }
 
-//     for (const auto& task: finished) {
-//         REQUIRE(task.isFinished());
-//         REQUIRE(task.hasError());
-//         REQUIRE(task.jobId() != 1);
-//     }
-//     REQUIRE(resolver.tasksNum() == 1);
-//     server::Task task = resolver.tasks()[0];
-//     REQUIRE(task.jobId()==1);
-//     REQUIRE(task.cmd()==1);
-// }
+    std::vector<server::TaskPtr> finished;
+    resolver.takeFinished(finished);
 
-// TEST_CASE("test_server_taskresolver_cmdOverrideFilter", "[vpr]") {
-//     server::TaskResolver resolver;
-//     resolver.addTask(server::Task{1,2,"1"});
-//     resolver.addTask(server::Task{2,2,"11"});
-//     resolver.addTask(server::Task{3,2,"222"});
+    REQUIRE(finished.size() == 4);
 
-//     std::vector<server::Task> finished;
-//     resolver.takeFinished(finished);
+    for (const auto& task: finished) {
+        REQUIRE(task->isFinished());
+        REQUIRE(task->hasError());
+        REQUIRE(task->jobId() != 1);
+    }
+    REQUIRE(resolver.tasksNum() == 1);
+    const server::TaskPtr& task = resolver.tasks().at(0);
+    REQUIRE(task->jobId() == 1);
+}
 
-//     REQUIRE(finished.size() == 2);
+TEST_CASE("test_server_taskresolver_cmdOverrideFilter", "[vpr]") {
+    server::TaskResolver resolver;
+    const int cmd = 10;
 
-//     for (const auto& task: finished) {
-//         REQUIRE(task.isFinished());
-//         REQUIRE(task.hasError());
-//         REQUIRE(task.jobId() != 3);
-//     }
-//     REQUIRE(resolver.tasksNum() == 1);
-//     server::Task task = resolver.tasks()[0];
-//     REQUIRE(task.jobId()==3);
-//     REQUIRE(task.cmd()==2);
-//     REQUIRE(task.options()=="222");
-// }
+    {
+        server::TaskPtr task0 = std::make_unique<server::Task>(1,cmd,"1");
+        server::TaskPtr task1 = std::make_unique<server::Task>(2,cmd,"11");
+        server::TaskPtr task2 = std::make_unique<server::Task>(3,cmd,"222");
 
-// TEST_CASE("test_server_taskresolver_cmdSpamAndOverrideOptions", "[vpr]") {
-//     server::TaskResolver resolver;
-//     resolver.addTask(server::Task{1,2,"1"});
-//     resolver.addTask(server::Task{2,2,"11"});
-//     resolver.addTask(server::Task{3,2,"222"});
-//     resolver.addTask(server::Task{4,2,"222"});
-//     resolver.addTask(server::Task{5,1});
-//     resolver.addTask(server::Task{6,1});
-//     resolver.addTask(server::Task{7,1});
+        resolver.addTask(task0);
+        resolver.addTask(task1);
+        resolver.addTask(task2);
+    }
 
-//     std::vector<server::Task> finished;
-//     resolver.takeFinished(finished);
+    std::vector<server::TaskPtr> finished;
+    resolver.takeFinished(finished);
 
-//     REQUIRE(resolver.tasksNum() == 2);
-//     server::TaskPtr task0 = resolver.tasks()[0];
-//     server::TaskPtr task1 = resolver.tasks()[1];
+    REQUIRE(finished.size() == 2);
 
-//     REQUIRE(task0.jobId()==3);
-//     REQUIRE(task0.cmd()==2);
-//     REQUIRE(task0.options()=="222");
+    for (const server::TaskPtr& task: finished) {
+        REQUIRE(task->isFinished());
+        REQUIRE(task->hasError());
+        REQUIRE(task->jobId() != 3);
+    }
+    REQUIRE(resolver.tasksNum() == 1);
+    const server::TaskPtr& task = resolver.tasks().at(0);
+    REQUIRE(task->jobId() == 3);
+    REQUIRE(task->cmd() == 2);
+    REQUIRE(task->options() == "222");
+}
 
-//     REQUIRE(task1.jobId()==5);
-//     REQUIRE(task1.cmd()==1);
-//     REQUIRE(task1.options()=="");
-// }
+TEST_CASE("test_server_taskresolver_cmdSpamAndOverrideOptions", "[vpr]") {
+    server::TaskResolver resolver;
 
-// } // namespace
+    {
+        server::TaskPtr task0 = std::make_unique<server::Task>(1,2,"1");
+        server::TaskPtr task1 = std::make_unique<server::Task>(2,2,"11");
+        server::TaskPtr task2 = std::make_unique<server::Task>(3,2,"222");
+        server::TaskPtr task3 = std::make_unique<server::Task>(4,2,"222");
+        server::TaskPtr task4 = std::make_unique<server::Task>(5,1);
+        server::TaskPtr task5 = std::make_unique<server::Task>(6,1);
+        server::TaskPtr task6 = std::make_unique<server::Task>(7,1);
+
+        resolver.addTask(task0);
+        resolver.addTask(task1);
+        resolver.addTask(task2);
+        resolver.addTask(task3);
+        resolver.addTask(task4);
+        resolver.addTask(task5);
+        resolver.addTask(task6);
+    }
+
+    std::vector<server::TaskPtr> finished;
+    resolver.takeFinished(finished);
+
+    REQUIRE(resolver.tasksNum() == 2);
+    const server::TaskPtr& task0 = resolver.tasks().at(0);
+    const server::TaskPtr& task1 = resolver.tasks().at(1);
+
+    REQUIRE(task0->jobId() == 3);
+    REQUIRE(task0->cmd() == 2);
+    REQUIRE(task0->options() == "222");
+
+    REQUIRE(task1->jobId() == 5);
+    REQUIRE(task1->cmd() == 1);
+    REQUIRE(task1->options() == "");
+}
+
+} // namespace
