@@ -81,7 +81,7 @@ class GateIO
     class TLogger {
     public:
         TLogger() {
-            m_logLevel = static_cast<int>(LogLevel::Debug);
+            m_logLevel = static_cast<int>(LogLevel::Info);
         }
         ~TLogger() {}
 
@@ -115,7 +115,7 @@ public:
     explicit GateIO();
     ~GateIO();
 
-    const int LOOP_INTERVAL_MS = 1;
+    const int LOOP_INTERVAL_MS = 100;
 
     bool isRunning() const { return m_isRunning.load(); }
 

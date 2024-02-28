@@ -119,20 +119,6 @@ TEST_CASE("test_server_telegrambuffer_twoFinished", "[vpr]")
     REQUIRE(comm::ByteArray{} == tBuff.data());
 }
 
-// TEST_CASE("test_server_telegrambuffer_twoCleared", "[vpr]") {
-//     comm::TelegramBuffer buff{1024};
-//     buff.append(comm::ByteArray{"111\x17"});
-//     buff.append(comm::ByteArray{"222\x17"});
-
-//     buff.clear();
-
-//     auto frames = buff.takeTelegramFrames();
-//     REQUIRE(frames.size() == 0);
-
-//     REQUIRE(buff.data().to_string() == "");
-// }
-
-
 TEST_CASE("test_server_telegrambuffer_clear", "[vpr]")
 {
     comm::TelegramBuffer tBuff;

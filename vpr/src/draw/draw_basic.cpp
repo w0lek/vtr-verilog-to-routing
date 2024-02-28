@@ -1011,53 +1011,15 @@ void draw_concrete_crit_path(const tatum::TimingPath& path, ezgl::renderer* g) {
     }
 }
 
-void draw_concrete_crit_path_DEBUG(const tatum::TimingPath& path, ezgl::renderer* g) {
-    t_draw_state* draw_state = get_draw_state_vars();
-
-    //Walk through the timing path drawing each edge
-    tatum::NodeId prev_node;
-    float prev_arr_time = std::numeric_limits<float>::quiet_NaN();
-    int i = 0;
-    for (tatum::TimingPathElem elem : path.data_arrival_path().elements()) {
-        tatum::NodeId node = elem.node();
-        float arr_time = elem.tag().time();
-        if (prev_node) {
-            //We draw each 'edge' in a different color, this allows users to identify the stages and
-            //any routing which corresponds to the edge
-            //
-            ezgl::color color{0,0,0,40};
-    
-            float delay = arr_time - prev_arr_time;
-            if (draw_state->show_crit_path == DRAW_CRIT_PATH_FLYLINES
-                || draw_state->show_crit_path
-                       == DRAW_CRIT_PATH_FLYLINES_DELAYS) {
-                g->set_color(color);
-                g->set_line_dash(ezgl::line_dash::none);
-                g->set_line_width(1);
-                draw_flyline_timing_edge(tnode_draw_coord(prev_node),
-                                         tnode_draw_coord(node), delay, g, /*skipDrawDelays*/true);
-            } else {
-                VTR_ASSERT(draw_state->show_crit_path != DRAW_NO_CRIT_PATH);
-
-                //Draw the routed version of the timing edge
-                draw_routed_timing_edge(prev_node, node, delay, color, g, /*skipDrawDelays*/true);
-            }
-        }
-        prev_node = node;
-        prev_arr_time = arr_time;
-    }
-}
-
 void draw_crit_path_elements(const std::vector<tatum::TimingPath>& paths, const std::map<std::size_t, std::set<std::size_t>>& crit_path_element_indexes, ezgl::renderer* g)
 {
     t_draw_state* draw_state = get_draw_state_vars();
+    static ezgl::color contour_color{0,0,0,40};
+    const bool draw_crit_path_contour = g_vpr_ctx.server().draw_crit_path_contour();
 
     for (const auto& [pathIndex, elementIndexes]: crit_path_element_indexes) {
         if (pathIndex < paths.size()) {
             const tatum::TimingPath& path = paths[pathIndex];
-            if (g_vpr_ctx.server().draw_crit_path_contour()) {
-                draw_concrete_crit_path_DEBUG(path, g); // debug
-            }
 
             //Walk through the timing path drawing each edge
             tatum::NodeId prev_node;
@@ -1078,24 +1040,36 @@ void draw_crit_path_elements(const std::vector<tatum::TimingPath>& paths, const 
                 ezgl::color color = kelly_max_contrast_colors[i++
                                                             % kelly_max_contrast_colors.size()];
 
-                if (prev_node && drawCurrentElement) {
+                if (prev_node) {
                     float delay = arr_time - prev_arr_time;
                     if (draw_state->show_crit_path == DRAW_CRIT_PATH_FLYLINES
                         || draw_state->show_crit_path
                             == DRAW_CRIT_PATH_FLYLINES_DELAYS) {
-                        g->set_color(color);
-                        g->set_line_dash(ezgl::line_dash::none);
-                        g->set_line_width(4);
-                        draw_flyline_timing_edge(tnode_draw_coord(prev_node),
-                                                tnode_draw_coord(node), delay, g);
+                        if (drawCurrentElement) {
+                            g->set_color(color);
+                            g->set_line_dash(ezgl::line_dash::none);
+                            g->set_line_width(4);
+                            draw_flyline_timing_edge(tnode_draw_coord(prev_node),
+                                                    tnode_draw_coord(node), delay, g);
+                        } else if (draw_crit_path_contour) {
+                            g->set_color(contour_color);
+                            g->set_line_dash(ezgl::line_dash::none);
+                            g->set_line_width(1);
+                            draw_flyline_timing_edge(tnode_draw_coord(prev_node),
+                                                    tnode_draw_coord(node), delay, g, /*skipDrawDelays*/true);
+                        }
                     } else {
                         VTR_ASSERT(draw_state->show_crit_path != DRAW_NO_CRIT_PATH);
 
                         //Draw the routed version of the timing edge
-                        draw_routed_timing_edge(prev_node, node, delay, color, g);
+                        if (drawCurrentElement) {
+                            draw_routed_timing_edge(prev_node, node, delay, color, g);
+                        } else if (draw_crit_path_contour) {
+                            draw_routed_timing_edge(prev_node, node, delay, contour_color, g, /*skipDrawDelays*/true);
+                        }
                     }
                 }
-
+                
                 prev_node = node;
                 prev_arr_time = arr_time;
                 // end draw element

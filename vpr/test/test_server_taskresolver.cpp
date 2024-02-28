@@ -8,9 +8,9 @@ namespace {
 
 TEST_CASE("test_server_taskresolver_cmdSpamFilter", "[vpr]") {
     server::TaskResolver resolver;
+    const int cmd = 10;
 
     {
-        const int cmd = 10;
         server::TaskPtr task0 = std::make_unique<server::Task>(1,cmd);
         server::TaskPtr task1 = std::make_unique<server::Task>(2,cmd);
         server::TaskPtr task2 = std::make_unique<server::Task>(3,cmd);
@@ -33,10 +33,12 @@ TEST_CASE("test_server_taskresolver_cmdSpamFilter", "[vpr]") {
         REQUIRE(task->isFinished());
         REQUIRE(task->hasError());
         REQUIRE(task->jobId() != 1);
+        REQUIRE(task->cmd() == cmd);
     }
     REQUIRE(resolver.tasksNum() == 1);
     const server::TaskPtr& task = resolver.tasks().at(0);
     REQUIRE(task->jobId() == 1);
+    REQUIRE(task->cmd() == cmd);
 }
 
 TEST_CASE("test_server_taskresolver_cmdOverrideFilter", "[vpr]") {
@@ -66,7 +68,7 @@ TEST_CASE("test_server_taskresolver_cmdOverrideFilter", "[vpr]") {
     REQUIRE(resolver.tasksNum() == 1);
     const server::TaskPtr& task = resolver.tasks().at(0);
     REQUIRE(task->jobId() == 3);
-    REQUIRE(task->cmd() == 2);
+    REQUIRE(task->cmd() == cmd);
     REQUIRE(task->options() == "222");
 }
 

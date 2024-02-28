@@ -89,7 +89,6 @@ void draw_crit_path(ezgl::renderer* g);
  * b) during routing, critical path is shown by both flylines and routed net connections.
  */
 void draw_concrete_crit_path(const tatum::TimingPath& path, ezgl::renderer* g);
-void draw_concrete_crit_path_DEBUG(const tatum::TimingPath& path, ezgl::renderer* g);
 
 void draw_crit_path_elements(const std::vector<tatum::TimingPath>& paths, const std::map<std::size_t, std::set<std::size_t>>& indexes, ezgl::renderer* g);
 

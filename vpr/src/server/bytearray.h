@@ -1,6 +1,7 @@
 #ifndef BYTEARRAY_H
 #define BYTEARRAY_H
 
+#include <cstdint>
 #include <vector>
 #include <string>
 #include <cstring>
@@ -39,17 +40,20 @@ public:
         push_back(b);
     }
 
-    std::size_t findSequence(const char* sequence, std::size_t n) {
-        for (std::size_t i = 0; i <= size() - n; ++i) {
-            bool found = true;
-            for (std::size_t j = 0; j < n; ++j) {
-                if (at(i + j) != sequence[j]) {
-                    found = false;
-                    break;
+    std::size_t findSequence(const char* sequence, std::size_t sequenceSize) {
+        const std::size_t mSize = size();
+        if (mSize >= sequenceSize) {
+            for (std::size_t i = 0; i <= mSize - sequenceSize; ++i) {
+                bool found = true;
+                for (std::size_t j = 0; j < sequenceSize; ++j) {
+                    if (at(i + j) != sequence[j]) {
+                        found = false;
+                        break;
+                    }
                 }
-            }
-            if (found) {
-                return i;
+                if (found) {
+                    return i;
+                }
             }
         }
         return std::size_t(-1);

@@ -370,7 +370,6 @@ void vpr_show_resource_usage(const t_vpr_setup& vpr_setup, const t_arch& Arch)
 {
     vtr::ScopedStartFinishTimer timer("Build Device Grid");
     /* Read in netlist file for placement and routing */
-    auto& cluster_ctx = g_vpr_ctx.clustering();
     auto& device_ctx = g_vpr_ctx.mutable_device();
 
     device_ctx.arch = &Arch;
@@ -854,6 +853,7 @@ RouteStatus vpr_route_flow(const Netlist<>& net_list,
 
         //Initialize the delay calculator
         std::shared_ptr<SetupHoldTimingInfo> timing_info = nullptr;
+
         std::shared_ptr<RoutingDelayCalculator> routing_delay_calc = nullptr;
         if (vpr_setup.Timing.timing_analysis_enabled) {
             auto& atom_ctx = g_vpr_ctx.atom();

@@ -16,6 +16,8 @@ set(VPR_PGO_DATA_DIR "." CACHE PATH "Where to store and retrieve PGO data")
 set(GRAPHICS_DEFINES "")
 
 #sockpp
+set(SOCKPP_BUILD_SHARED OFF CACHE BOOL "Override default value" FORCE)
+set(SOCKPP_BUILD_STATIC ON CACHE BOOL "Override default value" FORCE)
 add_subdirectory(thirdparty/sockpp)
 set(THIRDPARTY_INCLUDE_DIRS thirdparty/sockpp/include)
 
@@ -88,7 +90,7 @@ target_link_libraries(libvpr
                         libargparse
                         libpugixml
                         librrgraph
-                        sockpp 
+                        sockpp-static
                         -lz
 )
 

@@ -65,8 +65,13 @@ void GateIO::moveTasksToSendQueue(std::vector<TaskPtr>& tasks)
 
 void GateIO::startListening()
 {
+#ifdef ENABLE_CLIENT_ALIVE_TRACKER
     std::unique_ptr<ClientAliveTracker> clientAliveTrackerPtr =
          std::make_unique<ClientAliveTracker>(std::chrono::milliseconds{5000}, std::chrono::milliseconds{20000});
+#else
+    std::unique_ptr<ClientAliveTracker> clientAliveTrackerPtr;
+#endif
+
     static const std::string echoData{comm::ECHO_DATA};
 
     comm::TelegramBuffer telegramBuff;
@@ -76,7 +81,7 @@ void GateIO::startListening()
     sockpp::tcp6_acceptor tcpServer(m_portNum);
     tcpServer.set_non_blocking(true);
 
-    const std::size_t chunkMaxBytesNum = 0.5*1024*1024; // 0.5Mb
+    const std::size_t chunkMaxBytesNum = 2*1024*1024; // 2Mb
 
     if (tcpServer) {
         m_logger.queue(LogLevel::Info, "open server, port=", m_portNum);
@@ -111,16 +116,18 @@ void GateIO::startListening()
             /// handle sending response
             {
                 std::unique_lock<std::mutex> lock(m_tasksMutex);
-                for (const TaskPtr& task: m_sendTasks) {
+                
+                if (!m_sendTasks.empty()) {
+                    const TaskPtr& task = m_sendTasks.at(0);                
                     try {
                         std::size_t bytesToSend = std::min(chunkMaxBytesNum, task->responseBuffer().size());
                         std::size_t bytesActuallyWritten = client.write_n(task->responseBuffer().data(), bytesToSend);
                         if (bytesActuallyWritten <= task->origReponseBytesNum()) {
                             task->chopNumSentBytesFromResponseBuffer(bytesActuallyWritten);
                             m_logger.queue(LogLevel::Detail,
-                                           "sent chunk:", getPrettySizeStrFromBytesNum(bytesActuallyWritten),
-                                           "from", getPrettySizeStrFromBytesNum(task->origReponseBytesNum()),
-                                           "left:", getPrettySizeStrFromBytesNum(task->responseBuffer().size()));
+                                        "sent chunk:", getPrettySizeStrFromBytesNum(bytesActuallyWritten),
+                                        "from", getPrettySizeStrFromBytesNum(task->origReponseBytesNum()),
+                                        "left:", getPrettySizeStrFromBytesNum(task->responseBuffer().size()));
                             if (clientAliveTrackerPtr) {
                                 clientAliveTrackerPtr->onClientActivity();
                             }
@@ -137,10 +144,15 @@ void GateIO::startListening()
                 }
 
                 // remove reported tasks
+                std::size_t tasksBeforeRemoving = m_sendTasks.size();
+
                 auto partitionIter = std::partition(m_sendTasks.begin(), m_sendTasks.end(),
                                                     [](const TaskPtr& task) { return !task->isResponseFullySent(); });
                 m_sendTasks.erase(partitionIter, m_sendTasks.end());
-
+                bool removingTookPlace = tasksBeforeRemoving != m_sendTasks.size();
+                if (!m_sendTasks.empty() && removingTookPlace) {
+                    m_logger.queue(LogLevel::Detail, "left tasks num to send ", m_sendTasks.size());
+                }
             } // release lock
 
             /// handle receiving
