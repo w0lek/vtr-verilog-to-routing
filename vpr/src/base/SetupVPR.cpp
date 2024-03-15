@@ -497,6 +497,7 @@ static void SetupRouterOpts(const t_options& Options, t_router_opts* RouterOpts)
     RouterOpts->generate_rr_node_overuse_report = Options.generate_rr_node_overuse_report;
     RouterOpts->flat_routing = Options.flat_routing;
     RouterOpts->has_choking_spot = Options.has_choking_spot;
+    RouterOpts->with_timing_analysis = Options.timing_analysis;
 }
 
 static void SetupAnnealSched(const t_options& Options,
@@ -638,6 +639,8 @@ static void SetupPlacerOpts(const t_options& Options, t_placer_opts* PlacerOpts)
 
     PlacerOpts->constraints_file = Options.constraints_file;
 
+    PlacerOpts->write_initial_place_file = Options.write_initial_place_file;
+
     PlacerOpts->pad_loc_type = Options.pad_loc_type;
 
     PlacerOpts->place_chan_width = Options.PlaceChanWidth;
@@ -677,6 +680,7 @@ static void SetupPlacerOpts(const t_options& Options, t_placer_opts* PlacerOpts)
     PlacerOpts->place_static_move_prob = Options.place_static_move_prob;
     PlacerOpts->place_static_notiming_move_prob = Options.place_static_notiming_move_prob;
     PlacerOpts->place_high_fanout_net = Options.place_high_fanout_net;
+    PlacerOpts->place_bounding_box_mode = Options.place_bounding_box_mode;
     PlacerOpts->RL_agent_placement = Options.RL_agent_placement;
     PlacerOpts->place_agent_multistate = Options.place_agent_multistate;
     PlacerOpts->place_checkpointing = Options.place_checkpointing;
@@ -693,6 +697,9 @@ static void SetupPlacerOpts(const t_options& Options, t_placer_opts* PlacerOpts)
     PlacerOpts->floorplan_num_vertical_partitions = Options.floorplan_num_vertical_partitions;
 
     PlacerOpts->seed = Options.Seed;
+
+    PlacerOpts->placer_debug_block = Options.placer_debug_block;
+    PlacerOpts->placer_debug_net = Options.placer_debug_net;
 }
 
 static void SetupAnalysisOpts(const t_options& Options, t_analysis_opts& analysis_opts) {
@@ -748,6 +755,7 @@ static void SetupNocOpts(const t_options& Options, t_noc_opts* NocOpts) {
     NocOpts->noc_placement_weighting = Options.noc_placement_weighting;
     NocOpts->noc_latency_constraints_weighting = Options.noc_latency_constraints_weighting;
     NocOpts->noc_latency_weighting = Options.noc_latency_weighting;
+    NocOpts->noc_congestion_weighting = Options.noc_congestion_weighting;
     NocOpts->noc_swap_percentage = Options.noc_swap_percentage;
     NocOpts->noc_placement_file_name = Options.noc_placement_file_name;
 

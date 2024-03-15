@@ -24,13 +24,13 @@
  * 
  * Link
  * ----
- * A link is a component of the NoC ans is defined by the
+ * A link is a component of the NoC and is defined by the
  * NocLink class. Links are connections between two routers.
  * Links are used by routers to communicate with other routers
  * in the NoC. They can be thought of as edges in a graph. Links
  * have a source router where they exit from and sink router where
  * they enter. It is important to note that the links are not
- * unidirectional, the legal way to traverse a link is from the
+ * bi-directional; the legal way to traverse a link is from the
  * source router of the link to the sink router.
  * 
  */
@@ -141,7 +141,13 @@ class NocStorage {
      * 
      */
     int device_grid_width;
-    int num_layer_blocks;
+    /**
+     * @brief Internal reference to the number of blocks at each layer (width * height). This is necessary
+     * to compute a unique key for a given grid location which we can then use
+     * to get the corresponding physical (hard) router at the given grid
+     * location using 'grid_location_to_router_id'.
+     */
+    int layer_num_grid_locs;
 
     // prevent "copying" of this object
     NocStorage(const NocStorage&) = delete;
@@ -262,6 +268,21 @@ class NocStorage {
      * @return A link (NocLink) that is identified by the given id.
      */
     const NocLink& get_single_noc_link(NocLinkId id) const;
+
+    /**
+     * @brief Given source and sink router identifiers, this function
+     * finds a link connecting these routers and returns its identifier.
+     * If such a link does not exist, an invalid id is returned.
+     * The function is not optimized for performance as it has a complexity
+     * of O(N_links).
+     *
+     * @param src_router The unique router identifier for the source router.
+     * @param dst_router The unique router identifier for the destination router.
+     * @return A link identifier (NocLinkId) that connects the source router
+     * to the destination router. NocLinkId::INVALID() is such a link is not
+     * found.
+     */
+    NocLinkId  get_single_noc_link_id(NocRouterId src_router, NocRouterId dst_router) const;
 
     /**
      * @brief Given a unique link identifier, get the corresponding link

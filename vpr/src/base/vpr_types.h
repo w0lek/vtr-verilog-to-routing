@@ -65,6 +65,14 @@
 
 //#define VERBOSE //Prints additional intermediate data
 
+/*
+ * We need to define the maximum number of layers to address a specific issue.
+ * For certain data structures, such as `num_sink_pin_layer` in the placer context, dynamically allocating
+ * memory based on the number of layers can lead to a performance hit due to additional pointer chasing and
+ * cache locality concerns. Defining a constant variable helps optimize the memory allocation process.
+ */
+constexpr int MAX_NUM_LAYERS = 2;
+
 /**
  * @brief For update_screen. Denotes importance of update.
  *
@@ -111,10 +119,11 @@ constexpr auto INVALID_BLOCK_ID = ClusterBlockId(-2);
 #endif
 
 enum class e_router_lookahead {
-    CLASSIC,      ///<VPR's classic lookahead (assumes uniform wire types)
-    MAP,          ///<Lookahead considering different wire types (see Oleg Petelin's MASc Thesis)
-    EXTENDED_MAP, ///<Lookahead with a more extensive node sampling method
-    NO_OP         ///<A no-operation lookahead which always returns zero
+    CLASSIC,        ///<VPR's classic lookahead (assumes uniform wire types)
+    MAP,            ///<Lookahead considering different wire types (see Oleg Petelin's MASc Thesis)
+    COMPRESSED_MAP, /// Similar to MAP, but use a sparse sampling of the chip
+    EXTENDED_MAP,   ///<Lookahead with a more extensive node sampling method
+    NO_OP           ///<A no-operation lookahead which always returns zero
 };
 
 enum class e_route_bb_update {
@@ -186,16 +195,21 @@ class t_ext_pin_util_targets {
   public:
     t_ext_pin_util_targets() = default;
     t_ext_pin_util_targets(float default_in_util, float default_out_util);
+    t_ext_pin_util_targets(const std::vector<std::string>& specs);
+    t_ext_pin_util_targets& operator=(t_ext_pin_util_targets&& other) noexcept;
 
     ///@brief Returns the input pin util of the specified block (or default if unspecified)
-    t_ext_pin_util get_pin_util(std::string block_type_name) const;
+    t_ext_pin_util get_pin_util(const std::string& block_type_name) const;
+
+    ///@brief Returns a string describing input/output pin utilization targets
+    std::string to_string() const;
 
   public:
     /**
      * @brief Sets the pin util for the specified block type
      * @return true if non-default was previously set
      */
-    void set_block_pin_util(std::string block_type_name, t_ext_pin_util target);
+    void set_block_pin_util(const std::string& block_type_name, t_ext_pin_util target);
 
     /**
      * @brief Sets the default pin util
@@ -211,16 +225,22 @@ class t_ext_pin_util_targets {
 class t_pack_high_fanout_thresholds {
   public:
     t_pack_high_fanout_thresholds() = default;
-    t_pack_high_fanout_thresholds(int threshold);
+    explicit t_pack_high_fanout_thresholds(int threshold);
+    explicit t_pack_high_fanout_thresholds(const std::vector<std::string>& specs);
+    t_pack_high_fanout_thresholds& operator=(t_pack_high_fanout_thresholds&& other) noexcept;
 
-    int get_threshold(std::string block_type_name) const;
+    ///@brief Returns the high fanout threshold of the specifi  ed block
+    int get_threshold(const std::string& block_type_name) const;
+
+    ///@brief Returns a string describing high fanout thresholds for different block types
+    std::string to_string() const;
 
   public:
     /**
      * @brief Sets the pin util for the specified block type
      * @return true if non-default was previously set
      */
-    void set(std::string block_type_name, int threshold);
+    void set(const std::string& block_type_name, int threshold);
 
     /**
      * @brief Sets the default pin util
@@ -570,48 +590,79 @@ struct t_net_power {
 };
 
 /**
- * @brief Stores the bounding box of a net in terms of the minimum and
- *        maximum coordinates of the blocks forming the net, clipped to
- *        the region: (1..device_ctx.grid.width()-2, 1..device_ctx.grid.height()-1)
+ * @brief Stores a 3D bounding box in terms of the minimum and
+ *        maximum coordinates: x, y, layer
  */
 struct t_bb {
     t_bb() = default;
-    t_bb(int xmin_, int xmax_, int ymin_, int ymax_)
+    t_bb(int xmin_, int xmax_, int ymin_, int ymax_, int layer_min_, int layer_max_)
         : xmin(xmin_)
         , xmax(xmax_)
         , ymin(ymin_)
-        , ymax(ymax_) {
+        , ymax(ymax_)
+        , layer_min(layer_min_)
+        , layer_max(layer_max_) {
         VTR_ASSERT(xmax_ >= xmin_);
         VTR_ASSERT(ymax_ >= ymin_);
+        VTR_ASSERT(layer_max_ >= layer_min_);
     }
     int xmin = OPEN;
     int xmax = OPEN;
     int ymin = OPEN;
     int ymax = OPEN;
+    int layer_min = OPEN;
+    int layer_max = OPEN;
+};
+
+/**
+ * @brief Stores a 2D bounding box in terms of the minimum and maximum x and y
+ * @note layer_num indicates the layer that the bounding box is on.
+ */
+struct t_2D_bb {
+    t_2D_bb() = default;
+    t_2D_bb(int xmin_, int xmax_, int ymin_, int ymax_, int layer_num_)
+        : xmin(xmin_)
+        , xmax(xmax_)
+        , ymin(ymin_)
+        , ymax(ymax_)
+        , layer_num(layer_num_) {
+        VTR_ASSERT(xmax_ >= xmin_);
+        VTR_ASSERT(ymax_ >= ymin_);
+        VTR_ASSERT(layer_num_ >= 0);
+    }
+    int xmin = OPEN;
+    int xmax = OPEN;
+    int ymin = OPEN;
+    int ymax = OPEN;
+    int layer_num = OPEN;
 };
 
 /**
  * @brief An offset between placement locations (t_pl_loc)
- *
+ * @note In the case of comparing the offset, the layer offset should be equal
  * x: x-offset
  * y: y-offset
- * z: z-offset
+ * sub_tile: sub_tile-offset
+ * layer: layer-offset
  */
 struct t_pl_offset {
     t_pl_offset() = default;
-    t_pl_offset(int xoffset, int yoffset, int sub_tile_offset)
+    t_pl_offset(int xoffset, int yoffset, int sub_tile_offset, int layer_offset)
         : x(xoffset)
         , y(yoffset)
-        , sub_tile(sub_tile_offset) {}
+        , sub_tile(sub_tile_offset)
+        , layer(layer_offset) {}
 
     int x = 0;
     int y = 0;
     int sub_tile = 0;
+    int layer = 0;
 
     t_pl_offset& operator+=(const t_pl_offset& rhs) {
         x += rhs.x;
         y += rhs.y;
         sub_tile += rhs.sub_tile;
+        layer += rhs.layer;
         return *this;
     }
 
@@ -619,6 +670,7 @@ struct t_pl_offset {
         x -= rhs.x;
         y -= rhs.y;
         sub_tile -= rhs.sub_tile;
+        layer -= rhs.layer;
         return *this;
     }
 
@@ -633,18 +685,19 @@ struct t_pl_offset {
     }
 
     friend t_pl_offset operator-(const t_pl_offset& other) {
-        return t_pl_offset(-other.x, -other.y, -other.sub_tile);
+        return t_pl_offset(-other.x, -other.y, -other.sub_tile, -other.layer);
     }
     friend t_pl_offset operator+(const t_pl_offset& other) {
-        return t_pl_offset(+other.x, +other.y, +other.sub_tile);
+        return t_pl_offset(+other.x, +other.y, +other.sub_tile, +other.layer);
     }
 
     friend bool operator<(const t_pl_offset& lhs, const t_pl_offset& rhs) {
+        VTR_ASSERT(lhs.layer == rhs.layer);
         return std::tie(lhs.x, lhs.y, lhs.sub_tile) < std::tie(rhs.x, rhs.y, rhs.sub_tile);
     }
 
     friend bool operator==(const t_pl_offset& lhs, const t_pl_offset& rhs) {
-        return std::tie(lhs.x, lhs.y, lhs.sub_tile) == std::tie(rhs.x, rhs.y, rhs.sub_tile);
+        return std::tie(lhs.x, lhs.y, lhs.sub_tile, lhs.layer) == std::tie(rhs.x, rhs.y, rhs.sub_tile, rhs.layer);
     }
 
     friend bool operator!=(const t_pl_offset& lhs, const t_pl_offset& rhs) {
@@ -659,6 +712,7 @@ struct hash<t_pl_offset> {
         std::size_t seed = std::hash<int>{}(v.x);
         vtr::hash_combine(seed, v.y);
         vtr::hash_combine(seed, v.sub_tile);
+        vtr::hash_combine(seed, v.layer);
         return seed;
     }
 };
@@ -681,6 +735,11 @@ struct t_pl_loc {
         , y(yloc)
         , sub_tile(sub_tile_loc)
         , layer(layer_num) {}
+    t_pl_loc(const t_physical_tile_loc& phy_loc, int sub_tile_loc)
+        : x(phy_loc.x)
+        , y(phy_loc.y)
+        , sub_tile(sub_tile_loc)
+        , layer(phy_loc.layer_num) {}
 
     int x = OPEN;
     int y = OPEN;
@@ -688,7 +747,7 @@ struct t_pl_loc {
     int layer = OPEN;
 
     t_pl_loc& operator+=(const t_pl_offset& rhs) {
-        VTR_ASSERT(this->layer != OPEN);
+        layer += rhs.layer;
         x += rhs.x;
         y += rhs.y;
         sub_tile += rhs.sub_tile;
@@ -696,7 +755,7 @@ struct t_pl_loc {
     }
 
     t_pl_loc& operator-=(const t_pl_offset& rhs) {
-        VTR_ASSERT(this->layer != OPEN);
+        layer -= rhs.layer;
         x -= rhs.x;
         y -= rhs.y;
         sub_tile -= rhs.sub_tile;
@@ -720,8 +779,10 @@ struct t_pl_loc {
     }
 
     friend t_pl_offset operator-(const t_pl_loc& lhs, const t_pl_loc& rhs) {
-        VTR_ASSERT(lhs.layer == rhs.layer);
-        return {lhs.x - rhs.x, lhs.y - rhs.y, lhs.sub_tile - rhs.sub_tile};
+        return {lhs.x - rhs.x,
+                lhs.y - rhs.y,
+                lhs.sub_tile - rhs.sub_tile,
+                lhs.layer - rhs.layer};
     }
 
     friend bool operator<(const t_pl_loc& lhs, const t_pl_loc& rhs) {
@@ -745,6 +806,7 @@ struct hash<t_pl_loc> {
         std::size_t seed = std::hash<int>{}(v.x);
         vtr::hash_combine(seed, v.y);
         vtr::hash_combine(seed, v.sub_tile);
+        vtr::hash_combine(seed, v.layer);
         return seed;
     }
 };
@@ -974,6 +1036,12 @@ enum e_place_algorithm {
     SLACK_TIMING_PLACE
 };
 
+enum e_place_bounding_box_mode {
+    AUTO_BB,
+    CUBE_BB,
+    PER_LAYER_BB
+};
+
 /**
  * @brief Provides a wrapper around enum e_place_algorithm.
  *
@@ -1050,7 +1118,7 @@ enum e_agent_algorithm {
  * can be based on (block_type, move_type) pair.
  *
  */
-enum e_agent_space {
+enum class e_agent_space {
     MOVE_TYPE,
     MOVE_BLOCK_TYPE
 };
@@ -1062,6 +1130,7 @@ enum e_place_effort_scaling {
 };
 
 enum class PlaceDelayModelType {
+    SIMPLE,
     DELTA,          ///<Delta x/y based delay model
     DELTA_OVERRIDE, ///<Delta x/y based delay model with special case delay overrides
 };
@@ -1109,6 +1178,9 @@ enum class e_place_delta_delay_algorithm {
  *   @param constraints_file
  *              File that specifies locations of locked down (constrained)
  *              blocks for placement. Empty string means no constraints file.
+ *   @param write_initial_place_file
+ *              Write the initial placement into this file. Empty string means
+ *              the initial placement is not written.
  *   @param pad_loc_file
  *              File to read pad locations from if pad_loc_type is USER.
  *   @param place_freq
@@ -1151,6 +1223,7 @@ struct t_placer_opts {
     int place_chan_width;
     enum e_pad_loc_type pad_loc_type;
     std::string constraints_file;
+    std::string write_initial_place_file;
     enum pfreq place_freq;
     int recompute_crit_iter;
     int inner_loop_recompute_divider;
@@ -1186,6 +1259,7 @@ struct t_placer_opts {
     bool place_agent_multistate;
     bool place_checkpointing;
     int place_high_fanout_net;
+    e_place_bounding_box_mode place_bounding_box_mode;
     e_agent_algorithm place_agent_algorithm;
     float place_agent_epsilon;
     float place_agent_gamma;
@@ -1198,6 +1272,9 @@ struct t_placer_opts {
     bool place_constraint_subtile;
     int floorplan_num_horizontal_partitions;
     int floorplan_num_vertical_partitions;
+
+    int placer_debug_block;
+    int placer_debug_net;
 
     /**
      * @brief Tile types that should be used during delay sampling.
@@ -1268,6 +1345,7 @@ struct t_placer_opts {
 
 enum e_router_algorithm {
     PARALLEL,
+    PARALLEL_DECOMP,
     TIMING_DRIVEN,
 };
 
@@ -1392,6 +1470,8 @@ struct t_router_opts {
     bool flat_routing;
     bool has_choking_spot;
 
+    bool with_timing_analysis;
+
     // Options related to rr_node reordering, for testing and possible cache optimization
     e_rr_node_reorder_algorithm reorder_rr_graph_nodes_algorithm = DONT_REORDER;
     int reorder_rr_graph_nodes_threshold = 0;
@@ -1422,9 +1502,11 @@ struct t_noc_opts {
     std::string noc_flows_file;               ///<name of the file that contains all the traffic flow information to be sent over the NoC in this design
     std::string noc_routing_algorithm;        ///<controls the routing algorithm used to route packets within the NoC
     double noc_placement_weighting;           ///<controls the significance of the NoC placement cost relative to the total placement cost range:[0-inf)
-    double noc_latency_constraints_weighting; ///<controls the significance of meeting the traffic flow contraints range:[0-inf)
+    double noc_aggregate_bandwidth_weighting; ///<controls the significance of aggregate used bandwidth relative to other NoC placement costs:[0:-inf)
+    double noc_latency_constraints_weighting; ///<controls the significance of meeting the traffic flow constraints range:[0-inf)
     double noc_latency_weighting;             ///<controls the significance of the traffic flow latencies relative to the other NoC placement costs range:[0-inf)
-    int noc_swap_percentage;                  ///<controls the number of NoC router block swap attemps relative to the total number of swaps attempted by the placer range:[0-100]
+    double noc_congestion_weighting;          ///<controls the significance of the link congestions relative to the other NoC placement costs range:[0-inf)
+    int noc_swap_percentage;                  ///<controls the number of NoC router block swap attempts relative to the total number of swaps attempted by the placer range:[0-100]
     std::string noc_placement_file_name;      ///<is the name of the output file that contains the NoC placement information
 };
 
@@ -1811,6 +1893,7 @@ struct t_vpr_setup {
     e_clock_modeling clock_modeling;           ///<How clocks should be handled
     bool two_stage_clock_routing;              ///<How clocks should be routed in the presence of a dedicated clock network
     bool exit_before_pack;                     ///<Exits early before starting packing (useful for collecting statistics without running/loading any stages)
+    unsigned int num_workers;                  ///Maximum number of worker threads (determined from an env var or cmdline option)
 };
 
 class RouteStatus {

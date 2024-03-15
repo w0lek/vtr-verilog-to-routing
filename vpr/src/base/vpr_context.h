@@ -353,6 +353,11 @@ struct ClusteringHelperContext : public Context {
     // the utilization of external input/output pins during packing (between 0 and 1)
     t_ext_pin_util_targets target_external_pin_util;
 
+    // During clustering, a block is related to un-clustered primitives with nets.
+    // This relation has three types: low fanout, high fanout, and trasitive
+    // high_fanout_thresholds stores the threshold for nets to a block type to be considered high fanout
+    t_pack_high_fanout_thresholds high_fanout_thresholds;
+
     // A vector of unordered_sets of AtomBlockIds that are inside each clustered block [0 .. num_clustered_blocks-1]
     // unordered_set for faster insertion/deletion during the iterative improvement process of packing
     vtr::vector<ClusterBlockId, std::unordered_set<AtomBlockId>> atoms_lookup;
@@ -407,17 +412,16 @@ struct PlacementContext : public Context {
     std::string placement_id;
 
     /**
-     * @brief Map physical block type to RL-agent block type
-     *
-     * RL-agent block types are the physical block types that are used in the netlist (at least one logical block in the netlist maps to).
-     * As an example:
-     *      Having physical block types (EMPTY, LAB, DSP, IO),
-     *      agent block types would be (LAB,IO) if netlist doesn't contain DSP blocks.
-     * Key   : physical (agent) block type index
-     * Value : agent (physical) block type index
+     * Use during placement to print extra debug information. It is set to true based on the number assigned to
+     * placer_debug_net or placer_debug_block parameters in the command line.
      */
-    std::unordered_map<int, int> phys_blk_type_to_agent_blk_type_map;
-    std::unordered_map<int, int> agent_blk_type_to_phys_blk_type_map;
+    bool f_placer_debug = false;
+
+    /**
+     * Set this variable to ture if the type of the bounding box used in placement is of the type cube. If it is false,
+     * it would mean that per-layer bounding box is used. For the 2D architecture, the cube bounding box would be used.
+     */
+    bool cube_bb = false;
 };
 
 /**
@@ -556,7 +560,7 @@ struct NocContext : public Context {
      *
      * This is created from a user supplied command line option "--noc_routing_algorithm"
      */
-    NocRouting* noc_flows_router;
+    std::unique_ptr<NocRouting> noc_flows_router;
 };
 
 /**

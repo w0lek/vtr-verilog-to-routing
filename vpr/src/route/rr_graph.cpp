@@ -638,46 +638,47 @@ void create_rr_graph(const t_graph_type graph_type,
     bool echo_enabled = getEchoEnabled() && isEchoFileEnabled(E_ECHO_RR_GRAPH_INDEXED_DATA);
     const char* echo_file_name = getEchoFileName(E_ECHO_RR_GRAPH_INDEXED_DATA);
     bool load_rr_graph = !det_routing_arch->read_rr_graph_filename.empty();
-    if (load_rr_graph) {
-        if (device_ctx.read_rr_graph_filename != det_routing_arch->read_rr_graph_filename) {
-            free_rr_graph();
 
-            load_rr_file(&mutable_device_ctx.rr_graph_builder,
-                         &mutable_device_ctx.rr_graph,
-                         device_ctx.physical_tile_types,
-                         segment_inf,
-                         &mutable_device_ctx.rr_indexed_data,
-                         &mutable_device_ctx.rr_rc_data,
-                         grid,
-                         device_ctx.arch_switch_inf,
-                         graph_type,
-                         device_ctx.arch,
-                         &mutable_device_ctx.chan_width,
-                         router_opts.base_cost_type,
-                         device_ctx.virtual_clock_network_root_idx,
-                         &det_routing_arch->wire_to_rr_ipin_switch,
-                         &det_routing_arch->wire_to_arch_ipin_switch_between_dice,
-                         det_routing_arch->read_rr_graph_filename.c_str(),
-                         &det_routing_arch->read_rr_graph_filename,
-                         router_opts.read_rr_edge_metadata,
-                         router_opts.do_check_rr_graph,
-                         echo_enabled,
-                         echo_file_name,
-                         is_flat);
-            if (router_opts.reorder_rr_graph_nodes_algorithm != DONT_REORDER) {
-                mutable_device_ctx.rr_graph_builder.reorder_nodes(router_opts.reorder_rr_graph_nodes_algorithm,
-                                                                  router_opts.reorder_rr_graph_nodes_threshold,
-                                                                  router_opts.reorder_rr_graph_nodes_seed);
-            }
+    if (channel_widths_unchanged(device_ctx.chan_width, nodes_per_chan) && !device_ctx.rr_graph.empty()) {
+        //No change in channel width, so skip re-building RR graph
+        if (is_flat && !device_ctx.rr_graph_is_flat) {
+            VTR_LOG("RR graph channel widths unchanged, intra-cluster resources should be added...\n");
+        } else {
+            VTR_LOG("RR graph channel widths unchanged, skipping RR graph rebuild\n");
+            return;
         }
     } else {
-        if (channel_widths_unchanged(device_ctx.chan_width, nodes_per_chan) && !device_ctx.rr_graph.empty()) {
-            //No change in channel width, so skip re-building RR graph
-            if (is_flat && !device_ctx.rr_graph_is_flat) {
-                VTR_LOG("RR graph channel widths unchanged, intra-cluster resources should be added...\n");
-            } else {
-                VTR_LOG("RR graph channel widths unchanged, skipping RR graph rebuild\n");
-                return;
+        if (load_rr_graph) {
+            if (device_ctx.read_rr_graph_filename != det_routing_arch->read_rr_graph_filename) {
+                free_rr_graph();
+
+                load_rr_file(&mutable_device_ctx.rr_graph_builder,
+                             &mutable_device_ctx.rr_graph,
+                             device_ctx.physical_tile_types,
+                             segment_inf,
+                             &mutable_device_ctx.rr_indexed_data,
+                             &mutable_device_ctx.rr_rc_data,
+                             grid,
+                             device_ctx.arch_switch_inf,
+                             graph_type,
+                             device_ctx.arch,
+                             &mutable_device_ctx.chan_width,
+                             router_opts.base_cost_type,
+                             device_ctx.virtual_clock_network_root_idx,
+                             &det_routing_arch->wire_to_rr_ipin_switch,
+                             &det_routing_arch->wire_to_arch_ipin_switch_between_dice,
+                             det_routing_arch->read_rr_graph_filename.c_str(),
+                             &det_routing_arch->read_rr_graph_filename,
+                             router_opts.read_rr_edge_metadata,
+                             router_opts.do_check_rr_graph,
+                             echo_enabled,
+                             echo_file_name,
+                             is_flat);
+                if (router_opts.reorder_rr_graph_nodes_algorithm != DONT_REORDER) {
+                    mutable_device_ctx.rr_graph_builder.reorder_nodes(router_opts.reorder_rr_graph_nodes_algorithm,
+                                                                      router_opts.reorder_rr_graph_nodes_threshold,
+                                                                      router_opts.reorder_rr_graph_nodes_seed);
+                }
             }
         } else {
             free_rr_graph();
@@ -1353,6 +1354,26 @@ static void build_rr_graph(const t_graph_type graph_type,
             if (rr_graph.node_type(RRNodeId(i)) == CHANY) {
                 int xlow = rr_graph.node_xlow(RRNodeId(i));
                 device_ctx.rr_graph_builder.set_node_capacity(RRNodeId(i), nodes_per_chan.y_list[xlow]);
+            }
+        }
+    }
+
+    /*Update rr_nodes ptc_twist_incr number if we are creating tileable graph*/
+    if (graph_type == GRAPH_UNIDIR_TILEABLE) {
+        device_ctx.rr_graph_builder.resize_ptc_twist_incr(num_rr_nodes);
+        for (int rr_node_id = 0; rr_node_id < num_rr_nodes; rr_node_id++) {
+            auto node_type = rr_graph.node_type(RRNodeId(rr_node_id));
+            auto node_dir = rr_graph.node_direction(RRNodeId(rr_node_id));
+            if (node_type != CHANX && node_type != CHANY) { //SRC/SINK/IPIN/OPIN
+                device_ctx.rr_graph_builder.set_node_ptc_twist_incr(RRNodeId(rr_node_id), 0);
+            } else {
+                //The current ptc twist increment number in UNDIR TILEABLE RRGraph is 2 and -2
+                //The assumption should be synced up with openFPGA branch
+                if (node_dir == Direction::INC) {
+                    device_ctx.rr_graph_builder.set_node_ptc_twist_incr(RRNodeId(rr_node_id), 2);
+                } else {
+                    device_ctx.rr_graph_builder.set_node_ptc_twist_incr(RRNodeId(rr_node_id), -2);
+                }
             }
         }
     }
@@ -2079,6 +2100,7 @@ static std::function<void(t_chan_width*)> alloc_and_load_rr_graph(RRGraphBuilder
     num_edges = 0;
     /* Build channels */
     VTR_ASSERT(Fs % 3 == 0);
+
     for (int layer = 0; layer < grid.get_num_layers(); ++layer) {
         auto& device_ctx = g_vpr_ctx.device();
         /* Skip the current die if architecture file specifies that it doesn't require inter-cluster programmable resource routing */
@@ -2204,6 +2226,7 @@ static void alloc_and_load_intra_cluster_rr_graph(RRGraphBuilder& rr_graph_build
                                                   bool load_rr_graph) {
     t_rr_edge_info_set rr_edges_to_create;
     int num_edges = 0;
+
     for (int layer = 0; layer < grid.get_num_layers(); layer++) {
         for (int i = 0; i < (int)grid.width(); ++i) {
             for (int j = 0; j < (int)grid.height(); ++j) {
@@ -3692,6 +3715,11 @@ static void load_uniform_connection_block_pattern(vtr::NdMatrix<int, 6>& tracks_
         /* Bi-directional treats each track separately, uni-directional works with pairs of tracks */
         for (int j = 0; j < (Fc / group_size); ++j) {
             int max_chan_width = (((side == TOP) || (side == BOTTOM)) ? x_chan_width : y_chan_width);
+
+            // if the number of tracks we can assign is zero break from the loop
+            if (max_chan_width == 0) {
+                break;
+            }
             float step_size = (float)max_chan_width / (float)(Fc * num_phys_pins);
 
             VTR_ASSERT(Fc > 0);

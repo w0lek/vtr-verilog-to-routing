@@ -56,6 +56,19 @@ const NocLink& NocStorage::get_single_noc_link(NocLinkId id) const {
     return link_storage[id];
 }
 
+NocLinkId  NocStorage::get_single_noc_link_id(NocRouterId src_router, NocRouterId dst_router) const {
+    NocLinkId link_id = NocLinkId::INVALID();
+
+    for (const auto& link : link_storage) {
+        if (link.get_source_router() == src_router && link.get_sink_router() == dst_router) {
+            link_id = link.get_link_id();
+            break;
+        }
+    }
+
+    return link_id;
+}
+
 NocLink& NocStorage::get_single_mutable_noc_link(NocLinkId id) {
     return link_storage[id];
 }
@@ -100,10 +113,14 @@ void NocStorage::add_router(int id, int grid_position_x, int grid_posistion_y, i
 
 void NocStorage::add_link(NocRouterId source, NocRouterId sink) {
     VTR_ASSERT_MSG(!built_noc, "NoC already built, cannot modify further.");
-    link_storage.emplace_back(source, sink);
 
-    // the newly added link was added to the back of the list, so we can get the id as the last element in the list
-    NocLinkId added_link_id((int)link_storage.size() - 1);
+    // the new link will be added to the back of the list,
+    // so we can use the total number of links added so far as id
+    NocLinkId added_link_id((int)link_storage.size());
+
+    double link_bandwidth = get_noc_link_bandwidth();
+    link_storage.emplace_back(added_link_id, source, sink, link_bandwidth);
+
     router_link_list[source].push_back(added_link_id);
 
     return;
@@ -111,6 +128,12 @@ void NocStorage::add_link(NocRouterId source, NocRouterId sink) {
 
 void NocStorage::set_noc_link_bandwidth(double link_bandwidth) {
     noc_link_bandwidth = link_bandwidth;
+
+    // Iterate over all links and set their bandwidth
+    for (auto& link : link_storage) {
+        link.set_bandwidth(noc_link_bandwidth);
+    }
+
     return;
 }
 
@@ -131,7 +154,7 @@ void NocStorage::set_device_grid_width(int grid_width) {
 
 void NocStorage::set_device_grid_spec(int grid_width, int grid_height) {
     device_grid_width = grid_width;
-    num_layer_blocks = grid_width * grid_height;
+    layer_num_grid_locs = grid_width * grid_height;
     return;
 }
 
@@ -235,7 +258,7 @@ NocLinkId NocStorage::get_parallel_link(NocLinkId current_link) const {
 
 int NocStorage::generate_router_key_from_grid_location(int grid_position_x, int grid_position_y, int layer_position) const {
     // calculate the key value
-    return (num_layer_blocks * layer_position + device_grid_width * grid_position_y + grid_position_x);
+    return (layer_num_grid_locs * layer_position + device_grid_width * grid_position_y + grid_position_x);
 }
 
 void NocStorage::echo_noc(char* file_name) const {

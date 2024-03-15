@@ -27,6 +27,7 @@ struct t_options {
     argparse::ArgValue<std::string> constraints_file;
     argparse::ArgValue<std::string> write_rr_graph_file;
     argparse::ArgValue<std::string> read_rr_graph_file;
+    argparse::ArgValue<std::string> write_initial_place_file;
     argparse::ArgValue<std::string> read_vpr_constraints_file;
     argparse::ArgValue<std::string> write_vpr_constraints_file;
 
@@ -131,6 +132,7 @@ struct t_options {
     argparse::ArgValue<std::vector<float>> place_static_move_prob;
     argparse::ArgValue<std::vector<float>> place_static_notiming_move_prob;
     argparse::ArgValue<int> place_high_fanout_net;
+    argparse::ArgValue<e_place_bounding_box_mode> place_bounding_box_mode;
 
     argparse::ArgValue<bool> RL_agent_placement;
     argparse::ArgValue<bool> place_agent_multistate;
@@ -147,6 +149,9 @@ struct t_options {
     argparse::ArgValue<int> floorplan_num_horizontal_partitions;
     argparse::ArgValue<int> floorplan_num_vertical_partitions;
 
+    argparse::ArgValue<int> placer_debug_block;
+    argparse::ArgValue<int> placer_debug_net;
+
     /*NoC Options*/
     argparse::ArgValue<bool> noc;
     argparse::ArgValue<std::string> noc_flows_file;
@@ -154,6 +159,7 @@ struct t_options {
     argparse::ArgValue<double> noc_placement_weighting;
     argparse::ArgValue<double> noc_latency_constraints_weighting;
     argparse::ArgValue<double> noc_latency_weighting;
+    argparse::ArgValue<double> noc_congestion_weighting;
     argparse::ArgValue<double> noc_swap_percentage;
     argparse::ArgValue<std::string> noc_placement_file_name;
 
