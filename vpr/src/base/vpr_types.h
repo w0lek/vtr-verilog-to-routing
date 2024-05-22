@@ -89,11 +89,9 @@ enum class ScreenUpdatePriority {
 /* Values large enough to be way out of range for any data, but small enough
  * to allow a small number to be added to them without going out of range. */
 #define HUGE_POSITIVE_FLOAT 1.e30
-#define HUGE_NEGATIVE_FLOAT -1.e30
 
 /* Used to avoid floating-point errors when comparing values close to 0 */
 #define EPSILON 1.e-15
-#define NEGATIVE_EPSILON -1.e-15
 
 #define FIRST_ITER_WIRELENTH_LIMIT 0.85 /* If used wirelength exceeds this value in first iteration of routing, do not route */
 
@@ -110,12 +108,10 @@ constexpr auto INVALID_BLOCK_ID = ClusterBlockId(-2);
  * and maps it to the complex logic blocks found in the architecture
  ******************************************************************************/
 
-#define NO_CLUSTER -1
-#define NEVER_CLUSTER -2
-#define NOT_VALID -10000 /* Marks gains that aren't valid */
+#define NOT_VALID (-10000) /* Marks gains that aren't valid */
 /* Ensure no gain can ever be this negative! */
 #ifndef UNDEFINED
-#    define UNDEFINED -1
+#    define UNDEFINED (-1)
 #endif
 
 enum class e_router_lookahead {
@@ -550,9 +546,8 @@ enum class e_timing_update_type {
  ****************************************************************************/
 
 /* Values of number of placement available move types */
-#define NUM_PL_MOVE_TYPES 7
-#define NUM_PL_NONTIMING_MOVE_TYPES 3
-#define NUM_PL_1ST_STATE_MOVE_TYPES 4
+constexpr int NUM_PL_MOVE_TYPES = 7;
+constexpr int NUM_PL_NONTIMING_MOVE_TYPES = 3;
 
 /* Timing data structures end */
 enum sched_type {
@@ -1155,6 +1150,8 @@ enum class e_place_delta_delay_algorithm {
     DIJKSTRA_EXPANSION,
 };
 
+enum class e_move_type;
+
 /**
  * @brief Various options for the placer.
  *
@@ -1253,8 +1250,7 @@ struct t_placer_opts {
 
     std::string write_placement_delay_lookup;
     std::string read_placement_delay_lookup;
-    std::vector<float> place_static_move_prob;
-    std::vector<float> place_static_notiming_move_prob;
+    vtr::vector<e_move_type, float> place_static_move_prob;
     bool RL_agent_placement;
     bool place_agent_multistate;
     bool place_checkpointing;
@@ -1836,6 +1832,12 @@ struct t_TokenPair {
 
 struct t_lb_type_rr_node; /* Defined in pack_types.h */
 
+/// @brief Stores settings for VPR server mode
+struct t_server_opts {
+    bool is_server_mode_enabled = false;
+    int port_num = -1;
+};
+
 ///@brief Store settings for VPR
 struct t_vpr_setup {
     bool TimingEnabled;             ///<Is VPR timing enabled
@@ -1849,6 +1851,7 @@ struct t_vpr_setup {
     t_router_opts RouterOpts;       ///<router options
     t_analysis_opts AnalysisOpts;   ///<Analysis options
     t_noc_opts NocOpts;             ///<Options for the NoC
+    t_server_opts ServerOpts;       ///<Server options
     t_det_routing_arch RoutingArch; ///<routing architecture
     std::vector<t_lb_type_rr_node>* PackerRRGraph;
     std::vector<t_segment_inf> Segments; ///<wires in routing architecture
