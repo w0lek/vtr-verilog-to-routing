@@ -403,7 +403,7 @@ static void SetupRoutingArch(const t_arch& Arch,
     RoutingArch->R_minW_pmos = Arch.R_minW_pmos;
     RoutingArch->Fs = Arch.Fs;
     RoutingArch->directionality = BI_DIRECTIONAL;
-    if (Arch.Segments.size()) {
+    if (!Arch.Segments.empty()) {
         RoutingArch->directionality = Arch.Segments[0].directionality;
     }
 
@@ -423,6 +423,7 @@ static void SetupRouterOpts(const t_options& Options, t_router_opts* RouterOpts)
     RouterOpts->min_incremental_reroute_fanout = Options.min_incremental_reroute_fanout;
     RouterOpts->incr_reroute_delay_ripup = Options.incr_reroute_delay_ripup;
     RouterOpts->pres_fac_mult = Options.pres_fac_mult;
+    RouterOpts->max_pres_fac = Options.max_pres_fac;
     RouterOpts->route_type = Options.RouteType;
 
     RouterOpts->full_stats = Options.full_stats;
@@ -744,6 +745,7 @@ static void SetupNocOpts(const t_options& Options, t_noc_opts* NocOpts) {
     NocOpts->noc_latency_weighting = Options.noc_latency_weighting;
     NocOpts->noc_congestion_weighting = Options.noc_congestion_weighting;
     NocOpts->noc_swap_percentage = Options.noc_swap_percentage;
+    NocOpts->noc_centroid_weight = Options.noc_centroid_weight;
     NocOpts->noc_placement_file_name = Options.noc_placement_file_name;
 }
 
