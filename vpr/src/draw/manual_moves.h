@@ -18,7 +18,12 @@
 #include <cfloat>
 #include <cstring>
 #include <cmath>
+
+#ifdef VPR_QT
+#include <ezgl/qt/_qtcompat.hpp>
+#else
 #include <gtk/gtk.h>
+#endif
 
 /**
  * @brief ManualMovesInfo struct

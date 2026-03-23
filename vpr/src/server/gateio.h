@@ -16,6 +16,10 @@
 #include <utility>
 #include <optional>
 
+#ifdef VPR_QT
+#include <QTimer>
+#endif
+
 namespace server {
 
 enum class ActivityStatus : int {
@@ -136,6 +140,7 @@ class TLogger {
  */
 class GateIO {
     const int LOOP_INTERVAL_MS = 100;
+    const int SERVER_UPDATE_INTERVAL_MS = 100;
 
   public:
     /**
@@ -219,6 +224,10 @@ class GateIO {
     std::vector<TaskPtr> m_send_tasks;     // tasks to client (responses)
 
     TLogger m_logger;
+
+#ifdef VPR_QT
+    QTimer m_updateTimer;
+#endif
 
     void start_listening(); // thread worker function
 };

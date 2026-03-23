@@ -162,6 +162,13 @@ static void handle_activity_status(ActivityStatus status, std::unique_ptr<Client
 
 GateIO::GateIO() {
     m_is_running.store(false);
+#ifdef VPR_QT
+    m_timer.setInterval(SERVER_UPDATE_INTERVAL_MS);
+    QObject::connect(&m_timer, &QTimer::timeout, &m_timer, [](){
+        server::update(&application);
+    });
+    m_timer.start();
+#endif
 }
 
 GateIO::~GateIO() {

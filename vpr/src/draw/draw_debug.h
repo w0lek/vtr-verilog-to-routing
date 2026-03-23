@@ -12,7 +12,11 @@
 #include <cmath>
 #include <cstdio>
 #include <cstring>
+#ifdef VPR_QT
+#include <ezgl/qt/_qtcompat.hpp>
+#else
 #include <gtk/gtk.h>
+#endif
 #include <string>
 #include "breakpoint_state_globals.h"
 

@@ -176,6 +176,12 @@ add_executable(vpr ${EXEC_SOURCES})
 target_link_libraries(vpr libvpr)
 
 
+target_compile_definitions(
+    libvpr
+    PUBLIC
+    VPR_QT
+)
+
 #
 # Profile Guilded Optimization Configuration
 #
