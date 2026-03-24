@@ -1196,6 +1196,55 @@ ClusterBlockId get_cluster_block_id_from_xy_loc(double x, double y) {
 }
 
 static void setup_default_ezgl_callbacks(ezgl::application* app) {
+#ifdef VPR_QT
+    // Connect press_proceed function to the Proceed button
+    QAbstractButton* proceed_button = app->get_abstract_button("ProceedButton");
+    QObject::connect(proceed_button, &QAbstractButton::clicked, [app](){
+        press_proceed(/*unused*/nullptr, app);
+    });
+
+    // Connect press_zoom_fit function to the Zoom-fit button
+    QAbstractButton* zoom_fit_button = app->get_abstract_button("ZoomFitButton");
+    QObject::connect(zoom_fit_button, &QAbstractButton::clicked, [app](){
+        press_zoom_fit(/*unused*/nullptr, app);
+    });
+
+    // Connect Pause button
+    QAbstractButton* pause_button = app->get_abstract_button("PauseButton");
+    QObject::connect(pause_button, &QAbstractButton::clicked, [app](){
+        set_force_pause(/*unused*/nullptr, /*unused*/-1, app);
+    });
+
+    // Connect Block Outline checkbox
+    QAbstractButton* block_outline = app->get_abstract_button("blockOutline");
+    QObject::connect(block_outline, &QAbstractButton::toggled, [app](){
+        set_block_outline(/*unused*/nullptr, /*unused*/-1, app);
+    });
+        
+    // Connect Block Text checkbox
+    QAbstractButton* block_text = app->get_abstract_button("blockText");
+    QObject::connect(block_text, &QAbstractButton::toggled, [app](){
+        set_block_text(/*unused*/nullptr, /*unused*/-1, app);
+    });
+    
+    // Connect Clip Routing Util checkbox
+    QAbstractButton* clip_routing = app->get_abstract_button("clipRoutingUtil");
+    QObject::connect(clip_routing, &QAbstractButton::toggled, [app](){
+        clip_routing_util(/*unused*/nullptr, /*unused*/-1, app);
+    });
+
+    // Connect Debug Button
+    QAbstractButton* debugger = app->get_abstract_button("debugButton");
+    QObject::connect(debugger, &QAbstractButton::clicked, [app](){
+        draw_debug_window();
+    });
+        
+    // Connect Draw Partitions Checkbox
+    QAbstractButton* draw_partitions = app->get_abstract_button("drawPartitions");
+    QObject::connect(draw_partitions, &QAbstractButton::toggled, [app](){
+        set_draw_partitions(/*unused*/nullptr, /*unused*/-1, app);
+    });
+#else // VPR_QT
     // Connect press_proceed function to the Proceed button
     GObject* proceed_button = app->get_object("ProceedButton");
     g_signal_connect(proceed_button, "clicked", G_CALLBACK(ezgl::press_proceed),
@@ -1231,6 +1280,7 @@ static void setup_default_ezgl_callbacks(ezgl::application* app) {
     // Connect Draw Partitions Checkbox
     GObject* draw_partitions = app->get_object("drawPartitions");
     g_signal_connect(draw_partitions, "toggled", G_CALLBACK(set_draw_partitions), app);
+#endif // VPR_QT
 }
 
 // Callback function for Block Outline checkbox
