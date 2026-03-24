@@ -22,7 +22,11 @@ gint label_left_start_col = 0;
 gint box_left_start_col = 0;
 gint button_row = 2; // 2 is the row num of the window button in main.ui, add buttons starting from this row
 
+[[deprecated("todo: move to ezgl")]]
 void delete_button(const char* button_name) {
+#ifdef VPR_QT
+    QT_MIGRATION_TODO_ASSERT;
+#else // VPR_QT
     GObject* main_window_grid = application.get_object("InnerGrid");
     GList* list_of_widgets = gtk_container_get_children(GTK_CONTAINER(main_window_grid));
     GtkWidget* target_button = NULL;
@@ -42,9 +46,14 @@ void delete_button(const char* button_name) {
     //free the list and destroy the button
     g_list_free(list_of_widgets);
     gtk_widget_destroy(target_button);
+#endif // VPR_QT
 }
 
+[[deprecated("todo: move to ezgl")]]
 GtkWidget* find_button(const char* button_name) {
+#ifdef VPR_QT
+    QT_MIGRATION_TODO_ASSERT;
+#else // VPR_QT
     GObject* main_window_grid = application.get_object("InnerGrid");
     GList* list_of_widgets = gtk_container_get_children(GTK_CONTAINER(main_window_grid));
     GtkWidget* target_button = NULL;
@@ -63,6 +72,7 @@ GtkWidget* find_button(const char* button_name) {
     //free the list and destroy the button
     g_list_free(list_of_widgets);
     return target_button;
+#endif // VPR_QT
 }
 
 #endif /* NO_GRAPHICS */
