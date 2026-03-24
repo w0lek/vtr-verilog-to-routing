@@ -237,6 +237,9 @@ enum {
 
 //Highlights partition clicked on in the legend.
 void highlight_selected_partition(GtkWidget* widget) {
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     const FloorplanningContext& floorplanning_ctx = g_vpr_ctx.floorplanning();
     auto constraints = floorplanning_ctx.constraints;
     auto num_partitions = constraints.get_num_partitions();
@@ -278,8 +281,11 @@ void highlight_selected_partition(GtkWidget* widget) {
         gtk_tree_selection_unselect_all(GTK_TREE_SELECTION(widget));
     }
     application.refresh_drawing();
+#endif // VPR_QT
 }
 
+#ifdef VPR_QT
+#else // VPR_QT
 //Fills in the legend
 static GtkTreeModel* create_and_fill_model() {
     const AtomContext& atom_ctx = g_vpr_ctx.atom();
@@ -313,8 +319,12 @@ static GtkTreeModel* create_and_fill_model() {
 
     return GTK_TREE_MODEL(store);
 }
+#endif // VPR_QT
 
 GtkWidget* setup_floorplanning_legend(GtkWidget* content_tree) {
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     GtkCellRenderer* renderer;
 
     renderer = gtk_cell_renderer_text_new();
@@ -330,7 +340,7 @@ GtkWidget* setup_floorplanning_legend(GtkWidget* content_tree) {
     gtk_tree_view_set_model(GTK_TREE_VIEW(content_tree), model);
 
     g_object_unref(model);
-
+#endif // VPR_QT
     return content_tree;
 }
 
