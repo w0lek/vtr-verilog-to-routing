@@ -59,6 +59,10 @@
 
 #include "ui_setup.h"
 
+#ifdef VPR_QT
+#include <ezgl/qt/_qtcompat.hpp>
+#endif
+
 //To process key presses we need the X11 keysym definitions,
 //which are unavailable when building with MINGW
 #if defined(X11) && !defined(__MINGW32__)
@@ -1140,6 +1144,9 @@ static void on_dialog_response(GtkDialog* dialog, gint response_id, gpointer /* 
 
 // Callback function for Draw Partitions checkbox
 static void set_draw_partitions(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/) {
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     t_draw_state* draw_state = get_draw_state_vars();
 
     GObject* window;
@@ -1187,6 +1194,7 @@ static void set_draw_partitions(GtkWidget* widget, gint /*response_id*/, gpointe
     //redraw
     application.update_message(draw_state->default_message);
     application.refresh_drawing();
+#endif // VPR_QT
 }
 
 static void set_force_pause(GtkWidget* /*widget*/, gint /*response_id*/, gpointer /*data*/) {

@@ -3,7 +3,12 @@
 
 #ifndef NO_GRAPHICS
 
+#ifdef VPR_QT
+#include <ezgl/qt/_qtcompat.hpp>
+#else
 #include <gtk/gtk.h>
+#endif
+
 #include "ezgl/graphics.hpp"
 
 ///@brief Iterates through all partitions described in the constraints file and highlights their respective partitions

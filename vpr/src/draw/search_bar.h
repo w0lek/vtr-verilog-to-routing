@@ -15,6 +15,10 @@
 #include "rr_graph_fwd.h"
 
 #include "ezgl/application.hpp"
+#ifdef VPR_QT
+#include <QCompleter>
+#include <ezgl/qt/_qtcompat.hpp>
+#endif
 
 void search_and_highlight(GtkWidget* /*widget*/, ezgl::application* app);
 bool highlight_rr_nodes(RRNodeId hit_node);
@@ -25,11 +29,17 @@ void highlight_nets(std::string net_name);
 
 void highlight_atom_block(AtomBlockId block_id);
 
+#ifdef VPR_QT
+gboolean customMatchingFunction(
+    QCompleter* completer,
+    const gchar* key);
+#else // VPR_QT
 gboolean customMatchingFunction(
     GtkEntryCompletion* completer,
     const gchar* key,
     GtkTreeIter* iter,
     gpointer user_data);
+#endif // VPR_QT
 
 //Function to manage entry completions when search type is changed
 void search_type_changed(GtkComboBox* /*self*/, ezgl::application* app);
@@ -43,8 +53,12 @@ bool highlight_atom_block(AtomBlockId atom_blk, ClusterBlockId cl_blk, ezgl::app
 //Turns on autocomplete/suggestions
 void enable_autocomplete(ezgl::application* app);
 
+#ifdef VPR_QT
+
+#else
 //Simulates key press event
 GdkEvent simulate_keypress(char key, GdkWindow* window);
+#endif
 
 //Returns current search type
 std::string get_search_type(ezgl::application* app);

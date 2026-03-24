@@ -450,6 +450,15 @@ void search_type_changed(GtkComboBox* self, ezgl::application* app) {
  * @return true | if the string pointed to by iter contains key (case-insensitive)
  * @return false | if the string pointed to does not contain key
  */
+#ifdef VPR_QT
+gboolean customMatchingFunction(
+    QCompleter* completer,
+    const gchar* key
+) {
+    ASSERT_MIGRATE_QT_TODO;
+    return false;
+}
+#else
 gboolean customMatchingFunction(
     GtkEntryCompletion* completer,
     const gchar* key,
@@ -466,7 +475,11 @@ gboolean customMatchingFunction(
     //If substring not found, returning false;
     return (cppText.find(key, 0) != std::string::npos);
 }
+#endif
 
+#ifdef VPR_QT
+
+#else // VPR_QT
 /**
  * @brief Creates a GdkEvent that simulates user pressing key "key".
  * Currently used to fool GtkEntryCompletion into showing options w/o receiving a new input
@@ -491,6 +504,7 @@ GdkEvent simulate_keypress(char key, GdkWindow* window) {
     new_event.key.group = 0;
     return new_event;
 }
+#endif // VPR_QT
 
 /**
  * @brief Turns on autocomplete
