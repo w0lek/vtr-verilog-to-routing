@@ -61,6 +61,7 @@
 
 #ifdef VPR_QT
 #include <ezgl/qt/_qtcompat.hpp>
+#include <QLineEdit>
 #endif
 
 //To process key presses we need the X11 keysym definitions,
@@ -78,9 +79,15 @@ static constexpr ezgl::color OLD_BLK_LOC_COLOR = blk_GOLD;
 static constexpr ezgl::color NEW_BLK_LOC_COLOR = blk_GREEN;
 //#define TIME_DRAWSCREEN /* Enable if want to track runtime for drawscreen() */
 
+#ifdef VPR_QT
+void act_on_key_press(ezgl::application* /*app*/, QKeyEvent* event, char* key_name);
+void act_on_mouse_press(ezgl::application* app, QMouseEvent* event, double x, double y);
+void act_on_mouse_move(ezgl::application* app, QMouseEvent* event, double x, double y);
+#else // VPR_QT
 void act_on_key_press(ezgl::application* /*app*/, GdkEventKey* /*event*/, char* key_name);
 void act_on_mouse_press(ezgl::application* app, GdkEventButton* event, double x, double y);
 void act_on_mouse_move(ezgl::application* app, GdkEventButton* event, double x, double y);
+#endif // VPR_QT
 
 static void highlight_blocks(double x, double y);
 
@@ -136,7 +143,15 @@ const std::vector<ezgl::color> kelly_max_contrast_colors = {
 };
 
 ezgl::application::settings settings("/ezgl/main.ui", "MainWindow", "MainCanvas", "org.verilogtorouting.vpr.PID" + std::to_string(vtr::get_pid()), setup_default_ezgl_callbacks);
+#ifdef VPR_QT
+// provide fake argc and argc required for QApplication initialization
+int argc = 1;
+char appName[] = "vpr";
+char* argv[] = { appName, nullptr };
+ezgl::application application(settings, argc, argv);
+#else
 ezgl::application application(settings);
+#endif
 
 bool window_mode = false;
 bool window_point_1_collected = false;
@@ -644,6 +659,33 @@ bool draw_if_net_highlighted(ParentNetId inet) {
  * At the moment, only does something if user is currently typing in searchBar and
  * hits enter, at which point it runs autocomplete
  */
+#ifdef VPR_QT
+void act_on_key_press(ezgl::application* /*app*/, QKeyEvent* event, char* key_name)
+{
+    std::string key(key_name);
+    QLineEdit* searchBar = q_object_cast<QLineEdit>(app->get_object("TextInput"));
+    if (!searchBar) {
+        return;
+    }
+    QString text(searchBar->text());
+    t_draw_state* draw_state = get_draw_state_vars();
+    if (searchBar->isFocused()) {
+        if (key == "Return" || key == "Tab") {
+            enable_autocomplete(app);
+            searchBar->setCursorPosition(text.length());
+            return;
+        }
+    }
+    if (draw_state->justEnabled) {
+        draw_state->justEnabled = false;
+    } else {
+        searchBar->setCompleter(nullptr);
+    }
+    if (key == "Escape") {
+        deselect_all();
+    }
+}
+#else // VPR_QT
 void act_on_key_press(ezgl::application* app, GdkEventKey* /*event*/, char* key_name) {
     std::string key(key_name);
     GtkWidget* searchBar = GTK_WIDGET(app->get_object("TextInput"));
@@ -665,6 +707,7 @@ void act_on_key_press(ezgl::application* app, GdkEventKey* /*event*/, char* key_
         deselect_all();
     }
 }
+#endif // VPR_QT
 
 void act_on_mouse_press(ezgl::application* app, GdkEventButton* event, double x, double y) {
     if (event->button == 1) {
