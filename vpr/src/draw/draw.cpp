@@ -80,7 +80,7 @@ static constexpr ezgl::color NEW_BLK_LOC_COLOR = blk_GREEN;
 //#define TIME_DRAWSCREEN /* Enable if want to track runtime for drawscreen() */
 
 #ifdef VPR_QT
-void act_on_key_press(ezgl::application* /*app*/, QKeyEvent* event, char* key_name);
+void act_on_key_press(ezgl::application* /*app*/, QKeyEvent* event, const char* key_name);
 void act_on_mouse_press(ezgl::application* app, QMouseEvent* event, double x, double y);
 void act_on_mouse_move(ezgl::application* app, QMouseEvent* event, double x, double y);
 #else // VPR_QT
@@ -660,16 +660,16 @@ bool draw_if_net_highlighted(ParentNetId inet) {
  * hits enter, at which point it runs autocomplete
  */
 #ifdef VPR_QT
-void act_on_key_press(ezgl::application* /*app*/, QKeyEvent* event, char* key_name)
+void act_on_key_press(ezgl::application* app, QKeyEvent* event, const char* key_name)
 {
     std::string key(key_name);
-    QLineEdit* searchBar = q_object_cast<QLineEdit>(app->get_object("TextInput"));
+    QLineEdit* searchBar = qobject_cast<QLineEdit*>(app->get_object("TextInput"));
     if (!searchBar) {
         return;
     }
     QString text(searchBar->text());
     t_draw_state* draw_state = get_draw_state_vars();
-    if (searchBar->isFocused()) {
+    if (searchBar->hasFocus()) {
         if (key == "Return" || key == "Tab") {
             enable_autocomplete(app);
             searchBar->setCursorPosition(text.length());
@@ -709,6 +709,77 @@ void act_on_key_press(ezgl::application* app, GdkEventKey* /*event*/, char* key_
 }
 #endif // VPR_QT
 
+#ifdef VPR_QT
+void act_on_mouse_press(ezgl::application* app, QMouseEvent* event, double x, double y) {
+    if (event->button() == Qt::LeftButton) {
+
+        if (window_mode) {
+            //click on any two points to form new window rectangle bound
+
+            if (!window_point_1_collected) {
+                //collect first point data
+
+                window_point_1_collected = true;
+                point_1 = {x, y};
+            } else {
+                //collect second point data
+
+                //click on any two points to form new window rectangle bound
+                ezgl::point2d point_2 = {x, y};
+                ezgl::rectangle current_window = (app->get_canvas(
+                                                      app->get_main_canvas_id()))
+                                                     ->get_camera()
+                                                     .get_world();
+
+                //calculate a rectangle with the same ratio based on the two clicks
+                double window_ratio = current_window.height()
+                                      / current_window.width();
+                double new_height = abs(point_1.y - point_2.y);
+                double new_width = new_height / window_ratio;
+
+                //zoom in
+                ezgl::rectangle new_window = {point_1, {point_1.x + new_width, point_2.y}};
+                (app->get_canvas(app->get_main_canvas_id()))->get_camera().set_world(new_window);
+
+                //reset flags
+                window_mode = false;
+                window_point_1_collected = false;
+                app->update_message(get_draw_state_vars()->default_message);
+                app->refresh_drawing();
+            }
+            app->refresh_drawing();
+        } else {
+            // regular clicking mode
+
+            /* This routine is called when the user clicks in the graphics area. *
+             * It determines if a clb was clicked on.  If one was, it is         *
+             * highlighted in green, it's fanin nets and clbs are highlighted in *
+             * blue and it's fanout is highlighted in red.  If no clb was        *
+             * clicked on (user clicked on white space) any old highlighting is  *
+             * removed.  Note that even though global nets are not drawn, their  *
+             * fanins and fanouts are highlighted when you click on a block      *
+             * attached to them.                                                 */
+
+            if (get_draw_state_vars()->pic_on_screen == e_pic_type::ANALYTICAL_PLACEMENT) {
+                // No selection in analytical placement mode yet
+                return;
+            }
+
+            /* Control + mouse click to select multiple nets. */
+            if (!(event->modifiers() & Qt::ControlModifier))
+                deselect_all();
+
+            //Check if we hit an rr node
+            // Note that we check this before checking for a block, since pins and routing may appear overtop of a multi-width/height block
+            if (highlight_rr_nodes(x, y)) {
+                return; //Selected an rr node
+            }
+
+            highlight_blocks(x, y);
+        }
+    }
+}
+#else // VPR_QT
 void act_on_mouse_press(ezgl::application* app, GdkEventButton* event, double x, double y) {
     if (event->button == 1) {
 
@@ -778,6 +849,7 @@ void act_on_mouse_press(ezgl::application* app, GdkEventButton* event, double x,
         }
     }
 }
+#endif // VPR_QT
 
 void act_on_mouse_move(ezgl::application* app, GdkEventButton* /* event */, double x, double y) {
     // user has clicked the window button, in window mode
