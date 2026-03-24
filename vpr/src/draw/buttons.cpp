@@ -25,7 +25,7 @@ gint button_row = 2; // 2 is the row num of the window button in main.ui, add bu
 [[deprecated("todo: move to ezgl")]]
 void delete_button(const char* button_name) {
 #ifdef VPR_QT
-    QT_MIGRATION_TODO_ASSERT;
+    ASSERT_QT_MIGRATION_TODO;
 #else // VPR_QT
     GObject* main_window_grid = application.get_object("InnerGrid");
     GList* list_of_widgets = gtk_container_get_children(GTK_CONTAINER(main_window_grid));
@@ -52,7 +52,7 @@ void delete_button(const char* button_name) {
 [[deprecated("todo: move to ezgl")]]
 GtkWidget* find_button(const char* button_name) {
 #ifdef VPR_QT
-    QT_MIGRATION_TODO_ASSERT;
+    ASSERT_QT_MIGRATION_TODO;
 #else // VPR_QT
     GObject* main_window_grid = application.get_object("InnerGrid");
     GList* list_of_widgets = gtk_container_get_children(GTK_CONTAINER(main_window_grid));
