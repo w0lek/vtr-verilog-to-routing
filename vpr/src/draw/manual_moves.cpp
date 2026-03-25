@@ -23,6 +23,10 @@
 #include "buttons.h"
 #include "physical_types_util.h"
 
+#ifdef VPR_QT
+#include <ezgl/qt/_qtcompat.hpp>
+#endif
+
 void draw_manual_moves_window(const std::string& block_id) {
     t_draw_state* draw_state = get_draw_state_vars();
 
