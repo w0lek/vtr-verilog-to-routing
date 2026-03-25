@@ -2,7 +2,11 @@
 
 #ifndef NO_GRAPHICS
 
+#ifdef VPR_QT
+#include <ezgl/qt/_qtcompat.hpp>
+#else // VPR_QT
 #include <glib.h>
+#endif // VPR_QT
 
 /**
  * @brief Get the index of an item in a combo box by its text.
@@ -14,6 +18,7 @@
  * @param target_item The text of the item to search for.
  * @return The index of the item if found, or -1 if not found.
  */
+[[deprecated("todo: move to ezgl")]]
 gint get_item_index_by_text(gpointer combo_box, const gchar* target_item);
 
 #endif // NO_GRAPHICS

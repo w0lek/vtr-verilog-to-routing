@@ -1,6 +1,10 @@
 
 #ifndef NO_GRAPHICS
 
+#ifdef VPR_QT
+#include <ezgl/qt/_qtcompat.hpp>
+#endif
+
 #include <cstring>
 
 #include "vpr_error.h"
@@ -409,6 +413,9 @@ void set_net_alpha_value_cbk(GtkSpinButton* self, ezgl::application* app) {
  * @brief Callback function for 3d layer checkboxes
  */
 void select_layer_cbk(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/) {
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     t_draw_state* draw_state = get_draw_state_vars();
 
     GtkWidget* parent = gtk_widget_get_parent(widget);
@@ -438,11 +445,15 @@ void select_layer_cbk(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/
     }
     application.refresh_drawing();
     g_list_free(children);
+#endif // VPR_QT
 }
 /**
  * @brief Callback function for 3d layer transparency spin buttons
  */
 void transparency_cbk(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/) {
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     t_draw_state* draw_state = get_draw_state_vars();
 
     GtkWidget* parent = gtk_widget_get_parent(widget);
@@ -466,6 +477,7 @@ void transparency_cbk(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/
     }
     application.refresh_drawing();
     g_list_free(children);
+#endif // VPR_QT
 }
 
 /**

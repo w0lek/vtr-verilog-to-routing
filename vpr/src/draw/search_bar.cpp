@@ -35,6 +35,10 @@
 #include "physical_types.h"
 #include "place_macro.h"
 
+#ifdef VPR_QT
+#include <ezgl/qt/_qtcompat.hpp>
+#endif // VPR_QT
+
 //To process key presses we need the X11 keysym definitions,
 //which are unavailable when building with MINGW
 #if defined(X11) && !defined(__MINGW32__)
