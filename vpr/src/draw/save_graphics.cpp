@@ -10,7 +10,9 @@ extern ezgl::rectangle initial_world;
 
 void save_graphics_from_button(GtkWidget* /*widget*/, gint response_id, gpointer data) {
     auto dialog = static_cast<GtkWidget*>(data);
-
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     if (response_id == GTK_RESPONSE_ACCEPT) {
         //user clicked on the save button
 
@@ -35,7 +37,7 @@ void save_graphics_from_button(GtkWidget* /*widget*/, gint response_id, gpointer
             }
             current = next;
         }
-
+        
         // get the data from the text entry and combo box
         file_name = gtk_entry_get_text(GTK_ENTRY(text_entry));
         combo_box_content = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(combo_box));
@@ -50,6 +52,7 @@ void save_graphics_from_button(GtkWidget* /*widget*/, gint response_id, gpointer
     }
     // free widget
     gtk_widget_destroy(dialog);
+#endif // VPR_QT
 }
 
 void save_graphics(std::string extension, std::string file_name) {
@@ -93,7 +96,11 @@ void save_graphics_dialog_box(GtkWidget* /*widget*/, ezgl::application* /*app*/)
     // create a dialog window modal
     dialog = gtk_dialog_new_with_buttons("Save Graphics Contents",
                                          GTK_WINDOW(main_window),
+#ifdef VPR_QT
+                                         0
+#else
                                          GTK_DIALOG_DESTROY_WITH_PARENT,
+#endif
                                          ("_Save"),
                                          GTK_RESPONSE_ACCEPT,
                                          ("_Cancel"),
@@ -128,10 +135,14 @@ void save_graphics_dialog_box(GtkWidget* /*widget*/, ezgl::application* /*app*/)
     // show the label & child widget of the dialog
     gtk_widget_show_all(dialog);
 
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else
     g_signal_connect_swapped(GTK_DIALOG(dialog),
                              "response",
                              G_CALLBACK(save_graphics_from_button),
                              GTK_DIALOG(dialog));
+#endif
     return;
 }
 

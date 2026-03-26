@@ -87,8 +87,12 @@ void draw_manual_moves_window(const std::string& block_id) {
         gtk_widget_set_halign(calculate_cost_button, GTK_ALIGN_CENTER);
 
         //connect signals
+#ifdef VPR_QT
+        ASSERT_QT_MIGRATION_TODO;
+#else
         g_signal_connect(calculate_cost_button, "clicked", G_CALLBACK(calculate_cost_callback), grid);
         g_signal_connect(G_OBJECT(draw_state->manual_moves_state.manual_move_window), "destroy", G_CALLBACK(close_manual_moves_window), NULL);
+#endif
 
         gtk_container_add(GTK_CONTAINER(draw_state->manual_moves_state.manual_move_window), grid);
         gtk_widget_show_all(draw_state->manual_moves_state.manual_move_window);

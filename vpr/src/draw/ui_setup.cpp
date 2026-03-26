@@ -64,8 +64,11 @@ void net_button_setup(ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
 
     GtkSwitch* toggle_nets_switch = GTK_SWITCH(app->get_object("ToggleNets"));
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else
     g_signal_connect(toggle_nets_switch, "state-set", G_CALLBACK(toggle_show_nets_cbk), app);
-
+#endif
     // Manages net type
     GtkComboBoxText* toggle_nets = GTK_COMBO_BOX_TEXT(app->get_object("ToggleNetType"));
     g_signal_connect(toggle_nets, "changed", G_CALLBACK(toggle_draw_nets_cbk), app);
