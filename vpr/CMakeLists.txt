@@ -33,6 +33,11 @@ if (VPR_USE_EZGL STREQUAL "on")
              ${CMAKE_CURRENT_SOURCE_DIR}/../libs/EXTERNAL/libezgl/gcr-cmake/macros)
 
         include(GlibCompileResourcesSupport)
+    else()
+        # Qt flow: embed main.ui as a Qt resource (analogous to GLib compile_gresources).
+        # The file is accessible at runtime as :/ezgl/main.ui via QFile.
+        find_package(Qt6 REQUIRED COMPONENTS Core)
+        qt6_add_resources(VPR_QT_RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/vpr.qrc)
     endif()
 else()
     list(APPEND GRAPHICS_DEFINES "-DNO_GRAPHICS")
@@ -80,6 +85,9 @@ add_library(libvpr STATIC
              ${LIB_SOURCES}
 )
 
+if (VPR_QT)
+    target_sources(libvpr PRIVATE ${VPR_QT_RESOURCES})
+endif()
 
 target_include_directories(libvpr PUBLIC ${LIB_INCLUDE_DIRS})
 
