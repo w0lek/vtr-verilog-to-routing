@@ -3,7 +3,7 @@
 
 #ifdef VPR_QT
 
-#include <ezgl/qt/_qtcompat.hpp>
+#include <ezgl/qt/ezgl_qtcompat.hpp>
 
 #include <QCheckBox>
 #include <QBoxLayout>
