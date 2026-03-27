@@ -56,7 +56,9 @@ option(ODIN_SANITIZE "Enable building odin with sanitize flags" OFF)
 
 # Allow the user to enable building Yosys
 option(WITH_PARMYS "Enable Yosys as elaborator and parmys-plugin as partial mapper" ON)
-option(SLANG_SYSTEMVERILOG "Enable building and installing Yosys-Slang plugin for parsing SystemVerilog" ON)
+#option(SLANG_SYSTEMVERILOG "Enable building and installing Yosys-Slang plugin for parsing SystemVerilog" ON)
+message("WARNING: SLANG_SYSTEMVERILOG was deactivate during dev because of the build issues on ubuntu20.04. This should be undo on a stage of finalizing migrating to Qt")
+option(SLANG_SYSTEMVERILOG "Enable building and installing Yosys-Slang plugin for parsing SystemVerilog" OFF)
 
 set(VTR_VERSION_MAJOR 9)
 set(VTR_VERSION_MINOR 0)
