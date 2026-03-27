@@ -60,7 +60,7 @@
 #include "ui_setup.h"
 
 #ifdef VPR_QT
-#include "_qtcompat2.h"
+#include "vpr_qtcompat.h"
 #include <QLineEdit>
 #endif
 

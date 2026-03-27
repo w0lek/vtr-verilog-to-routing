@@ -1,5 +1,5 @@
-#ifndef VPR_QTCOMPAT2_H
-#define VPR_QTCOMPAT2_H
+#ifndef VPR_QTCOMPAT_H
+#define VPR_QTCOMPAT_H
 
 #ifdef VPR_QT
 
@@ -367,4 +367,4 @@ void gtk_spin_button_set_value(QSpinBox* spin_box, double value)
 }
 
 #endif // VPR_QT
-#endif // VPR_QTCOMPAT2_H
+#endif // VPR_QTCOMPAT_H

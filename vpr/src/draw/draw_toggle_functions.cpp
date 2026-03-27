@@ -2,7 +2,7 @@
 #ifndef NO_GRAPHICS
 
 #ifdef VPR_QT
-#include "_qtcompat2.h"
+#include "vpr_qtcompat.h"
 #endif
 
 #include <cstring>

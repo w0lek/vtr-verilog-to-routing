@@ -36,7 +36,7 @@
 #include "place_macro.h"
 
 #ifdef VPR_QT
-#include "_qtcompat2.h"
+#include "vpr_qtcompat.h"
 #endif // VPR_QT
 
 //To process key presses we need the X11 keysym definitions,

@@ -7,7 +7,7 @@
 #include "pathhelper.h"
 #include "telegramoptions.h"
 #ifdef VPR_QT
-#include "_qtcompat2.h"
+#include "vpr_qtcompat.h"
 #else // VPR_QT
 #include <gtk/gtk.h>
 #endif // VPR_QT

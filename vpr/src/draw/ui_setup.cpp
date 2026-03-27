@@ -23,7 +23,7 @@
 #include "ezgl/application.hpp"
 
 #ifdef VPR_QT
-#include "_qtcompat2.h"
+#include "vpr_qtcompat.h"
 #endif // VPR_QT
 
 /**

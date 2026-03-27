@@ -24,7 +24,7 @@
 #include "physical_types_util.h"
 
 #ifdef VPR_QT
-#include "_qtcompat2.h"
+#include "vpr_qtcompat.h"
 #endif
 
 void draw_manual_moves_window(const std::string& block_id) {

@@ -3,7 +3,7 @@
 #ifndef NO_SERVER
 
 #ifdef VPR_QT
-#include "_qtcompat2.h"
+#include "vpr_qtcompat.h"
 #else
 #include <glib.h>
 #endif

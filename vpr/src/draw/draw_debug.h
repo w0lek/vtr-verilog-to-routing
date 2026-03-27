@@ -13,7 +13,7 @@
 #include <cstdio>
 #include <cstring>
 #ifdef VPR_QT
-#include "_qtcompat2.h"
+#include "vpr_qtcompat.h"
 #else
 #include <gtk/gtk.h>
 #endif
