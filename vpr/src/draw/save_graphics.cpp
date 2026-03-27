@@ -92,20 +92,19 @@ void save_graphics_dialog_box(GtkWidget* /*widget*/, ezgl::application* /*app*/)
 
     // get a pointer to the main window
     main_window = application.get_object(application.get_main_window_id().c_str());
-
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     // create a dialog window modal
     dialog = gtk_dialog_new_with_buttons("Save Graphics Contents",
                                          GTK_WINDOW(main_window),
-#ifdef VPR_QT
-                                         0
-#else
                                          GTK_DIALOG_DESTROY_WITH_PARENT,
-#endif
                                          ("_Save"),
                                          GTK_RESPONSE_ACCEPT,
                                          ("_Cancel"),
                                          GTK_RESPONSE_REJECT,
                                          NULL);
+#endif // VPR_QT
 
     // create elements
     name_label = gtk_label_new("File name:");

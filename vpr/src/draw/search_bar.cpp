@@ -37,6 +37,7 @@
 
 #ifdef VPR_QT
 #include <ezgl/qt/_qtcompat.hpp>
+#include "_qtcompat2.h"
 #endif // VPR_QT
 
 //To process key presses we need the X11 keysym definitions,
@@ -382,12 +383,16 @@ void highlight_nets(ClusterNetId net_id) {
 }
 
 void warning_dialog_box(const char* message) {
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     GObject* main_window;    // parent window over which to add the dialog
     GtkWidget* content_area; // content area of the dialog
     GtkWidget* label;        // label to display a message
     GtkWidget* dialog;
     // get a pointer to the main window
     main_window = application.get_object(application.get_main_window_id().c_str());
+
     // create a dialog window modal with no button
     dialog = gtk_message_dialog_new(GTK_WINDOW(main_window),
                                     GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -405,6 +410,7 @@ void warning_dialog_box(const char* message) {
                              "response",
                              G_CALLBACK(gtk_widget_destroy),
                              dialog);
+#endif // VPR_QT
 }
 
 /**
@@ -418,6 +424,9 @@ void warning_dialog_box(const char* message) {
  * @param app ezgl app used to access other objects
  */
 void search_type_changed(GtkComboBox* self, ezgl::application* app) {
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     auto type = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(self));
     GtkEntry* searchBar = GTK_ENTRY(app->get_object("TextInput"));
     GtkEntryCompletion* completion = GTK_ENTRY_COMPLETION(app->get_object("Completion"));
@@ -441,6 +450,7 @@ void search_type_changed(GtkComboBox* self, ezgl::application* app) {
         gtk_entry_completion_set_model(completion, nullptr);
         gtk_entry_set_completion(searchBar, nullptr);
     }
+#endif // VPR_QT
 }
 
 /**
@@ -459,7 +469,7 @@ gboolean customMatchingFunction(
     QCompleter* completer,
     const gchar* key
 ) {
-    ASSERT_MIGRATE_QT_TODO;
+    ASSERT_QT_MIGRATION_TODO;
     return false;
 }
 #else
@@ -541,6 +551,9 @@ GdkEvent simulate_keypress(char key, GdkWindow* window) {
  * @param app ezgl app
  */
 void enable_autocomplete(ezgl::application* app) {
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     GtkEntryCompletion* completion = GTK_ENTRY_COMPLETION(app->get_object("Completion"));
     GtkEntry* searchBar = GTK_ENTRY(app->get_object("TextInput"));
     auto draw_state = get_draw_state_vars();
@@ -563,7 +576,6 @@ void enable_autocomplete(ezgl::application* app) {
 
     //Setting min key length to either 0 or 1 less than key length (max option)
     gtk_entry_completion_set_minimum_key_length(completion, std::max(0, (int)(oldText.length() - 1)));
-
     draw_state->justEnabled = true;
 
     //If string len is 0, reutrning
@@ -577,6 +589,7 @@ void enable_autocomplete(ezgl::application* app) {
     auto window = gtk_widget_get_parent_window(GTK_WIDGET(searchBar));
     GdkEvent new_event = simulate_keypress(oldText.back(), window);
     gdk_event_put(&new_event);
+#endif // VPR_QT
 }
 
 //Returns current search type. Returns empty string if fails

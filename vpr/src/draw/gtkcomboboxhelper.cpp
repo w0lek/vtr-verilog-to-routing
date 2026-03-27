@@ -2,6 +2,7 @@
 
 #include "gtkcomboboxhelper.h"
 #ifdef VPR_QT
+#include <ezgl/qt/_qtcompat.hpp>
 #else // VPR_QT
 #include <gtk/gtk.h>
 #endif // VPR_QT

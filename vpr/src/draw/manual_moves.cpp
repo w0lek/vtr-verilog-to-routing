@@ -219,6 +219,9 @@ void manual_move_cost_summary_dialog() {
     GtkWidget* dialog;
     GtkWidget* content_area;
 
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else
     //Creating the dialog window
     dialog = gtk_dialog_new_with_buttons("Move Costs",
                                          (GtkWindow*)draw_state->manual_moves_state.manual_move_window,
@@ -228,7 +231,7 @@ void manual_move_cost_summary_dialog() {
                                          ("Reject"),
                                          GTK_RESPONSE_REJECT,
                                          NULL);
-
+#endif
     gtk_window_set_transient_for((GtkWindow*)dialog, (GtkWindow*)draw_state->manual_moves_state.manual_move_window);
 
     //Create elements for the dialog and printing costs to the user.

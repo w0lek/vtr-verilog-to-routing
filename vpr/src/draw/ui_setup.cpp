@@ -22,6 +22,10 @@
 
 #include "ezgl/application.hpp"
 
+#ifdef VPR_QT
+#include "_qtcompat2.h"
+#endif // VPR_QT
+
 /**
  * @brief Helper function to connect a toggle button to a callback function
  */
@@ -228,9 +232,13 @@ void view_button_setup(ezgl::application* app) {
         gtk_widget_set_name(spin_button, g_strdup(trans_label.c_str()));
         gtk_box_pack_start(GTK_BOX(trans_box), spin_button, FALSE, FALSE, 0);
 
+#ifdef VPR_QT
+        ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
         // Connect cross layer to callback function:
         g_signal_connect(checkbox, "toggled", G_CALLBACK(cross_layer_checkbox_cbk), app);
         g_signal_connect(spin_button, "value-changed", G_CALLBACK(cross_layer_transparency_cbk), app);
+#endif // VPR_QT
 
         // Make all widgets in the boxes appear
         gtk_widget_show_all(GTK_WIDGET(box));
@@ -244,9 +252,13 @@ void view_button_setup(ezgl::application* app) {
 void search_setup(ezgl::application* app) {
     load_block_names(app);
     load_net_names(app);
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else 
     //Setting custom matching function for entry completion (searches whole string instead of start)
     GtkEntryCompletion* wildcardComp = GTK_ENTRY_COMPLETION(app->get_object("Completion"));
     gtk_entry_completion_set_match_func(wildcardComp, (GtkEntryCompletionMatchFunc)customMatchingFunction, NULL, NULL);
+#endif
 }
 
 /**
@@ -260,7 +272,11 @@ void crit_path_button_setup(ezgl::application* app) {
 
     // Toggle Critical Path
     GtkSwitch* toggle_nets_switch = GTK_SWITCH(app->get_object("ToggleCritPath"));
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     g_signal_connect(toggle_nets_switch, "state-set", G_CALLBACK(toggle_crit_path_cbk), app);
+#endif // VPR_QT
 
     // Checkboxes for critical path
     setup_checkbox_button("ToggleCritPathFlylines", app, &draw_state->show_crit_path_flylines);
@@ -322,6 +338,9 @@ void show_widget(std::string widgetName, ezgl::application* app) {
  * @param app ezgl application used for ui
  */
 void load_block_names(ezgl::application* app) {
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     auto blockStorage = GTK_LIST_STORE(app->get_object("BlockNames"));
     const ClusteringContext& cluster_ctx = g_vpr_ctx.clustering();
     const AtomContext& atom_ctx = g_vpr_ctx.atom();
@@ -333,9 +352,11 @@ void load_block_names(ezgl::application* app) {
     }
     for (AtomBlockId id : atom_ctx.netlist().blocks()) {
         gtk_list_store_append(blockStorage, &iter);
-        gtk_list_store_set(blockStorage, &iter,
+        
+        #igtk_list_store_set(blockStorage, &iter,
                            0, (atom_ctx.netlist().block_name(id)).c_str(), -1);
     }
+#endif // VPR_QT
 }
 
 /*
@@ -344,6 +365,9 @@ void load_block_names(ezgl::application* app) {
  * @param app ezgl application used for ui
  */
 void load_net_names(ezgl::application* app) {
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else
     auto netStorage = GTK_LIST_STORE(app->get_object("NetNames"));
     const AtomContext& atom_ctx = g_vpr_ctx.atom();
     GtkTreeIter iter;
@@ -353,6 +377,7 @@ void load_net_names(ezgl::application* app) {
         gtk_list_store_set(netStorage, &iter,
                            0, (atom_ctx.netlist().net_name(id)).c_str(), -1);
     }
+#endif
 }
 
 #endif /* NO_GRAPHICS */
