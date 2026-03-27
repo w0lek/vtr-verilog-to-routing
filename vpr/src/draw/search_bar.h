@@ -17,7 +17,7 @@
 #include "ezgl/application.hpp"
 #ifdef VPR_QT
 #include <QCompleter>
-#include <ezgl/qt/_qtcompat.hpp>
+#include "_qtcompat2.h"
 #endif
 
 void search_and_highlight(GtkWidget* /*widget*/, ezgl::application* app);

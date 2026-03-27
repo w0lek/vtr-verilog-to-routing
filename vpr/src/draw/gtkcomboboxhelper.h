@@ -3,7 +3,7 @@
 #ifndef NO_GRAPHICS
 
 #ifdef VPR_QT
-#include <ezgl/qt/_qtcompat.hpp>
+#include "_qtcompat2.h"
 #else // VPR_QT
 #include <glib.h>
 #endif // VPR_QT

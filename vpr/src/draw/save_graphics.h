@@ -10,7 +10,7 @@
 #include "ezgl/application.hpp"
 
 #ifdef VPR_QT
-#include <ezgl/qt/_qtcompat.hpp>
+#include "_qtcompat2.h"
 // TODO: this should be part of EZGL
 #else
 #include <gtk/gtk.h>

@@ -36,7 +36,6 @@
 #include "place_macro.h"
 
 #ifdef VPR_QT
-#include <ezgl/qt/_qtcompat.hpp>
 #include "_qtcompat2.h"
 #endif // VPR_QT
 

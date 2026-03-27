@@ -63,4 +63,80 @@ void gtk_switch_set_active(QCheckBox* button, bool flag)
   button->setChecked(flag);
 }
 
+void gtk_widget_show_all(QWidget* w)
+{
+    w->show();
+    for (auto child : w->findChildren<QWidget*>()) {
+      child->show();
+    }
+}
+
+bool gtk_toggle_button_get_active(GtkToggleButton* button) 
+{
+  if (!button) {
+    return false;
+  }
+  return button->isChecked();
+}
+
+void gtk_toggle_button_set_active(GtkToggleButton* button, bool flag) 
+{
+  if (!button) {
+    return;
+  }
+  button->setChecked(flag);
+}
+
+void gtk_widget_set_margin_start(QWidget* w, int m)
+{
+  if (!w) {
+    return;
+  }
+
+  QMargins margins = w->contentsMargins();
+  margins.setLeft(m);
+  w->setContentsMargins(margins);
+}
+
+void gtk_widget_set_margin_end(QWidget* w, int m)
+{
+  if (!w) {
+    return;
+  }
+
+  QMargins margins = w->contentsMargins();
+  margins.setRight(m);
+  w->setContentsMargins(margins);
+}
+
+void gtk_widget_set_margin_top(QWidget* w, int m)
+{
+  if (!w) {
+    return;
+  }
+
+  QMargins margins = w->contentsMargins();
+  margins.setTop(m);
+  w->setContentsMargins(margins);
+}
+
+void gtk_widget_set_margin_bottom(QWidget* w, int m)
+{
+  if (!w) {
+    return;
+  }
+
+  QMargins margins = w->contentsMargins();
+  margins.setBottom(m);
+  w->setContentsMargins(margins);
+}
+
+void gtk_window_close(QWidget* w)
+{
+  if (!w) {
+    return; 
+  }
+  w->close();
+}
+
 #endif // VPR_QT
