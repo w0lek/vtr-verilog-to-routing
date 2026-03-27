@@ -34,6 +34,40 @@ QString g_strdup(const char* str)
     return s;
 }
 
+void gtk_box_pack_start(QBoxLayout* box,
+                        QWidget* widget,
+                        bool expand,
+                        bool fill,
+                        int padding)
+{
+  if (!box || !widget) {
+    return;
+  }
+
+  int stretch = expand ? 1 : 0;
+
+  Qt::Alignment align = Qt::Alignment();
+  if (!fill) {
+    align = Qt::AlignLeft;
+  }
+
+  box->addWidget(widget, stretch, align);
+
+  if (padding > 0) {
+    box->setSpacing(padding);
+  }
+}
+
+void gtk_switch_set_active(QCheckBox* button, bool flag)
+{
+  if (!button) {
+    return;
+  }
+  button->setChecked(flag);
+}
+
+using GtkBox = QBoxLayout;
+
 #define GTK_SWITCH(w) qobject_cast<QCheckBox*>(w);
 
 #endif // VPR_QT

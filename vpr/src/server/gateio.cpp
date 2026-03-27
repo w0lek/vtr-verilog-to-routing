@@ -7,6 +7,9 @@
 #include "convertutils.h"
 
 #include "sockpp/tcp6_acceptor.h"
+#ifdef VPR_QT
+#include "serverupdate.h"
+#endif
 
 namespace server {
 
@@ -163,11 +166,12 @@ static void handle_activity_status(ActivityStatus status, std::unique_ptr<Client
 GateIO::GateIO() {
     m_is_running.store(false);
 #ifdef VPR_QT
-    m_timer.setInterval(SERVER_UPDATE_INTERVAL_MS);
-    QObject::connect(&m_timer, &QTimer::timeout, &m_timer, [](){
-        server::update(&application);
+    m_updateTimer.setInterval(SERVER_UPDATE_INTERVAL_MS);
+    QObject::connect(&m_updateTimer, &QTimer::timeout, &m_updateTimer, [](){
+        ASSERT_QT_MIGRATION_TODO;
+        //server::update(&application);
     });
-    m_timer.start();
+    m_updateTimer.start();
 #endif
 }
 
