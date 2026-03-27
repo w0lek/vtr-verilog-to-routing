@@ -14,21 +14,26 @@ set(VPR_PGO_DATA_DIR "." CACHE PATH "Where to store and retrieve PGO data")
 
 set(VPR_ENABLE_OPEN_MP "on" CACHE STRING "Enable OpenMP when compiling VPR")
 
+option(VPR_QT "Use Qt backend for VPR graphics" ON)
+
 #Handle graphics setup
 set(GRAPHICS_DEFINES "")
 
 if (VPR_USE_EZGL STREQUAL "on")
     message(STATUS "EZGL: graphics enabled")
-    set(
-        RESOURCE_LIST
-        # Strip all the whitespace characters from ui file
-        STRIPBLANKS main.ui
-    )
 
-    list(APPEND CMAKE_MODULE_PATH
-         ${CMAKE_CURRENT_SOURCE_DIR}/../libs/EXTERNAL/libezgl/gcr-cmake/macros)
+    if(NOT VPR_QT)
+        set(
+            RESOURCE_LIST
+            # Strip all the whitespace characters from ui file
+            STRIPBLANKS main.ui
+        )
 
-    include(GlibCompileResourcesSupport)
+        list(APPEND CMAKE_MODULE_PATH
+             ${CMAKE_CURRENT_SOURCE_DIR}/../libs/EXTERNAL/libezgl/gcr-cmake/macros)
+
+        include(GlibCompileResourcesSupport)
+    endif()
 else()
     list(APPEND GRAPHICS_DEFINES "-DNO_GRAPHICS")
     message(STATUS "EZGL: graphics disabled")
@@ -133,34 +138,35 @@ if (VPR_USE_EZGL STREQUAL "on")
     target_link_libraries(libvpr
 			     ezgl)
 
-    compile_gresources(
-      # input: the name of our resources
-      RESOURCE_FILE
-      # output: the filename of the generated XML file
-      XML_OUT
-      # generate C code to be compiled with our program
-      TYPE
-        EMBED_C
-      # specify the name of the C file that is generated
-      TARGET
-        resources.C
-      # specify the resource prefix (used in the code)
-      PREFIX
-        /ezgl
-      # input: specify the list of files to compile into resources
-      RESOURCES
-        ${RESOURCE_LIST}
-    )
+    if(NOT VPR_QT)
+        compile_gresources(
+          # input: the name of our resources
+          RESOURCE_FILE
+          # output: the filename of the generated XML file
+          XML_OUT
+          # generate C code to be compiled with our program
+          TYPE
+            EMBED_C
+          # specify the name of the C file that is generated
+          TARGET
+            resources.C
+          # specify the resource prefix (used in the code)
+          PREFIX
+            /ezgl
+          # input: specify the list of files to compile into resources
+          RESOURCES
+            ${RESOURCE_LIST}
+        )
 
+        add_custom_target(
+          resource ALL
+          DEPENDS
+            ${RESOURCE_FILE}
+        )
 
-    add_custom_target(
-      resource ALL
-      DEPENDS
-        ${RESOURCE_FILE}
-    )
-
-    #Create the executable with resources
-    list(APPEND EXEC_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/resources.C)
+        #Create the executable with resources
+        list(APPEND EXEC_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/resources.C)
+    endif()
 
 endif()
 
@@ -176,11 +182,13 @@ add_executable(vpr ${EXEC_SOURCES})
 target_link_libraries(vpr libvpr)
 
 
-target_compile_definitions(
-    libvpr
-    PUBLIC
-    VPR_QT
-)
+if(VPR_QT)
+    target_compile_definitions(
+        libvpr
+        PUBLIC
+        VPR_QT
+    )
+endif()
 
 #
 # Profile Guilded Optimization Configuration
