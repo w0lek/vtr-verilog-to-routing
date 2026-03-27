@@ -33,27 +33,47 @@ static void setup_checkbox_button(std::string button_id, ezgl::application* app,
     t_draw_state* draw_state = get_draw_state_vars();
     GtkToggleButton* checkbox_button = GTK_TOGGLE_BUTTON(app->get_object(button_id.c_str()));
     draw_state->checkbox_data.emplace_back(app, toggle_state);
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     g_signal_connect(checkbox_button, "toggled", G_CALLBACK(toggle_checkbox_cbk), &draw_state->checkbox_data.back());
+#endif // VPR_QT
 }
 
 void basic_button_setup(ezgl::application* app) {
     //button to enter window_mode, created in main.ui
     GtkButton* window = (GtkButton*)app->get_object("Window");
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     g_signal_connect(window, "clicked", G_CALLBACK(toggle_window_mode), app);
+#endif // VPR_QT
 
     //button to search, created in main.ui
     GtkButton* search = (GtkButton*)app->get_object("Search");
     gtk_button_set_label(search, "Search");
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     g_signal_connect(search, "clicked", G_CALLBACK(search_and_highlight), app);
+#endif // VPR_QT
 
     //button for save graphics, created in main.ui
     GtkButton* save = (GtkButton*)app->get_object("SaveGraphics");
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     g_signal_connect(save, "clicked", G_CALLBACK(save_graphics_dialog_box),
                      app);
+#endif // VPR_QT
 
     //combo box for search type, created in main.ui
     GObject* search_type = (GObject*)app->get_object("SearchType");
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     g_signal_connect(search_type, "changed", G_CALLBACK(search_type_changed), app);
+#endif // VPR_QT
 }
 
 /*
@@ -70,12 +90,17 @@ void net_button_setup(ezgl::application* app) {
     GtkSwitch* toggle_nets_switch = GTK_SWITCH(app->get_object("ToggleNets"));
 #ifdef VPR_QT
     ASSERT_QT_MIGRATION_TODO;
-#else
+#else // VPR_QT
     g_signal_connect(toggle_nets_switch, "state-set", G_CALLBACK(toggle_show_nets_cbk), app);
-#endif
+#endif // VPR_QT
+
     // Manages net type
     GtkComboBoxText* toggle_nets = GTK_COMBO_BOX_TEXT(app->get_object("ToggleNetType"));
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     g_signal_connect(toggle_nets, "changed", G_CALLBACK(toggle_draw_nets_cbk), app);
+#endif // VPR_QT
 
     setup_checkbox_button("ToggleInterClusterNets", app, &draw_state->draw_inter_cluster_nets);
 
@@ -85,13 +110,21 @@ void net_button_setup(ezgl::application* app) {
 
     //Manages net alpha
     GtkSpinButton* net_alpha = GTK_SPIN_BUTTON(app->get_object("NetAlpha"));
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     g_signal_connect(net_alpha, "value-changed", G_CALLBACK(set_net_alpha_value_cbk), app);
+#endif // VPR_QT
     gtk_spin_button_set_increments(net_alpha, 1, 1);
     gtk_spin_button_set_range(net_alpha, 0, 255);
 
     //Manages net max fanout
     GtkSpinButton* max_fanout = GTK_SPIN_BUTTON(app->get_object("NetMaxFanout"));
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     g_signal_connect(max_fanout, "value-changed", G_CALLBACK(set_net_max_fanout_cbk), app);
+#endif // VPR_QT
     gtk_spin_button_set_increments(max_fanout, 1, 1);
     gtk_spin_button_set_range(max_fanout, 0., (double)get_max_fanout());
 }
@@ -109,17 +142,29 @@ void block_button_setup(ezgl::application* app) {
 
     //Toggle block internals
     GtkSpinButton* blk_internals_button = GTK_SPIN_BUTTON(app->get_object("ToggleBlkInternals"));
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     g_signal_connect(blk_internals_button, "value-changed", G_CALLBACK(toggle_blk_internal_cbk), app);
+#endif // VPR_QT
     gtk_spin_button_set_increments(blk_internals_button, 1, 1);
     gtk_spin_button_set_range(blk_internals_button, 0., (double)(draw_state->max_sub_blk_lvl));
 
     //Toggle Block Pin Util
     GtkComboBoxText* blk_pin_util = GTK_COMBO_BOX_TEXT(app->get_object("ToggleBlkPinUtil"));
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     g_signal_connect(blk_pin_util, "changed", G_CALLBACK(toggle_blk_pin_util_cbk), app);
+#endif // VPR_QT
 
     //Toggle Placement Macros
     GtkComboBoxText* placement_macros = GTK_COMBO_BOX_TEXT(app->get_object("TogglePlacementMacros"));
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     g_signal_connect(placement_macros, "changed", G_CALLBACK(placement_macros_cbk), app);
+#endif // VPR_QT
 
     //Toggle NoC Display (based on startup cmd --noc on)
     if (!draw_state->show_noc_button) {
@@ -127,7 +172,11 @@ void block_button_setup(ezgl::application* app) {
         hide_widget("ToggleNocBox", app);
     } else {
         GtkComboBoxText* toggleNocBox = GTK_COMBO_BOX_TEXT(app->get_object("ToggleNocBox"));
+#ifdef VPR_QT
+        ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
         g_signal_connect(toggleNocBox, "changed", G_CALLBACK(toggle_noc_cbk), app);
+#endif // VPR_QT
     }
 }
 
@@ -144,7 +193,11 @@ void routing_button_setup(ezgl::application* app) {
 
     //Toggle RR
     GtkSwitch* toggle_nets_switch = GTK_SWITCH(app->get_object("ToggleRR"));
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     g_signal_connect(toggle_nets_switch, "state-set", G_CALLBACK(toggle_rr_cbk), app);
+#endif // VPR_QT
 
     // RR Checkboxes
 
@@ -158,26 +211,46 @@ void routing_button_setup(ezgl::application* app) {
 
     //Toggle Congestion
     GtkComboBoxText* toggle_congestion = GTK_COMBO_BOX_TEXT(app->get_object("ToggleCongestion"));
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     g_signal_connect(toggle_congestion, "changed", G_CALLBACK(toggle_cong_cbk), app);
+#endif // VPR_QT
 
     //Toggle Congestion Cost
     GtkComboBoxText* toggle_cong_cost = GTK_COMBO_BOX_TEXT(app->get_object("ToggleCongestionCost"));
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     g_signal_connect(toggle_cong_cost, "changed", G_CALLBACK(toggle_cong_cost_cbk), app);
+#endif // VPR_QT
 
     //Toggle Routing BB
     GtkSpinButton* toggle_routing_bbox = GTK_SPIN_BUTTON(app->get_object("ToggleRoutingBBox"));
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     g_signal_connect(toggle_routing_bbox, "value-changed", G_CALLBACK(toggle_routing_bbox_cbk), app);
+#endif // VPR_QT
     gtk_spin_button_set_increments(toggle_routing_bbox, 1, 1);
     gtk_spin_button_set_range(toggle_routing_bbox, -1., (double)(route_ctx.route_bb.size() - 1));
     gtk_spin_button_set_value(toggle_routing_bbox, -1.);
 
     //Toggle Routing Expansion Costs
     GtkComboBoxText* toggle_expansion_cost = GTK_COMBO_BOX_TEXT(app->get_object("ToggleRoutingExpansionCost"));
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     g_signal_connect(toggle_expansion_cost, "changed", G_CALLBACK(toggle_expansion_cost_cbk), app);
+#endif // VPR_QT
 
     //Toggle Router Util
     GtkComboBoxText* toggle_router_util = GTK_COMBO_BOX_TEXT(app->get_object("ToggleRoutingUtil"));
+#ifdef VPR_QT
+    ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
     g_signal_connect(toggle_router_util, "changed", G_CALLBACK(toggle_router_util_cbk), app);
+#endif // VPR_QT
     show_widget("RoutingMenuButton", app);
 }
 
@@ -214,9 +287,12 @@ void view_button_setup(ezgl::application* app) {
                 // Set the initial state of the first checkbox to checked to represent the default view.
                 gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(checkbox), TRUE);
             }
-
+#ifdef VPR_QT
+            ASSERT_QT_MIGRATION_TODO;
+#else // VPR_QT
             g_signal_connect(checkbox, "toggled", G_CALLBACK(select_layer_cbk), app);
             g_signal_connect(spin_button, "value-changed", G_CALLBACK(transparency_cbk), app);
+#endif // VPR_QT
         }
 
         // Set up the final row for cross-layer connections
