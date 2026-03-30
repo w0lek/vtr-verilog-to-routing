@@ -9,6 +9,9 @@
 #include "sockpp/tcp6_acceptor.h"
 #ifdef VPR_QT
 #include "serverupdate.h"
+#include "ezgl/application.hpp"
+
+extern ezgl::application application;
 #endif
 
 namespace server {
@@ -168,8 +171,7 @@ GateIO::GateIO() {
 #ifdef VPR_QT
     m_updateTimer.setInterval(SERVER_UPDATE_INTERVAL_MS);
     QObject::connect(&m_updateTimer, &QTimer::timeout, &m_updateTimer, [](){
-        ASSERT_QT_MIGRATION_TODO;
-        //server::update(&application);
+        server::update(&application);
     });
     m_updateTimer.start();
 #endif
