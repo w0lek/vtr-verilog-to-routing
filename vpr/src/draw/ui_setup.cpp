@@ -467,7 +467,23 @@ void show_widget(std::string widgetName, ezgl::application* app) {
  */
 void load_block_names(ezgl::application* app) {
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QLineEdit* textInput = qobject_cast<QLineEdit*>(app->get_object("TextInput"));
+    if (!textInput) return;
+
+    const ClusteringContext& cluster_ctx = g_vpr_ctx.clustering();
+    const AtomContext& atom_ctx = g_vpr_ctx.atom();
+    QStringList block_names;
+    for (ClusterBlockId id : cluster_ctx.clb_nlist.blocks()) {
+        block_names.append(QString::fromStdString(cluster_ctx.clb_nlist.block_name(id)));
+    }
+    for (AtomBlockId id : atom_ctx.netlist().blocks()) {
+        block_names.append(QString::fromStdString(atom_ctx.netlist().block_name(id)));
+    }
+
+    QCompleter* completer = new QCompleter(block_names, textInput);
+    completer->setObjectName("BlockNames");
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    completer->setFilterMode(Qt::MatchContains);
 #else // VPR_QT
     auto blockStorage = GTK_LIST_STORE(app->get_object("BlockNames"));
     const ClusteringContext& cluster_ctx = g_vpr_ctx.clustering();
@@ -480,8 +496,7 @@ void load_block_names(ezgl::application* app) {
     }
     for (AtomBlockId id : atom_ctx.netlist().blocks()) {
         gtk_list_store_append(blockStorage, &iter);
-        
-        #igtk_list_store_set(blockStorage, &iter,
+        gtk_list_store_set(blockStorage, &iter,
                            0, (atom_ctx.netlist().block_name(id)).c_str(), -1);
     }
 #endif // VPR_QT
