@@ -55,7 +55,7 @@ void gtk_box_pack_start(QBoxLayout* box,
   }
 }
 
-void gtk_switch_set_active(QCheckBox* button, bool flag)
+void gtk_switch_set_active(QAbstractButton* button, bool flag)
 {
   if (!button) {
     return;

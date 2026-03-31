@@ -24,11 +24,13 @@ void gtk_box_pack_start(QBoxLayout* box,
                         bool fill,
                         int padding);
 
-void gtk_switch_set_active(QCheckBox* button, bool flag);
+void gtk_switch_set_active(QAbstractButton* button, bool flag);
 
 using GtkBox = QBoxLayout;
 
-#define GTK_SWITCH(w) qobject_cast<QCheckBox*>(w);
+#define GTK_SWITCH(w) qobject_cast<QAbstractButton*>(w)
+
+#define Q_ABSTRACT_BUTTON(w) qobject_cast<QAbstractButton*>(w);
 
 #include <QRadioButton>
 #include <QSpinBox>
@@ -41,7 +43,7 @@ using GtkBox = QBoxLayout;
 
 using GtkToggleButton = QCheckBox;
 using GtkSpinButton = QSpinBox;
-using GtkSwitch = QCheckBox;
+using GtkSwitch = QAbstractButton;
 using GtkWindow = QWidget;
 using GtkEntry = QLineEdit;
 using GtkLabel = QLabel;

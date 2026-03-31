@@ -100,7 +100,6 @@ void basic_button_setup(ezgl::application* app) {
 void net_button_setup(ezgl::application* app) {
 
     t_draw_state* draw_state = get_draw_state_vars();
-
     GtkSwitch* toggle_nets_switch = GTK_SWITCH(app->get_object("ToggleNets"));
 #ifdef VPR_QT
     QObject::connect(toggle_nets_switch, &QAbstractButton::toggled, toggle_nets_switch, [toggle_nets_switch, app](bool checked) {
