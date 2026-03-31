@@ -402,8 +402,6 @@ void gtk_spin_button_set_increments(QDoubleSpinBox* spin_box, int step, int page
   }
 
   spin_box->setSingleStep(step);
-
-  QT_MIGRATION_TODO; // there is no analog for page in Qt
 }
 
 void gtk_spin_button_set_range(QDoubleSpinBox* spin_box, double min, double max)
