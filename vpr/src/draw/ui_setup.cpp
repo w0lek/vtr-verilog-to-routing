@@ -399,7 +399,9 @@ void crit_path_button_setup(ezgl::application* app) {
     // Toggle Critical Path
     GtkSwitch* toggle_nets_switch = GTK_SWITCH(app->get_object("ToggleCritPath"));
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QObject::connect(GTK_SWITCH(app->get_object("ToggleCritPath")), &QAbstractButton::toggled, toggle_nets_switch, [toggle_nets_switch, app](bool checked) {
+        toggle_crit_path_cbk(toggle_nets_switch, checked, app);
+    });
 #else // VPR_QT
     g_signal_connect(toggle_nets_switch, "state-set", G_CALLBACK(toggle_crit_path_cbk), app);
 #endif // VPR_QT
