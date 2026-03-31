@@ -492,7 +492,19 @@ void load_block_names(ezgl::application* app) {
  */
 void load_net_names(ezgl::application* app) {
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QLineEdit* textInput = qobject_cast<QLineEdit*>(app->get_object("TextInput"));
+    if (!textInput) return;
+
+    const AtomContext& atom_ctx = g_vpr_ctx.atom();
+    QStringList net_names;
+    for (AtomNetId id : atom_ctx.netlist().nets()) {
+        net_names.append(QString::fromStdString(atom_ctx.netlist().net_name(id)));
+    }
+
+    QCompleter* completer = new QCompleter(net_names, textInput);
+    completer->setObjectName("NetNames");
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    completer->setFilterMode(Qt::MatchContains);
 #else
     auto netStorage = GTK_LIST_STORE(app->get_object("NetNames"));
     const AtomContext& atom_ctx = g_vpr_ctx.atom();
