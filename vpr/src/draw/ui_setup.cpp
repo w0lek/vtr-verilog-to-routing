@@ -58,7 +58,9 @@ void basic_button_setup(ezgl::application* app) {
     GtkButton* search = (GtkButton*)app->get_object("Search");
     gtk_button_set_label(search, "Search");
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QObject::connect(search, &QAbstractButton::clicked, search, [app]() {
+        search_and_highlight(/*widget=*/nullptr, app);
+    });
 #else // VPR_QT
     g_signal_connect(search, "clicked", G_CALLBACK(search_and_highlight), app);
 #endif // VPR_QT
@@ -66,7 +68,9 @@ void basic_button_setup(ezgl::application* app) {
     //button for save graphics, created in main.ui
     GtkButton* save = (GtkButton*)app->get_object("SaveGraphics");
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QObject::connect(save, &QAbstractButton::clicked, save, []() {
+        save_graphics_dialog_box(/*widget=*/nullptr, /*app=*/nullptr);
+    });
 #else // VPR_QT
     g_signal_connect(save, "clicked", G_CALLBACK(save_graphics_dialog_box),
                      app);
@@ -75,7 +79,10 @@ void basic_button_setup(ezgl::application* app) {
     //combo box for search type, created in main.ui
     GObject* search_type = (GObject*)app->get_object("SearchType");
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QComboBox* search_type_combo = qobject_cast<QComboBox*>(search_type);
+    QObject::connect(search_type_combo, &QComboBox::currentIndexChanged, search_type_combo, [search_type_combo, app]() {
+        search_type_changed(search_type_combo, app);
+    });
 #else // VPR_QT
     g_signal_connect(search_type, "changed", G_CALLBACK(search_type_changed), app);
 #endif // VPR_QT
