@@ -101,7 +101,9 @@ void net_button_setup(ezgl::application* app) {
 
     GtkSwitch* toggle_nets_switch = GTK_SWITCH(app->get_object("ToggleNets"));
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QObject::connect(toggle_nets_switch, &QAbstractButton::toggled, toggle_nets_switch, [toggle_nets_switch, app](bool checked) {
+        toggle_show_nets_cbk(toggle_nets_switch, checked, app);
+    });
 #else // VPR_QT
     g_signal_connect(toggle_nets_switch, "state-set", G_CALLBACK(toggle_show_nets_cbk), app);
 #endif // VPR_QT
@@ -109,7 +111,9 @@ void net_button_setup(ezgl::application* app) {
     // Manages net type
     GtkComboBoxText* toggle_nets = GTK_COMBO_BOX_TEXT(app->get_object("ToggleNetType"));
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QObject::connect(toggle_nets, &QComboBox::currentIndexChanged, toggle_nets, [toggle_nets, app]() {
+        toggle_draw_nets_cbk(toggle_nets, app);
+    });
 #else // VPR_QT
     g_signal_connect(toggle_nets, "changed", G_CALLBACK(toggle_draw_nets_cbk), app);
 #endif // VPR_QT
@@ -123,7 +127,9 @@ void net_button_setup(ezgl::application* app) {
     //Manages net alpha
     GtkSpinButton* net_alpha = GTK_SPIN_BUTTON(app->get_object("NetAlpha"));
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QObject::connect(net_alpha, &QSpinBox::valueChanged, net_alpha, [net_alpha, app]() {
+        set_net_alpha_value_cbk(net_alpha, app);
+    });
 #else // VPR_QT
     g_signal_connect(net_alpha, "value-changed", G_CALLBACK(set_net_alpha_value_cbk), app);
 #endif // VPR_QT
@@ -133,7 +139,9 @@ void net_button_setup(ezgl::application* app) {
     //Manages net max fanout
     GtkSpinButton* max_fanout = GTK_SPIN_BUTTON(app->get_object("NetMaxFanout"));
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QObject::connect(max_fanout, &QSpinBox::valueChanged, max_fanout, [max_fanout, app]() {
+        set_net_max_fanout_cbk(max_fanout, app);
+    });
 #else // VPR_QT
     g_signal_connect(max_fanout, "value-changed", G_CALLBACK(set_net_max_fanout_cbk), app);
 #endif // VPR_QT
