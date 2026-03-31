@@ -163,7 +163,9 @@ void block_button_setup(ezgl::application* app) {
     //Toggle block internals
     GtkSpinButton* blk_internals_button = GTK_SPIN_BUTTON(app->get_object("ToggleBlkInternals"));
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QObject::connect(blk_internals_button, &QSpinBox::valueChanged, blk_internals_button, [blk_internals_button, app]() {
+        toggle_blk_internal_cbk(blk_internals_button, app);
+    });
 #else // VPR_QT
     g_signal_connect(blk_internals_button, "value-changed", G_CALLBACK(toggle_blk_internal_cbk), app);
 #endif // VPR_QT
@@ -173,7 +175,9 @@ void block_button_setup(ezgl::application* app) {
     //Toggle Block Pin Util
     GtkComboBoxText* blk_pin_util = GTK_COMBO_BOX_TEXT(app->get_object("ToggleBlkPinUtil"));
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QObject::connect(blk_pin_util, &QComboBox::currentIndexChanged, blk_pin_util, [blk_pin_util, app]() {
+        toggle_blk_pin_util_cbk(blk_pin_util, app);
+    });
 #else // VPR_QT
     g_signal_connect(blk_pin_util, "changed", G_CALLBACK(toggle_blk_pin_util_cbk), app);
 #endif // VPR_QT
@@ -181,7 +185,9 @@ void block_button_setup(ezgl::application* app) {
     //Toggle Placement Macros
     GtkComboBoxText* placement_macros = GTK_COMBO_BOX_TEXT(app->get_object("TogglePlacementMacros"));
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QObject::connect(placement_macros, &QComboBox::currentIndexChanged, placement_macros, [placement_macros, app]() {
+        placement_macros_cbk(placement_macros, app);
+    });
 #else // VPR_QT
     g_signal_connect(placement_macros, "changed", G_CALLBACK(placement_macros_cbk), app);
 #endif // VPR_QT
@@ -193,7 +199,9 @@ void block_button_setup(ezgl::application* app) {
     } else {
         GtkComboBoxText* toggleNocBox = GTK_COMBO_BOX_TEXT(app->get_object("ToggleNocBox"));
 #ifdef VPR_QT
-        ASSERT_QT_MIGRATION_TODO;
+        QObject::connect(toggleNocBox, &QComboBox::currentIndexChanged, toggleNocBox, [toggleNocBox, app]() {
+            toggle_noc_cbk(toggleNocBox, app);
+        });
 #else // VPR_QT
         g_signal_connect(toggleNocBox, "changed", G_CALLBACK(toggle_noc_cbk), app);
 #endif // VPR_QT
