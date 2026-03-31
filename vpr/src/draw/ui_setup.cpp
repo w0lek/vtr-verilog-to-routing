@@ -328,7 +328,12 @@ void view_button_setup(ezgl::application* app) {
                 gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(checkbox), TRUE);
             }
 #ifdef VPR_QT
-            ASSERT_QT_MIGRATION_TODO;
+            QObject::connect(GTK_BUTTON(checkbox), &QAbstractButton::toggled, GTK_BUTTON(checkbox), [checkbox]() {
+                select_layer_cbk(checkbox, /*response_id=*/0, /*data=*/nullptr);
+            });
+            QObject::connect(GTK_SPIN_BUTTON(spin_button), &QSpinBox::valueChanged, GTK_SPIN_BUTTON(spin_button), [spin_button]() {
+                transparency_cbk(spin_button, /*response_id=*/0, /*data=*/nullptr);
+            });
 #else // VPR_QT
             g_signal_connect(checkbox, "toggled", G_CALLBACK(select_layer_cbk), app);
             g_signal_connect(spin_button, "value-changed", G_CALLBACK(transparency_cbk), app);
@@ -349,7 +354,12 @@ void view_button_setup(ezgl::application* app) {
         gtk_box_pack_start(GTK_BOX(trans_box), spin_button, FALSE, FALSE, 0);
 
 #ifdef VPR_QT
-        ASSERT_QT_MIGRATION_TODO;
+        QObject::connect(GTK_BUTTON(checkbox), &QAbstractButton::toggled, GTK_BUTTON(checkbox), [checkbox]() {
+            cross_layer_checkbox_cbk(checkbox, /*response_id=*/0, /*data=*/nullptr);
+        });
+        QObject::connect(GTK_SPIN_BUTTON(spin_button), &QSpinBox::valueChanged, GTK_SPIN_BUTTON(spin_button), [spin_button]() {
+            cross_layer_transparency_cbk(spin_button, /*response_id=*/0, /*data=*/nullptr);
+        });
 #else // VPR_QT
         // Connect cross layer to callback function:
         g_signal_connect(checkbox, "toggled", G_CALLBACK(cross_layer_checkbox_cbk), app);
