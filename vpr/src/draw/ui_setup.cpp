@@ -47,7 +47,9 @@ void basic_button_setup(ezgl::application* app) {
     //button to enter window_mode, created in main.ui
     GtkButton* window = (GtkButton*)app->get_object("Window");
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QObject::connect(window, &QAbstractButton::clicked, window, [app]() {
+        toggle_window_mode(/*widget=*/nullptr, app);
+    });
 #else // VPR_QT
     g_signal_connect(window, "clicked", G_CALLBACK(toggle_window_mode), app);
 #endif // VPR_QT
