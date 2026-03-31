@@ -33,7 +33,7 @@ using GtkBox = QBoxLayout;
 #define Q_ABSTRACT_BUTTON(w) qobject_cast<QAbstractButton*>(w);
 
 #include <QRadioButton>
-#include <QSpinBox>
+#include <QDoubleSpinBox>
 #include <QCheckBox>
 #include <QLabel>
 #include <QLineEdit>
@@ -42,7 +42,7 @@ using GtkBox = QBoxLayout;
 #include <QDialogButtonBox>
 
 using GtkToggleButton = QCheckBox;
-using GtkSpinButton = QSpinBox;
+using GtkSpinButton = QDoubleSpinBox;
 using GtkSwitch = QAbstractButton;
 using GtkWindow = QWidget;
 using GtkEntry = QLineEdit;
@@ -63,7 +63,7 @@ void gtk_widget_set_margin_top(QWidget*, int);
 void gtk_widget_set_margin_bottom(QWidget*, int);
 
 void gtk_window_close(QWidget*);
-int gtk_spin_button_get_value(QSpinBox* spinBox);
+int gtk_spin_button_get_value(QDoubleSpinBox* spinBox);
 void gtk_combo_box_text_append_text(QComboBox* combo, const QString& item);
 void gtk_combo_box_text_remove(QComboBox* combo, int index);
 QComboBox* gtk_combo_box_text_new();
@@ -82,7 +82,7 @@ void gtk_window_set_title(QWidget* w, const char* title);
 #define GTK_WINDOW_TOPLEVEL 0
 QWidget* gtk_window_new(int);
 
-#define GTK_SPIN_BUTTON(w) qobject_cast<QSpinBox*>(w)
+#define GTK_SPIN_BUTTON(w) qobject_cast<QDoubleSpinBox*>(w)
 #define GTK_BUTTON(w) qobject_cast<QAbstractButton*>(w)
 #define GTK_TOGGLE_BUTTON(w) qobject_cast<QCheckBox*>(w)
 #define GTK_COMBO_BOX_TEXT(w) qobject_cast<QComboBox*>(reinterpret_cast<QObject*>(w))
@@ -99,7 +99,7 @@ void gtk_grid_attach(QWidget* widget, QWidget* child, int col, int row, int w, i
 void gtk_container_add(QWidget* container, QWidget* w);
 QWidget* gtk_grid_new();
 int gtk_dialog_run(QDialog* dialog);
-int gtk_spin_button_get_value_as_int(QSpinBox* spinBox);
+int gtk_spin_button_get_value_as_int(QDoubleSpinBox* spinBox);
 
 #define GTK_DIALOG_MODAL 0x1
 struct GtkDialogButton {
@@ -128,11 +128,11 @@ void gtk_widget_set_halign(QWidget* w, int flag);
 void gtk_window_set_transient_for(QWidget* dialog, QWidget* parent);
 void gtk_widget_show(QWidget* widget);
 void gtk_widget_hide(QWidget* widget);
-QSpinBox* gtk_spin_button_new_with_range(int min, int max, int step);
+QDoubleSpinBox* gtk_spin_button_new_with_range(int min, int max, int step);
 QWidget* gtk_widget_get_parent_window(QWidget* w);
-void gtk_spin_button_set_increments(QSpinBox* spin_box, int step, int page);
-void gtk_spin_button_set_range(QSpinBox* spin_box, double min, double max);
-void gtk_spin_button_set_value(QSpinBox* spin_box, double value);
+void gtk_spin_button_set_increments(QDoubleSpinBox* spin_box, int step, int page);
+void gtk_spin_button_set_range(QDoubleSpinBox* spin_box, double min, double max);
+void gtk_spin_button_set_value(QDoubleSpinBox* spin_box, double value);
 
 #endif // VPR_QT
 #endif // VPR_QTCOMPAT_H

@@ -139,9 +139,9 @@ void gtk_window_close(QWidget* w)
   w->close();
 }
 
-int gtk_spin_button_get_value(QSpinBox* spinBox)
+int gtk_spin_button_get_value(QDoubleSpinBox* spinBox)
 {
-  return spinBox->value();
+  return static_cast<int>(spinBox->value());
 }
 
 void gtk_combo_box_text_append_text(QComboBox* combo, const QString& item)
@@ -284,9 +284,9 @@ int gtk_dialog_run(QDialog* dialog)
   return dialog->exec();
 }
 
-int gtk_spin_button_get_value_as_int(QSpinBox* spinBox)
+int gtk_spin_button_get_value_as_int(QDoubleSpinBox* spinBox)
 {
-  return spinBox->value();
+  return static_cast<int>(spinBox->value());
 }
 
 GtkWidget* gtk_dialog_new_with_buttons(
@@ -381,11 +381,13 @@ void gtk_widget_hide(QWidget* widget)
   widget->hide();
 }
 
-QSpinBox* gtk_spin_button_new_with_range(int min, int max, int step)
+QDoubleSpinBox* gtk_spin_button_new_with_range(int min, int max, int step)
 {
-  QSpinBox* spin_box = new QSpinBox();
+  QDoubleSpinBox* spin_box = new QDoubleSpinBox();
+  spin_box->setDecimals(0);
   spin_box->setRange(min, max);
   spin_box->setSingleStep(step);
+  return spin_box;
 }
 
 QWidget* gtk_widget_get_parent_window(QWidget* w)
@@ -393,7 +395,7 @@ QWidget* gtk_widget_get_parent_window(QWidget* w)
   return qobject_cast<QWidget*>(w->parent());
 }
 
-void gtk_spin_button_set_increments(QSpinBox* spin_box, int step, int page)
+void gtk_spin_button_set_increments(QDoubleSpinBox* spin_box, int step, int page)
 {
   if (!spin_box) {
     return;
@@ -404,7 +406,7 @@ void gtk_spin_button_set_increments(QSpinBox* spin_box, int step, int page)
   QT_MIGRATION_TODO; // there is no analog for page in Qt
 }
 
-void gtk_spin_button_set_range(QSpinBox* spin_box, double min, double max)
+void gtk_spin_button_set_range(QDoubleSpinBox* spin_box, double min, double max)
 {
   if (!spin_box) {
     return;
@@ -413,7 +415,7 @@ void gtk_spin_button_set_range(QSpinBox* spin_box, double min, double max)
   spin_box->setRange(min, max);
 }
 
-void gtk_spin_button_set_value(QSpinBox* spin_box, double value)
+void gtk_spin_button_set_value(QDoubleSpinBox* spin_box, double value)
 {
   if (!spin_box) {
     return;
