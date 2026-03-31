@@ -25,7 +25,21 @@ gint button_row = 2; // 2 is the row num of the window button in main.ui, add bu
 [[deprecated("todo: move to ezgl")]]
 void delete_button(const char* button_name) {
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QWidget* main_window_grid = application.get_widget("InnerGrid");
+    QList<QWidget*> list_of_widgets = gtk_container_get_children(GTK_CONTAINER(main_window_grid));
+    GtkWidget* target_button = nullptr;
+
+    // loop through the list to find the button
+    for (QWidget* widget : list_of_widgets) {
+        if (strcmp(gtk_widget_get_name(widget), button_name) == 0) {
+            // found text entry
+            target_button = widget;
+            break;
+        }
+    }
+
+    if (target_button)
+        target_button->deleteLater();
 #else // VPR_QT
     GObject* main_window_grid = application.get_object("InnerGrid");
     GList* list_of_widgets = gtk_container_get_children(GTK_CONTAINER(main_window_grid));
@@ -52,7 +66,17 @@ void delete_button(const char* button_name) {
 [[deprecated("todo: move to ezgl")]]
 GtkWidget* find_button(const char* button_name) {
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QWidget* main_window_grid = application.get_widget("InnerGrid");
+    QList<QWidget*> list_of_widgets = gtk_container_get_children(GTK_CONTAINER(main_window_grid));
+
+    // loop through the list to find the button
+    for (QWidget* widget : list_of_widgets) {
+        if (strcmp(gtk_widget_get_name(widget), button_name) == 0) {
+            return widget;
+        }
+    }
+
+    return nullptr;
 #else // VPR_QT
     GObject* main_window_grid = application.get_object("InnerGrid");
     GList* list_of_widgets = gtk_container_get_children(GTK_CONTAINER(main_window_grid));
