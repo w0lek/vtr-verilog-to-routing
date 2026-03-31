@@ -128,7 +128,7 @@ void net_button_setup(ezgl::application* app) {
     //Manages net alpha
     GtkSpinButton* net_alpha = GTK_SPIN_BUTTON(app->get_object("NetAlpha"));
 #ifdef VPR_QT
-    QObject::connect(net_alpha, &QDoubleSpinBox::valueChanged, net_alpha, [net_alpha, app]() {
+    QObject::connect(net_alpha, &QSpinBox::valueChanged, net_alpha, [net_alpha, app]() {
         set_net_alpha_value_cbk(net_alpha, app);
     });
 #else // VPR_QT
@@ -140,7 +140,7 @@ void net_button_setup(ezgl::application* app) {
     //Manages net max fanout
     GtkSpinButton* max_fanout = GTK_SPIN_BUTTON(app->get_object("NetMaxFanout"));
 #ifdef VPR_QT
-    QObject::connect(max_fanout, &QDoubleSpinBox::valueChanged, max_fanout, [max_fanout, app]() {
+    QObject::connect(max_fanout, &QSpinBox::valueChanged, max_fanout, [max_fanout, app]() {
         set_net_max_fanout_cbk(max_fanout, app);
     });
 #else // VPR_QT
@@ -164,7 +164,7 @@ void block_button_setup(ezgl::application* app) {
     //Toggle block internals
     GtkSpinButton* blk_internals_button = GTK_SPIN_BUTTON(app->get_object("ToggleBlkInternals"));
 #ifdef VPR_QT
-    QObject::connect(blk_internals_button, &QDoubleSpinBox::valueChanged, blk_internals_button, [blk_internals_button, app]() {
+    QObject::connect(blk_internals_button, &QSpinBox::valueChanged, blk_internals_button, [blk_internals_button, app]() {
         toggle_blk_internal_cbk(blk_internals_button, app);
     });
 #else // VPR_QT
@@ -263,7 +263,7 @@ void routing_button_setup(ezgl::application* app) {
     //Toggle Routing BB
     GtkSpinButton* toggle_routing_bbox = GTK_SPIN_BUTTON(app->get_object("ToggleRoutingBBox"));
 #ifdef VPR_QT
-    QObject::connect(toggle_routing_bbox, &QDoubleSpinBox::valueChanged, toggle_routing_bbox, [toggle_routing_bbox, app]() {
+    QObject::connect(toggle_routing_bbox, &QSpinBox::valueChanged, toggle_routing_bbox, [toggle_routing_bbox, app]() {
         toggle_routing_bbox_cbk(toggle_routing_bbox, app);
     });
 #else // VPR_QT
@@ -332,7 +332,7 @@ void view_button_setup(ezgl::application* app) {
             QObject::connect(GTK_BUTTON(checkbox), &QAbstractButton::toggled, GTK_BUTTON(checkbox), [checkbox]() {
                 select_layer_cbk(checkbox, /*response_id=*/0, /*data=*/nullptr);
             });
-            QObject::connect(GTK_SPIN_BUTTON(spin_button), &QDoubleSpinBox::valueChanged, GTK_SPIN_BUTTON(spin_button), [spin_button]() {
+            QObject::connect(GTK_SPIN_BUTTON(spin_button), &QSpinBox::valueChanged, GTK_SPIN_BUTTON(spin_button), [spin_button]() {
                 transparency_cbk(spin_button, /*response_id=*/0, /*data=*/nullptr);
             });
 #else // VPR_QT
@@ -358,7 +358,7 @@ void view_button_setup(ezgl::application* app) {
         QObject::connect(GTK_BUTTON(checkbox), &QAbstractButton::toggled, GTK_BUTTON(checkbox), [checkbox]() {
             cross_layer_checkbox_cbk(checkbox, /*response_id=*/0, /*data=*/nullptr);
         });
-        QObject::connect(GTK_SPIN_BUTTON(spin_button), &QDoubleSpinBox::valueChanged, GTK_SPIN_BUTTON(spin_button), [spin_button]() {
+        QObject::connect(GTK_SPIN_BUTTON(spin_button), &QSpinBox::valueChanged, GTK_SPIN_BUTTON(spin_button), [spin_button]() {
             cross_layer_transparency_cbk(spin_button, /*response_id=*/0, /*data=*/nullptr);
         });
 #else // VPR_QT

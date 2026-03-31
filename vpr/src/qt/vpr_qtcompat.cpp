@@ -139,7 +139,7 @@ void gtk_window_close(QWidget* w)
   w->close();
 }
 
-int gtk_spin_button_get_value(QDoubleSpinBox* spinBox)
+int gtk_spin_button_get_value(QSpinBox* spinBox)
 {
   return static_cast<int>(spinBox->value());
 }
@@ -284,7 +284,7 @@ int gtk_dialog_run(QDialog* dialog)
   return dialog->exec();
 }
 
-int gtk_spin_button_get_value_as_int(QDoubleSpinBox* spinBox)
+int gtk_spin_button_get_value_as_int(QSpinBox* spinBox)
 {
   return static_cast<int>(spinBox->value());
 }
@@ -381,10 +381,9 @@ void gtk_widget_hide(QWidget* widget)
   widget->hide();
 }
 
-QDoubleSpinBox* gtk_spin_button_new_with_range(int min, int max, int step)
+QSpinBox* gtk_spin_button_new_with_range(int min, int max, int step)
 {
-  QDoubleSpinBox* spin_box = new QDoubleSpinBox();
-  spin_box->setDecimals(0);
+  QSpinBox* spin_box = new QSpinBox();
   spin_box->setRange(min, max);
   spin_box->setSingleStep(step);
   return spin_box;
@@ -395,7 +394,7 @@ QWidget* gtk_widget_get_parent_window(QWidget* w)
   return qobject_cast<QWidget*>(w->parent());
 }
 
-void gtk_spin_button_set_increments(QDoubleSpinBox* spin_box, int step, int page)
+void gtk_spin_button_set_increments(QSpinBox* spin_box, int step, int page)
 {
   if (!spin_box) {
     return;
@@ -404,7 +403,7 @@ void gtk_spin_button_set_increments(QDoubleSpinBox* spin_box, int step, int page
   spin_box->setSingleStep(step);
 }
 
-void gtk_spin_button_set_range(QDoubleSpinBox* spin_box, double min, double max)
+void gtk_spin_button_set_range(QSpinBox* spin_box, double min, double max)
 {
   if (!spin_box) {
     return;
@@ -413,7 +412,7 @@ void gtk_spin_button_set_range(QDoubleSpinBox* spin_box, double min, double max)
   spin_box->setRange(min, max);
 }
 
-void gtk_spin_button_set_value(QDoubleSpinBox* spin_box, double value)
+void gtk_spin_button_set_value(QSpinBox* spin_box, double value)
 {
   if (!spin_box) {
     return;
