@@ -34,7 +34,10 @@ static void setup_checkbox_button(std::string button_id, ezgl::application* app,
     GtkToggleButton* checkbox_button = GTK_TOGGLE_BUTTON(app->get_object(button_id.c_str()));
     draw_state->checkbox_data.emplace_back(app, toggle_state);
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    t_checkbox_data* data = &draw_state->checkbox_data.back();
+    QObject::connect(checkbox_button, &QAbstractButton::toggled, checkbox_button, [checkbox_button, data]() {
+        toggle_checkbox_cbk(checkbox_button, data);
+    });
 #else // VPR_QT
     g_signal_connect(checkbox_button, "toggled", G_CALLBACK(toggle_checkbox_cbk), &draw_state->checkbox_data.back());
 #endif // VPR_QT
