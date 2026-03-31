@@ -24,6 +24,8 @@
 
 #ifdef VPR_QT
 #include "vpr_qtcompat.h"
+#include <QStringList>
+#include <QCompleter>
 #endif // VPR_QT
 
 /**
@@ -411,7 +413,7 @@ void crit_path_button_setup(ezgl::application* app) {
     // Toggle Critical Path
     GtkSwitch* toggle_nets_switch = GTK_SWITCH(app->get_object("ToggleCritPath"));
 #ifdef VPR_QT
-    QObject::connect(GTK_SWITCH(app->get_object("ToggleCritPath")), &QAbstractButton::toggled, toggle_nets_switch, [toggle_nets_switch, app](bool checked) {
+    QObject::connect(toggle_nets_switch, &QAbstractButton::toggled, toggle_nets_switch, [toggle_nets_switch, app](bool checked) {
         toggle_crit_path_cbk(toggle_nets_switch, checked, app);
     });
 #else // VPR_QT
