@@ -222,7 +222,9 @@ void routing_button_setup(ezgl::application* app) {
     //Toggle RR
     GtkSwitch* toggle_nets_switch = GTK_SWITCH(app->get_object("ToggleRR"));
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QObject::connect(toggle_nets_switch, &QAbstractButton::toggled, toggle_nets_switch, [toggle_nets_switch, app](bool checked) {
+        toggle_rr_cbk(toggle_nets_switch, checked, app);
+    });
 #else // VPR_QT
     g_signal_connect(toggle_nets_switch, "state-set", G_CALLBACK(toggle_rr_cbk), app);
 #endif // VPR_QT
@@ -240,7 +242,9 @@ void routing_button_setup(ezgl::application* app) {
     //Toggle Congestion
     GtkComboBoxText* toggle_congestion = GTK_COMBO_BOX_TEXT(app->get_object("ToggleCongestion"));
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QObject::connect(toggle_congestion, &QComboBox::currentIndexChanged, toggle_congestion, [toggle_congestion, app]() {
+        toggle_cong_cbk(toggle_congestion, app);
+    });
 #else // VPR_QT
     g_signal_connect(toggle_congestion, "changed", G_CALLBACK(toggle_cong_cbk), app);
 #endif // VPR_QT
@@ -248,7 +252,9 @@ void routing_button_setup(ezgl::application* app) {
     //Toggle Congestion Cost
     GtkComboBoxText* toggle_cong_cost = GTK_COMBO_BOX_TEXT(app->get_object("ToggleCongestionCost"));
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QObject::connect(toggle_cong_cost, &QComboBox::currentIndexChanged, toggle_cong_cost, [toggle_cong_cost, app]() {
+        toggle_cong_cost_cbk(toggle_cong_cost, app);
+    });
 #else // VPR_QT
     g_signal_connect(toggle_cong_cost, "changed", G_CALLBACK(toggle_cong_cost_cbk), app);
 #endif // VPR_QT
@@ -256,7 +262,9 @@ void routing_button_setup(ezgl::application* app) {
     //Toggle Routing BB
     GtkSpinButton* toggle_routing_bbox = GTK_SPIN_BUTTON(app->get_object("ToggleRoutingBBox"));
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QObject::connect(toggle_routing_bbox, &QSpinBox::valueChanged, toggle_routing_bbox, [toggle_routing_bbox, app]() {
+        toggle_routing_bbox_cbk(toggle_routing_bbox, app);
+    });
 #else // VPR_QT
     g_signal_connect(toggle_routing_bbox, "value-changed", G_CALLBACK(toggle_routing_bbox_cbk), app);
 #endif // VPR_QT
@@ -267,7 +275,9 @@ void routing_button_setup(ezgl::application* app) {
     //Toggle Routing Expansion Costs
     GtkComboBoxText* toggle_expansion_cost = GTK_COMBO_BOX_TEXT(app->get_object("ToggleRoutingExpansionCost"));
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QObject::connect(toggle_expansion_cost, &QComboBox::currentIndexChanged, toggle_expansion_cost, [toggle_expansion_cost, app]() {
+        toggle_expansion_cost_cbk(toggle_expansion_cost, app);
+    });
 #else // VPR_QT
     g_signal_connect(toggle_expansion_cost, "changed", G_CALLBACK(toggle_expansion_cost_cbk), app);
 #endif // VPR_QT
@@ -275,7 +285,9 @@ void routing_button_setup(ezgl::application* app) {
     //Toggle Router Util
     GtkComboBoxText* toggle_router_util = GTK_COMBO_BOX_TEXT(app->get_object("ToggleRoutingUtil"));
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QObject::connect(toggle_router_util, &QComboBox::currentIndexChanged, toggle_router_util, [toggle_router_util, app]() {
+        toggle_router_util_cbk(toggle_router_util, app);
+    });
 #else // VPR_QT
     g_signal_connect(toggle_router_util, "changed", G_CALLBACK(toggle_router_util_cbk), app);
 #endif // VPR_QT
