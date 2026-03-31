@@ -379,8 +379,20 @@ void search_setup(ezgl::application* app) {
     load_block_names(app);
     load_net_names(app);
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
-#else 
+#ifdef QT_MIGRATION_REDUNDANT
+    // setCaseSensitivity/setFilterMode are already applied when QCompleter objects are
+    // created in load_block_names/load_net_names, but set explicitly here to maintain
+    // structural parity with the GTK path where gtk_entry_completion_set_match_func
+    // is called at this point.
+    QLineEdit* textInput = qobject_cast<QLineEdit*>(app->get_object("TextInput"));
+    if (textInput) {
+        for (QCompleter* completer : textInput->findChildren<QCompleter*>()) {
+            completer->setCaseSensitivity(Qt::CaseInsensitive);
+            completer->setFilterMode(Qt::MatchContains);
+        }
+    }
+#endif // QT_MIGRATION_REDUNDANT
+#else
     //Setting custom matching function for entry completion (searches whole string instead of start)
     GtkEntryCompletion* wildcardComp = GTK_ENTRY_COMPLETION(app->get_object("Completion"));
     gtk_entry_completion_set_match_func(wildcardComp, (GtkEntryCompletionMatchFunc)customMatchingFunction, NULL, NULL);

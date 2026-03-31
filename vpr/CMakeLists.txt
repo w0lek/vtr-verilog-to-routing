@@ -194,6 +194,7 @@ if(VPR_QT)
         libvpr
         PUBLIC
         VPR_QT
+        QT_MIGRATION_REDUNDANT
     )
 endif()
 
