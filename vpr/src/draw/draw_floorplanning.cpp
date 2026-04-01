@@ -9,6 +9,11 @@
 #include "draw.h"
 #include "draw_global.h"
 
+#ifdef VPR_QT
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
+#endif
+
 //To process key presses we need the X11 keysym definitions,
 //which are unavailable when building with MINGW
 #if defined(X11) && !defined(__MINGW32__)
@@ -238,7 +243,35 @@ enum {
 //Highlights partition clicked on in the legend.
 void highlight_selected_partition(GtkWidget* widget) {
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QTreeWidget* tree = qobject_cast<QTreeWidget*>(widget);
+    if (!tree) return;
+
+    QList<QTreeWidgetItem*> selected = tree->selectedItems();
+    if (selected.isEmpty()) return;
+
+    const QString row_value = selected.first()->text(0);
+    const int name_end = row_value.indexOf('(');
+    if (name_end < 0) return;
+    const std::string partition_name = row_value.left(name_end - 1).toStdString();
+
+    const FloorplanningContext& floorplanning_ctx = g_vpr_ctx.floorplanning();
+    const auto& constraints = floorplanning_ctx.constraints;
+    const int num_partitions = constraints.get_num_partitions();
+
+    ezgl::renderer* g = application.get_renderer();
+    for (int partitionID = 0; partitionID < num_partitions; partitionID++) {
+        if (constraints.get_partition((PartitionId)partitionID).get_name() == partition_name) {
+            if (highlight_alpha.empty()) return;
+            highlight_alpha[partitionID] = (highlight_alpha[partitionID] == CLICKED_HIGHLIGHT_ALPHA)
+                                               ? DEFAULT_HIGHLIGHT_ALPHA
+                                               : CLICKED_HIGHLIGHT_ALPHA;
+            highlight_partition(g, partitionID, highlight_alpha[partitionID]);
+            break;
+        }
+    }
+
+    tree->clearSelection();
+    application.refresh_drawing();
 #else // VPR_QT
     const FloorplanningContext& floorplanning_ctx = g_vpr_ctx.floorplanning();
     auto constraints = floorplanning_ctx.constraints;
@@ -323,7 +356,32 @@ static GtkTreeModel* create_and_fill_model() {
 
 GtkWidget* setup_floorplanning_legend(GtkWidget* content_tree) {
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QTreeWidget* tree = qobject_cast<QTreeWidget*>(content_tree);
+    if (!tree) return content_tree;
+
+    tree->setColumnCount(1);
+    tree->setHeaderLabel("Partition");
+
+    const AtomContext& atom_ctx = g_vpr_ctx.atom();
+    const FloorplanningContext& floorplanning_ctx = g_vpr_ctx.floorplanning();
+    const auto& constraints = floorplanning_ctx.constraints;
+    const int num_partitions = constraints.get_num_partitions();
+
+    for (int partitionID = 0; partitionID < num_partitions; partitionID++) {
+        const auto& partition = constraints.get_partition((PartitionId)partitionID);
+        const auto& atoms = constraints.get_part_atoms((PartitionId)partitionID);
+
+        const QString label = QString::fromStdString(partition.get_name())
+                              + " (" + QString::number(atoms.size()) + " primitives)";
+        QTreeWidgetItem* parent = new QTreeWidgetItem(tree, QStringList(label));
+
+        for (AtomBlockId atom : atoms) {
+            const std::string atom_name = (atom_ctx.lookup().atom_pb_bimap().atom_pb(atom))->name;
+            new QTreeWidgetItem(parent, QStringList(QString::fromStdString(atom_name)));
+        }
+    }
+
+    return content_tree;
 #else // VPR_QT
     GtkCellRenderer* renderer;
 

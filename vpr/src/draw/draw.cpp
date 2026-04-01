@@ -62,6 +62,9 @@
 #ifdef VPR_QT
 #include "vpr_qtcompat.h"
 #include <QLineEdit>
+#include <QTreeWidget>
+#include <QVBoxLayout>
+#include <QDialogButtonBox>
 #endif
 
 //To process key presses we need the X11 keysym definitions,
@@ -1353,7 +1356,38 @@ static void on_dialog_response(GtkDialog* dialog, gint response_id, gpointer /* 
 // Callback function for Draw Partitions checkbox
 static void set_draw_partitions(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/) {
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    t_draw_state* draw_state = get_draw_state_vars();
+
+    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget))) {
+        QWidget* window = application.get_widget(application.get_main_window_id().c_str());
+
+        QDialog* dialog = new QDialog(window);
+        dialog->setWindowTitle("Floorplanning Legend");
+        dialog->setAttribute(Qt::WA_DeleteOnClose);
+        dialog->resize(400, 500);
+
+        QVBoxLayout* layout = new QVBoxLayout(dialog);
+
+        QTreeWidget* tree = new QTreeWidget(dialog);
+        setup_floorplanning_legend(tree);
+        layout->addWidget(tree);
+
+        QDialogButtonBox* buttons = new QDialogButtonBox(QDialogButtonBox::Close, dialog);
+        QObject::connect(buttons, &QDialogButtonBox::rejected, dialog, &QDialog::close);
+        layout->addWidget(buttons);
+
+        QObject::connect(tree, &QTreeWidget::itemSelectionChanged, tree, [tree]() {
+            highlight_selected_partition(tree);
+        });
+
+        dialog->show();
+        draw_state->draw_partitions = true;
+    } else {
+        draw_state->draw_partitions = false;
+    }
+
+    application.update_message(draw_state->default_message);
+    application.refresh_drawing();
 #else // VPR_QT
     t_draw_state* draw_state = get_draw_state_vars();
 
