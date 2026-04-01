@@ -29,11 +29,7 @@ void highlight_nets(std::string net_name);
 
 void highlight_atom_block(AtomBlockId block_id);
 
-#ifdef VPR_QT
-gboolean customMatchingFunction(
-    QCompleter* completer,
-    const gchar* key);
-#else // VPR_QT
+#ifndef VPR_QT
 gboolean customMatchingFunction(
     GtkEntryCompletion* completer,
     const gchar* key,

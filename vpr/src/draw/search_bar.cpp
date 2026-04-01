@@ -484,20 +484,13 @@ void search_type_changed(GtkComboBox* self, ezgl::application* app) {
  * @return true | if the string pointed to by iter contains key (case-insensitive)
  * @return false | if the string pointed to does not contain key
  */
-#ifdef VPR_QT
-gboolean customMatchingFunction(
-    QCompleter* completer,
-    const gchar* key
-) {
-    ASSERT_QT_MIGRATION_TODO;
-    return false;
-}
-#else
+
+#ifndef VPR_QT
 gboolean customMatchingFunction(
     GtkEntryCompletion* completer,
     const gchar* key,
     GtkTreeIter* iter,
-    gpointer /*user data*/
+    gpointer /*user_data*/
 ) {
     GtkTreeModel* model = gtk_entry_completion_get_model(completer);
     const gchar* text;
