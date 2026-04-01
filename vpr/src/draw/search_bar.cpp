@@ -37,6 +37,7 @@
 
 #ifdef VPR_QT
 #include "vpr_qtcompat.h"
+#include <QMessageBox>
 #endif // VPR_QT
 
 //To process key presses we need the X11 keysym definitions,
@@ -383,7 +384,14 @@ void highlight_nets(ClusterNetId net_id) {
 
 void warning_dialog_box(const char* message) {
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QWidget* main_window = application.get_widget(application.get_main_window_id().c_str());
+    QMessageBox* box = new QMessageBox(QMessageBox::Warning,
+                                       "Error",
+                                       message,
+                                       QMessageBox::NoButton,
+                                       main_window);
+    box->setAttribute(Qt::WA_DeleteOnClose);
+    box->show();
 #else // VPR_QT
     GObject* main_window;    // parent window over which to add the dialog
     GtkWidget* content_area; // content area of the dialog
@@ -424,7 +432,20 @@ void warning_dialog_box(const char* message) {
  */
 void search_type_changed(GtkComboBox* self, ezgl::application* app) {
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    if (!self) return;
+    const QString searchType = self->currentText();
+    if (searchType.isEmpty()) return;
+
+    QLineEdit* searchBar = qobject_cast<QLineEdit*>(app->get_object("TextInput"));
+    if (!searchBar) return;
+
+    if (searchType == "Block Name") {
+        searchBar->setCompleter(searchBar->findChild<QCompleter*>("BlockNames"));
+    } else if (searchType == "Net Name") {
+        searchBar->setCompleter(searchBar->findChild<QCompleter*>("NetNames"));
+    } else {
+        searchBar->setCompleter(nullptr);
+    }
 #else // VPR_QT
     auto type = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(self));
     GtkEntry* searchBar = GTK_ENTRY(app->get_object("TextInput"));
@@ -551,7 +572,31 @@ GdkEvent simulate_keypress(char key, GdkWindow* window) {
  */
 void enable_autocomplete(ezgl::application* app) {
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QLineEdit* searchBar = qobject_cast<QLineEdit*>(app->get_object("TextInput"));
+    if (!searchBar) return;
+
+    const std::string searchType = get_search_type(app);
+    if (searchType.empty()) return;
+
+    // Resolve the completer for the active search type. Completers are stored
+    // as named children of the QLineEdit (set up in ui_setup.cpp).
+    QCompleter* completer = nullptr;
+    if (searchType == "Block Name") {
+        completer = searchBar->findChild<QCompleter*>("BlockNames");
+    } else if (searchType == "Net Name") {
+        completer = searchBar->findChild<QCompleter*>("NetNames");
+    }
+
+    if (!completer) return;
+
+    searchBar->setCompleter(completer);
+
+    auto draw_state = get_draw_state_vars();
+    draw_state->justEnabled = true;
+
+    // Directly trigger the popup — replaces the GTK hack of stripping and
+    // re-typing the last character to force GtkEntryCompletion to show.
+    completer->complete();
 #else // VPR_QT
     GtkEntryCompletion* completion = GTK_ENTRY_COMPLETION(app->get_object("Completion"));
     GtkEntry* searchBar = GTK_ENTRY(app->get_object("TextInput"));
