@@ -84,6 +84,7 @@ QWidget* gtk_window_new(int);
 
 #define GTK_SPIN_BUTTON(w) qobject_cast<QSpinBox*>(w)
 #define GTK_BUTTON(w) qobject_cast<QAbstractButton*>(w)
+#define Q_BUTTON(w) qobject_cast<QAbstractButton*>(w)
 #define GTK_TOGGLE_BUTTON(w) qobject_cast<QCheckBox*>(w)
 #define GTK_COMBO_BOX_TEXT(w) qobject_cast<QComboBox*>(reinterpret_cast<QObject*>(w))
 #define GTK_IS_CHECK_BUTTON(w) (qobject_cast<QCheckBox*>(w) != nullptr)

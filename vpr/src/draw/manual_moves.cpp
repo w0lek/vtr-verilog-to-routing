@@ -88,7 +88,10 @@ void draw_manual_moves_window(const std::string& block_id) {
 
         //connect signals
 #ifdef VPR_QT
-        ASSERT_QT_MIGRATION_TODO;
+        QObject::connect(Q_BUTTON(calculate_cost_button), &QAbstractButton::clicked,
+                         [grid]() { calculate_cost_callback(nullptr, grid); });
+        QObject::connect(draw_state->manual_moves_state.manual_move_window, &QObject::destroyed,
+                         []() { close_manual_moves_window(); });
 #else
         g_signal_connect(calculate_cost_button, "clicked", G_CALLBACK(calculate_cost_callback), grid);
         g_signal_connect(G_OBJECT(draw_state->manual_moves_state.manual_move_window), "destroy", G_CALLBACK(close_manual_moves_window), NULL);
