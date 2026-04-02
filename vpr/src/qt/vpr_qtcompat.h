@@ -88,6 +88,8 @@ QWidget* gtk_window_new(int);
 #define GTK_COMBO_BOX_TEXT(w) qobject_cast<QComboBox*>(reinterpret_cast<QObject*>(w))
 #define GTK_IS_CHECK_BUTTON(w) (qobject_cast<QCheckBox*>(w) != nullptr)
 #define GTK_DIALOG(w) qobject_cast<QDialog*>(w)
+#define Q_DIALOG(w) qobject_cast<QDialog*>(w)
+#define Q_WIDGET(w) qobject_cast<QWidget*>(w)
 #define GTK_ENTRY(w) qobject_cast<QLineEdit*>(w)
 #define GTK_GRID(w) qobject_cast<QWidget*>(w)
 #define GTK_CONTAINER(w) (w)

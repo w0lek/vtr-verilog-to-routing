@@ -8,11 +8,18 @@
 
 extern ezgl::rectangle initial_world;
 
-void save_graphics_from_button(GtkWidget* /*widget*/, gint response_id, gpointer data) {
-    auto dialog = static_cast<GtkWidget*>(data);
+void save_graphics_from_button(GtkWidget* /*widget*/, [[maybe_unused]] gint response_id, gpointer data) {
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    QDialog* dialog = Q_DIALOG(static_cast<QObject*>(data));
+    QLineEdit* text_entry = dialog->findChild<QLineEdit*>("file_name_text_entry");
+    QComboBox* combo_box = dialog->findChild<QComboBox*>("file_name_combo_box");
+    if (text_entry && combo_box) {
+        std::string file_name = text_entry->text().toStdString();
+        std::string extension = combo_box->currentText().toStdString();
+        save_graphics(extension, file_name);
+    }
 #else // VPR_QT
+    auto dialog = static_cast<GtkWidget*>(data);
     if (response_id == GTK_RESPONSE_ACCEPT) {
         //user clicked on the save button
 
@@ -93,7 +100,9 @@ void save_graphics_dialog_box(GtkWidget* /*widget*/, ezgl::application* /*app*/)
     // get a pointer to the main window
     main_window = application.get_object(application.get_main_window_id().c_str());
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    dialog = new QDialog(Q_WIDGET(main_window));
+    dialog->setWindowTitle("Save Graphics Contents");
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
 #else // VPR_QT
     // create a dialog window modal
     dialog = gtk_dialog_new_with_buttons("Save Graphics Contents",
@@ -135,7 +144,14 @@ void save_graphics_dialog_box(GtkWidget* /*widget*/, ezgl::application* /*app*/)
     gtk_widget_show_all(dialog);
 
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    auto* buttonBox = new QDialogButtonBox(
+        QDialogButtonBox::Save | QDialogButtonBox::Cancel, dialog);
+    gtk_container_add(dialog, buttonBox);
+    QObject::connect(buttonBox, &QDialogButtonBox::accepted, dialog, [dialog]() {
+        save_graphics_from_button(dialog, 0, dialog);
+        Q_DIALOG(dialog)->accept();
+    });
+    QObject::connect(buttonBox, &QDialogButtonBox::rejected, Q_DIALOG(dialog), &QDialog::reject);
 #else
     g_signal_connect_swapped(GTK_DIALOG(dialog),
                              "response",
