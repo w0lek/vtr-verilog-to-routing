@@ -735,9 +735,6 @@ void delete_bp_callback(GtkWidget* widget) {
 
 //sets a new move type breakpoint
 void set_moves_button_callback(GtkWidget* /*widget*/, GtkWidget* grid) {
-#ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
-#else // VPR_QT
     t_draw_state* draw_state = get_draw_state_vars();
     GtkWidget* entry = gtk_grid_get_child_at(GTK_GRID(grid), 1, 1);
 
@@ -749,14 +746,10 @@ void set_moves_button_callback(GtkWidget* /*widget*/, GtkWidget* grid) {
         add_to_bpList(bpDescription);
     } else
         invalid_breakpoint_entry_window("Invalid Move Number");
-#endif // VPR_QT
 }
 
 //sets a new temperature type breakpoint
 void set_temp_button_callback(GtkWidget* /*widget*/, GtkWidget* grid) {
-#ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
-#else // VPR_QT
     t_draw_state* draw_state = get_draw_state_vars();
     GtkWidget* entry = gtk_grid_get_child_at((GtkGrid*)grid, 1, 2);
 
@@ -768,14 +761,10 @@ void set_temp_button_callback(GtkWidget* /*widget*/, GtkWidget* grid) {
         add_to_bpList(bpDescription);
     } else
         invalid_breakpoint_entry_window("Invalid temperature");
-#endif // VPR_QT
 }
 
 //sets a new block type breakpoint
 void set_block_button_callback(GtkWidget* /*widget*/, GtkWidget* grid) {
-#ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
-#else // VPR_QT
     t_draw_state* draw_state = get_draw_state_vars();
     GtkWidget* entry = gtk_grid_get_child_at((GtkGrid*)grid, 1, 3);
 
@@ -783,14 +772,10 @@ void set_block_button_callback(GtkWidget* /*widget*/, GtkWidget* grid) {
     std::string s(gtk_entry_get_text((GtkEntry*)entry));
     std::string bpDescription = "Breakpoint from_block == " + s;
     add_to_bpList(bpDescription);
-#endif // VPR_QT
 }
 
 //sets a new router_iter type breakpoint
 void set_router_iter_button_callback(GtkWidget* /*widget*/, GtkWidget* grid) {
-#ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
-#else // VPR_QT
     t_draw_state* draw_state = get_draw_state_vars();
     GtkWidget* entry = gtk_grid_get_child_at(GTK_GRID(grid), 1, 5);
 
@@ -802,14 +787,10 @@ void set_router_iter_button_callback(GtkWidget* /*widget*/, GtkWidget* grid) {
         add_to_bpList(bpDescription);
     } else
         invalid_breakpoint_entry_window("Invalid Router Iteration");
-#endif // VPR_QT
 }
 
 //sets a new net_id type breakpoint
 void set_net_id_button_callback(GtkWidget* /*widget*/, GtkWidget* grid) {
-#ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
-#else // VPR_QT
     t_draw_state* draw_state = get_draw_state_vars();
     GtkWidget* entry = gtk_grid_get_child_at((GtkGrid*)grid, 1, 6);
 
@@ -817,7 +798,6 @@ void set_net_id_button_callback(GtkWidget* /*widget*/, GtkWidget* grid) {
     std::string s(gtk_entry_get_text((GtkEntry*)entry));
     std::string bpDescription = "Breakpoint route_net_id == " + s;
     add_to_bpList(bpDescription);
-#endif // VPR_QT
 }
 
 //sets a new expression type breakpoint
