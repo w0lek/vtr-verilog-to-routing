@@ -5,6 +5,7 @@
 #include "vtr_expr_eval.h"
 
 #ifdef VPR_QT
+#include <QGroupBox>
 #include <QScrollArea>
 #endif
 
@@ -360,7 +361,79 @@ void draw_debug_window() {
 //window for setting advanced breakpoints
 void advanced_button_callback() {
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    if (!draw_debug_glob_vars.openWindows.advanced_window) {
+        draw_debug_glob_vars.openWindows.advanced_window = true;
+
+        GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+        gtk_window_set_position(window, GTK_WIN_POS_CENTER);
+        gtk_window_set_title(window, "Advanced Debugger Options");
+
+        GtkWidget* set = gtk_button_new_with_label("set");
+        GtkWidget* entry = gtk_entry_new();
+        entry->setMinimumWidth(entry->fontMetrics().horizontalAdvance(QString(40, 'x')));
+        GtkWidget* instructions = gtk_label_new("You can use % == > < <= >= && || operators with temp_count, move_num, and from_block to set your desired breakpoint. To see the full list of variables refer to the variables tab on the left\nex. move_num == 4 || from_block == 83");
+        auto* instrLabel = qobject_cast<QLabel*>(instructions);
+        instrLabel->setAlignment(Qt::AlignCenter);
+        instrLabel->setWordWrap(true);
+        instrLabel->setMaximumWidth(instrLabel->fontMetrics().horizontalAdvance(QString(40, 'x')));
+        GtkWidget* expression_here = gtk_label_new("Write expression below:");
+
+        // GtkExpander equivalent: QGroupBox
+        auto* expander = new QGroupBox("Variables");
+        GtkWidget* varGrid = gtk_grid_new();
+        GtkWidget* pLabel  = gtk_label_new(nullptr);
+        gtk_label_set_markup((GtkLabel*)pLabel, "<b>Placer Variables:</b>");
+        GtkWidget* mLabel  = gtk_label_new("move_num");
+        GtkWidget* tLabel  = gtk_label_new("temp_count");
+        GtkWidget* bLabel  = gtk_label_new("from_block");
+        GtkWidget* iLabel  = gtk_label_new("in_blocks_affected");
+        GtkWidget* roLabel = gtk_label_new(nullptr);
+        gtk_label_set_markup((GtkLabel*)roLabel, "<b>Router Variables:</b>");
+        GtkWidget* rLabel  = gtk_label_new("router_iter");
+        GtkWidget* nLabel  = gtk_label_new("route_net_id");
+        gtk_widget_set_halign(mLabel,  GTK_ALIGN_START);
+        gtk_widget_set_halign(tLabel,  GTK_ALIGN_START);
+        gtk_widget_set_halign(bLabel,  GTK_ALIGN_START);
+        gtk_widget_set_halign(iLabel,  GTK_ALIGN_START);
+        gtk_widget_set_halign(rLabel,  GTK_ALIGN_START);
+        gtk_widget_set_halign(nLabel,  GTK_ALIGN_START);
+        gtk_grid_attach((GtkGrid*)varGrid, pLabel,  0, 0, 1, 1);
+        gtk_grid_attach((GtkGrid*)varGrid, mLabel,  0, 1, 1, 1);
+        gtk_grid_attach((GtkGrid*)varGrid, tLabel,  0, 2, 1, 1);
+        gtk_grid_attach((GtkGrid*)varGrid, bLabel,  0, 3, 1, 1);
+        gtk_grid_attach((GtkGrid*)varGrid, iLabel,  0, 4, 1, 1);
+        gtk_grid_attach((GtkGrid*)varGrid, roLabel, 0, 5, 1, 1);
+        gtk_grid_attach((GtkGrid*)varGrid, rLabel,  0, 6, 1, 1);
+        gtk_grid_attach((GtkGrid*)varGrid, nLabel,  0, 7, 1, 1);
+        gtk_container_add(expander, varGrid);
+        gtk_widget_set_halign(expander, GTK_ALIGN_START);
+
+        gtk_widget_set_margin_start(instructions, 30);
+        gtk_widget_set_margin_end(instructions, 30);
+        gtk_widget_set_margin_top(instructions, 30);
+        gtk_widget_set_margin_bottom(instructions, 30);
+        gtk_widget_set_margin_bottom(expression_here, 5);
+        gtk_widget_set_margin_start(entry, 30);
+        gtk_widget_set_margin_end(set, 30);
+        gtk_widget_set_margin_start(set, 40);
+        gtk_widget_set_margin_start(expander, 10);
+        gtk_widget_set_margin_top(expander, 20);
+
+        GtkWidget* advancedGrid = gtk_grid_new();
+        gtk_grid_attach((GtkGrid*)advancedGrid, instructions,    1, 0, 2, 1);
+        gtk_grid_attach((GtkGrid*)advancedGrid, expression_here, 1, 1, 1, 1);
+        gtk_grid_attach((GtkGrid*)advancedGrid, entry,           1, 2, 1, 1);
+        gtk_grid_attach((GtkGrid*)advancedGrid, set,             2, 2, 1, 1);
+        gtk_grid_attach((GtkGrid*)advancedGrid, expander,        0, 0, 1, 1);
+
+        QObject::connect(Q_BUTTON(set), &QAbstractButton::clicked,
+                         [advancedGrid]() { set_expression_button_callback(nullptr, advancedGrid); });
+        QObject::connect(window, &QObject::destroyed,
+                         []() { close_advanced_window(); });
+
+        gtk_container_add(GTK_CONTAINER(window), advancedGrid);
+        gtk_widget_show_all(window);
+    }
 #else // VPR_QT
     if (!draw_debug_glob_vars.openWindows.advanced_window) {
         draw_debug_glob_vars.openWindows.advanced_window = true;
