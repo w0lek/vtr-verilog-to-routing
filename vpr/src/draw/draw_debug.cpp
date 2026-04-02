@@ -625,8 +625,32 @@ void refresh_bpList() {
 //adds new breakpoint to the breakpoint list in the ui
 void add_to_bpList(std::string bpDescription) {
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
-#else // VPR_QT 
+    draw_debug_glob_vars.bp_labels.push_back(bpDescription);
+    int row = ++draw_debug_glob_vars.bpList_row;
+
+    GtkWidget* label = gtk_label_new(bpDescription.c_str());
+    gtk_grid_attach((GtkGrid*)draw_debug_glob_vars.bpGrid, label, 0, row, 1, 1);
+    gtk_widget_set_halign(label, GTK_ALIGN_START);
+
+    auto* checkbox = new QCheckBox();
+    std::string c = "c" + std::to_string(row);
+    gtk_widget_set_name(checkbox, c.c_str());
+    checkbox->setChecked(true);
+    QObject::connect(checkbox, &QCheckBox::toggled,
+                     [checkbox]() { checkbox_callback(checkbox); });
+    gtk_grid_attach((GtkGrid*)draw_debug_glob_vars.bpGrid, checkbox, 1, row, 1, 1);
+    gtk_widget_set_margin_start(checkbox, 290 - bpDescription.size());
+
+    auto* deleteButton = new QPushButton(QIcon("src/draw/trash.png"), "");
+    std::string d = "d" + std::to_string(row);
+    gtk_widget_set_name(deleteButton, d.c_str());
+    QObject::connect(deleteButton, &QPushButton::clicked,
+                     [deleteButton]() { delete_bp_callback(deleteButton); });
+    gtk_grid_attach((GtkGrid*)draw_debug_glob_vars.bpGrid, deleteButton, 2, row, 1, 1);
+    gtk_widget_set_margin_start(deleteButton, 10);
+
+    gtk_widget_show_all(draw_debug_glob_vars.bpGrid);
+#else // VPR_QT
     //create description label
     draw_debug_glob_vars.bp_labels.push_back(bpDescription);
     GtkWidget* label = gtk_label_new(bpDescription.c_str());
