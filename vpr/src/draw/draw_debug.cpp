@@ -874,7 +874,97 @@ void invalid_breakpoint_entry_window(std::string error) {
 //shows which breakpoint the program has stopped at and gives an info summary
 void breakpoint_info_window(std::string bpDescription, BreakpointState draw_breakpoint_state, bool in_placer) {
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_position(window, GTK_WIN_POS_CENTER);
+    gtk_window_set_title(window, "Breakpoint");
+
+    GtkWidget* grid = gtk_grid_new();
+
+    GtkWidget* label = gtk_label_new(bpDescription.c_str());
+    gtk_widget_set_margin_start(label, 30);
+    gtk_widget_set_margin_end(label, 30);
+    gtk_widget_set_margin_top(label, 30);
+    gtk_widget_set_margin_bottom(label, 30);
+    gtk_grid_attach((GtkGrid*)grid, label, 0, 0, 1, 1);
+
+    GtkWidget* curr_info = gtk_label_new(nullptr);
+    gtk_label_set_markup((GtkLabel*)curr_info, "<b>Current Information</b>");
+    gtk_widget_set_margin_start(curr_info, 30);
+    gtk_widget_set_margin_end(curr_info, 30);
+    gtk_widget_set_margin_bottom(curr_info, 15);
+    gtk_grid_attach((GtkGrid*)grid, curr_info, 0, 1, 1, 1);
+
+    GtkWidget* info_grid = gtk_grid_new();
+    gtk_widget_set_margin_start(info_grid, 30);
+    gtk_widget_set_margin_end(info_grid, 30);
+    gtk_widget_set_margin_bottom(info_grid, 20);
+
+    auto make_image = [](const char* path) -> GtkWidget* {
+        auto* lbl = new QLabel();
+        lbl->setPixmap(QPixmap(path));
+        return lbl;
+    };
+    GtkWidget* m = make_image("src/draw/m.png");
+    GtkWidget* t = make_image("src/draw/t.png");
+    GtkWidget* r = make_image("src/draw/r.png");
+    GtkWidget* n = make_image("src/draw/n.png");
+    gtk_widget_set_margin_start(n, 18);
+    GtkWidget* i = make_image("src/draw/i.png");
+    gtk_widget_set_margin_start(i, 16);
+    GtkWidget* b = make_image("src/draw/b.png");
+    gtk_widget_set_margin_start(b, 18);
+
+    std::string move_num = "move_num: " + std::to_string(draw_breakpoint_state.move_num);
+    GtkWidget* move_info = gtk_label_new(move_num.c_str());
+    gtk_widget_set_margin_start(move_info, 5);
+    gtk_widget_set_halign(move_info, GTK_ALIGN_START);
+    std::string temp_count = "temp_count: " + std::to_string(draw_breakpoint_state.temp_count);
+    GtkWidget* temp_info = gtk_label_new(temp_count.c_str());
+    gtk_widget_set_margin_start(temp_info, 5);
+    gtk_widget_set_halign(temp_info, GTK_ALIGN_START);
+    std::string in_blocks_affected = "in_blocks_affected: " + std::to_string(get_bp_state_globals()->get_glob_breakpoint_state()->block_affected);
+    GtkWidget* ba_info = gtk_label_new(in_blocks_affected.c_str());
+    gtk_widget_set_halign(ba_info, GTK_ALIGN_START);
+    std::string block_id = "from_block: " + std::to_string(draw_breakpoint_state.from_block);
+    GtkWidget* block_info = gtk_label_new(block_id.c_str());
+    gtk_widget_set_margin_start(block_info, 5);
+    gtk_widget_set_halign(block_info, GTK_ALIGN_START);
+    std::string router_iter = "router_iter: " + std::to_string(draw_breakpoint_state.router_iter);
+    GtkWidget* ri_info = gtk_label_new(router_iter.c_str());
+    gtk_widget_set_margin_start(ri_info, 5);
+    gtk_widget_set_halign(ri_info, GTK_ALIGN_START);
+    std::string net_id = "route_net_id: " + std::to_string(draw_breakpoint_state.route_net_id);
+    GtkWidget* net_info = gtk_label_new(net_id.c_str());
+    gtk_widget_set_margin_start(net_info, 5);
+    gtk_widget_set_halign(net_info, GTK_ALIGN_START);
+
+    if (in_placer) {
+        gtk_grid_attach((GtkGrid*)info_grid, m,          0, 0, 1, 1);
+        gtk_grid_attach((GtkGrid*)info_grid, t,          0, 1, 1, 1);
+        gtk_grid_attach((GtkGrid*)info_grid, i,          2, 0, 1, 1);
+        gtk_grid_attach((GtkGrid*)info_grid, b,          2, 1, 1, 1);
+        gtk_grid_attach((GtkGrid*)info_grid, move_info,  1, 0, 1, 1);
+        gtk_grid_attach((GtkGrid*)info_grid, temp_info,  1, 1, 1, 1);
+        gtk_grid_attach((GtkGrid*)info_grid, ba_info,    3, 0, 1, 1);
+        gtk_grid_attach((GtkGrid*)info_grid, block_info, 3, 1, 1, 1);
+    } else {
+        gtk_grid_attach((GtkGrid*)info_grid, n,       2, 2, 1, 1);
+        gtk_grid_attach((GtkGrid*)info_grid, r,       0, 2, 1, 1);
+        gtk_grid_attach((GtkGrid*)info_grid, ri_info, 1, 2, 1, 1);
+        gtk_grid_attach((GtkGrid*)info_grid, net_info,3, 2, 1, 1);
+    }
+
+    gtk_grid_attach((GtkGrid*)grid, info_grid, 0, 2, 1, 1);
+
+    GtkWidget* button = gtk_button_new_with_label("OK");
+    gtk_widget_set_margin_bottom(button, 30);
+    gtk_widget_set_halign(button, GTK_ALIGN_CENTER);
+    gtk_grid_attach((GtkGrid*)grid, button, 0, 3, 1, 1);
+    QObject::connect(Q_BUTTON(button), &QAbstractButton::clicked,
+                     [window]() { ok_close_window(nullptr, window); });
+
+    gtk_container_add(GTK_CONTAINER(window), grid);
+    gtk_widget_show_all(window);
 #else // VPR_QT
     //window settings
     GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
