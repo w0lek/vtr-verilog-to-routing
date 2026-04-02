@@ -223,7 +223,14 @@ void manual_move_cost_summary_dialog() {
     GtkWidget* content_area;
 
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    const GtkDialogButton btns[] = {
+        {"Accept", GTK_RESPONSE_ACCEPT},
+        {"Reject", GTK_RESPONSE_REJECT}
+    };
+    dialog = gtk_dialog_new_with_buttons("Move Costs",
+                                         Q_WIDGET(draw_state->manual_moves_state.manual_move_window),
+                                         GTK_DIALOG_MODAL,
+                                         btns, 2);
 #else
     //Creating the dialog window
     dialog = gtk_dialog_new_with_buttons("Move Costs",

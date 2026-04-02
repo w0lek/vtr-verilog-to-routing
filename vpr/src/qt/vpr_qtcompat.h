@@ -103,6 +103,8 @@ int gtk_dialog_run(QDialog* dialog);
 int gtk_spin_button_get_value_as_int(QSpinBox* spinBox);
 
 #define GTK_DIALOG_MODAL 0x1
+#define GTK_RESPONSE_ACCEPT QDialog::Accepted
+#define GTK_RESPONSE_REJECT QDialog::Rejected
 struct GtkDialogButton {
     const char* text;
     int response;
