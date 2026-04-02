@@ -346,7 +346,7 @@ void gtk_window_set_position(QWidget* w, int key)
 
     w->move(x, y);
   } else {
-    ASSERT_QT_MIGRATION_TODO;
+    qWarning() << key << "for gtk_window_set_position is not implemented";
   }
 }
 
