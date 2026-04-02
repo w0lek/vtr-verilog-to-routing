@@ -540,8 +540,36 @@ void advanced_button_callback() {
 //refreshes breakpoint list for when a breakpoint is deleted
 void refresh_bpList() {
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
-#else // VPR_QT   
+    for (auto* child : gtk_container_get_children(draw_debug_glob_vars.bpGrid))
+        gtk_widget_destroy(child);
+
+    t_draw_state* draw_state = get_draw_state_vars();
+    for (size_t i = 0; i < draw_debug_glob_vars.bp_labels.size(); i++) {
+        GtkWidget* label = gtk_label_new(draw_debug_glob_vars.bp_labels[i].c_str());
+        gtk_grid_attach((GtkGrid*)draw_debug_glob_vars.bpGrid, label, 0, i, 1, 1);
+        gtk_widget_set_halign(label, GTK_ALIGN_START);
+
+        auto* checkbox = new QCheckBox();
+        std::string c = "c" + std::to_string(i);
+        gtk_widget_set_name(checkbox, c.c_str());
+        if (draw_state->list_of_breakpoints[i].active)
+            checkbox->setChecked(true);
+        QObject::connect(checkbox, &QCheckBox::toggled,
+                         [checkbox]() { checkbox_callback(checkbox); });
+        gtk_grid_attach((GtkGrid*)draw_debug_glob_vars.bpGrid, checkbox, 1, i, 1, 1);
+        gtk_widget_set_margin_start(checkbox, 290 - draw_debug_glob_vars.bp_labels[i].size());
+
+        auto* deleteButton = new QPushButton(QIcon("src/draw/trash.png"), "");
+        std::string d = "d" + std::to_string(i);
+        gtk_widget_set_name(deleteButton, d.c_str());
+        QObject::connect(deleteButton, &QPushButton::clicked,
+                         [deleteButton]() { delete_bp_callback(deleteButton); });
+        gtk_grid_attach((GtkGrid*)draw_debug_glob_vars.bpGrid, deleteButton, 2, i, 1, 1);
+        gtk_widget_set_margin_start(deleteButton, 10);
+
+        gtk_widget_show_all(draw_debug_glob_vars.bpGrid);
+    }
+#else // VPR_QT
     //delete all previous widgets in the bpGrid
     GList* iter;
     GList* list = gtk_container_get_children(GTK_CONTAINER(draw_debug_glob_vars.bpGrid));
