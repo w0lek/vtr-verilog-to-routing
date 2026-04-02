@@ -414,7 +414,16 @@ void set_net_alpha_value_cbk(GtkSpinButton* self, ezgl::application* app) {
  */
 void select_layer_cbk(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/) {
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    t_draw_state* draw_state = get_draw_state_vars();
+    int index = 0;
+    for (QCheckBox* checkbox : widget->parentWidget()->findChildren<QCheckBox*>(QString(), Qt::FindDirectChildrenOnly)) {
+        const QString label = checkbox->text();
+        if (label.contains("Layer") && !label.contains("Cross")) {
+            draw_state->draw_layer_display[index].visible = checkbox->isChecked();
+            index++;
+        }
+    }
+    application.refresh_drawing();
 #else // VPR_QT
     t_draw_state* draw_state = get_draw_state_vars();
 
