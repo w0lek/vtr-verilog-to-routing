@@ -802,9 +802,6 @@ void set_net_id_button_callback(GtkWidget* /*widget*/, GtkWidget* grid) {
 
 //sets a new expression type breakpoint
 void set_expression_button_callback(GtkWidget* /*widget*/, GtkWidget* grid) {
-#ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
-#else // VPR_QT
     t_draw_state* draw_state = get_draw_state_vars();
     GtkWidget* entry = gtk_grid_get_child_at((GtkGrid*)grid, 1, 2);
 
@@ -816,7 +813,6 @@ void set_expression_button_callback(GtkWidget* /*widget*/, GtkWidget* grid) {
         add_to_bpList(bpDescription);
     } else
         invalid_breakpoint_entry_window("Invalid expression");
-#endif // VPR_QT
 }
 
 //window that pops up when an entry is not valid
