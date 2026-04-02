@@ -818,7 +818,30 @@ void set_expression_button_callback(GtkWidget* /*widget*/, GtkWidget* grid) {
 //window that pops up when an entry is not valid
 void invalid_breakpoint_entry_window(std::string error) {
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_position(window, GTK_WIN_POS_CENTER);
+    gtk_window_set_title(window, "ERROR");
+    window->setWindowModality(Qt::ApplicationModal);
+
+    GtkWidget* grid = gtk_grid_new();
+
+    GtkWidget* label = gtk_label_new(error.c_str());
+    gtk_widget_set_margin_start(label, 30);
+    gtk_widget_set_margin_end(label, 30);
+    gtk_widget_set_margin_top(label, 30);
+    gtk_widget_set_margin_bottom(label, 30);
+    gtk_grid_attach((GtkGrid*)grid, label, 0, 0, 1, 1);
+
+    GtkWidget* button = gtk_button_new_with_label("OK");
+    gtk_widget_set_margin_bottom(button, 30);
+    gtk_widget_set_margin_end(button, 30);
+    gtk_widget_set_margin_start(button, 30);
+    gtk_grid_attach((GtkGrid*)grid, button, 0, 1, 1, 1);
+    QObject::connect(Q_BUTTON(button), &QAbstractButton::clicked,
+                     [window]() { ok_close_window(nullptr, window); });
+
+    gtk_container_add(GTK_CONTAINER(window), grid);
+    gtk_widget_show_all(window);
 #else // VPR_QT
     //window settings
     GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
