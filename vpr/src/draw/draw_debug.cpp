@@ -695,7 +695,10 @@ void add_to_bpList(std::string bpDescription) {
 //enables and disables a breakpoint when the checkbox is activated
 void checkbox_callback(GtkWidget* widget) {
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    std::string name = gtk_widget_get_name(widget);
+    name.erase(name.begin());
+    int location = stoi(name);
+    activate_breakpoint_by_index(location, GTK_TOGGLE_BUTTON(widget)->isChecked());
 #else // VPR_QT
     std::string name = gtk_widget_get_name(widget);
     name.erase(name.begin());
@@ -711,7 +714,13 @@ void checkbox_callback(GtkWidget* widget) {
 //deletes breakpoint when indicated by the user using the delete button in the ui
 void delete_bp_callback(GtkWidget* widget) {
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    draw_debug_glob_vars.bpList_row--;
+    std::string name = gtk_widget_get_name(widget);
+    name.erase(name.begin());
+    int location = stoi(name);
+    draw_debug_glob_vars.bp_labels.erase(draw_debug_glob_vars.bp_labels.begin() + location);
+    delete_breakpoint_by_index(location);
+    refresh_bpList();
 #else // VPR_QT
     draw_debug_glob_vars.bpList_row--;
     std::string name = gtk_widget_get_name(widget);
