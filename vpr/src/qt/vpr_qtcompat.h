@@ -126,7 +126,10 @@ void gtk_window_set_position(QWidget* w, int key);
 
 QList<QWidget*> gtk_container_get_children(QWidget* container);
 
-#define GTK_ALIGN_CENTER 1
+#define GTK_ALIGN_FILL   0
+#define GTK_ALIGN_START  1
+#define GTK_ALIGN_END    2
+#define GTK_ALIGN_CENTER 3
 void gtk_widget_set_halign(QWidget* w, int flag);
 void gtk_window_set_transient_for(QWidget* dialog, QWidget* parent);
 void gtk_widget_show(QWidget* widget);

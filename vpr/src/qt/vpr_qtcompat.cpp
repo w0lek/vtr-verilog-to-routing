@@ -360,8 +360,16 @@ QList<QWidget*> gtk_container_get_children(QWidget* container)
 
 void gtk_widget_set_halign(QWidget* w, int flag)
 {
-  ASSERT_QT_MIGRATION_TODO;
-  //layout->setAlignment(w, Qt::AlignHCenter);
+    Qt::Alignment qtAlign;
+    if (flag == GTK_ALIGN_START) qtAlign = Qt::AlignLeft;
+    else if (flag == GTK_ALIGN_END) qtAlign = Qt::AlignRight;
+    else qtAlign = Qt::AlignHCenter;
+
+    if (auto* label = qobject_cast<QLabel*>(w)) {
+        label->setAlignment((label->alignment() & ~Qt::AlignHorizontal_Mask) | qtAlign);
+    } else if (w->parentWidget() && w->parentWidget()->layout()) {
+        w->parentWidget()->layout()->setAlignment(w, qtAlign);
+    }
 }
 
 void gtk_window_set_transient_for(QWidget* dialog, QWidget* parent)

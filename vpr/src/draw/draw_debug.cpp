@@ -4,6 +4,10 @@
 #include "draw_global.h"
 #include "vtr_expr_eval.h"
 
+#ifdef VPR_QT
+#include <QScrollArea>
+#endif
+
 //keeps track of open windows to avoid reopenning windows that are already open
 struct open_windows {
     bool debug_window = false;
@@ -37,8 +41,133 @@ DrawDebuggerGlobals draw_debug_glob_vars;
 //draws main debugger window
 void draw_debug_window() {
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
-#else // VPR_QT  
+    if (!draw_debug_glob_vars.openWindows.debug_window) {
+        draw_debug_glob_vars.openWindows.debug_window = true;
+
+        GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+        gtk_window_set_title(window, "Debugger");
+        gtk_window_set_position(window, GTK_WIN_POS_CENTER);
+
+        GtkWidget* mainGrid = gtk_grid_new();
+        gtk_widget_set_margin_top(mainGrid, 30);
+        gtk_widget_set_margin_bottom(mainGrid, 30);
+        gtk_widget_set_margin_start(mainGrid, 30);
+        gtk_widget_set_margin_end(mainGrid, 20);
+
+        GtkWidget* placerOpts = gtk_label_new(nullptr);
+        gtk_label_set_markup((GtkLabel*)placerOpts, "<b>Placer Options</b>");
+        gtk_widget_set_margin_bottom(placerOpts, 10);
+        GtkWidget* routerOpts = gtk_label_new(nullptr);
+        gtk_label_set_markup((GtkLabel*)routerOpts, "<b>Router Options</b>");
+        gtk_widget_set_margin_bottom(routerOpts, 10);
+        gtk_widget_set_margin_top(routerOpts, 30);
+        GtkWidget* bplist = gtk_label_new(nullptr);
+        gtk_label_set_markup((GtkLabel*)bplist, "<b>List of Breakpoints</b>");
+        gtk_widget_set_margin_bottom(bplist, 10);
+        gtk_widget_set_margin_top(bplist, 30);
+        GtkWidget* movesLabel = gtk_label_new("Number of moves to proceed");
+        gtk_widget_set_halign(movesLabel, GTK_ALIGN_END);
+        gtk_widget_set_margin_end(movesLabel, 8);
+        GtkWidget* tempsLabel = gtk_label_new("Temperatures to proceed:");
+        gtk_widget_set_halign(tempsLabel, GTK_ALIGN_END);
+        gtk_widget_set_margin_end(tempsLabel, 8);
+        GtkWidget* blockLabel = gtk_label_new("Stop at from_block");
+        gtk_widget_set_halign(blockLabel, GTK_ALIGN_END);
+        gtk_widget_set_margin_end(blockLabel, 8);
+        GtkWidget* iterLabel = gtk_label_new("Stop at router iteration");
+        gtk_widget_set_halign(iterLabel, GTK_ALIGN_END);
+        gtk_widget_set_margin_end(iterLabel, 8);
+        GtkWidget* netLabel = gtk_label_new("Stop at route_net_id");
+        gtk_widget_set_halign(netLabel, GTK_ALIGN_END);
+        gtk_widget_set_margin_end(netLabel, 8);
+        GtkWidget* star = gtk_label_new("*for handling multiple breakpoints at once using an expression can be more accurate");
+        gtk_widget_set_margin_top(star, 15);
+
+        GtkWidget* setM = gtk_button_new_with_label("Set");
+        gtk_widget_set_halign(setM, GTK_ALIGN_START);
+        gtk_widget_set_margin_bottom(setM, 10);
+        gtk_widget_set_margin_start(setM, 10);
+        GtkWidget* setT = gtk_button_new_with_label("Set");
+        gtk_widget_set_halign(setT, GTK_ALIGN_START);
+        gtk_widget_set_margin_bottom(setT, 10);
+        gtk_widget_set_margin_start(setT, 10);
+        GtkWidget* setB = gtk_button_new_with_label("Set");
+        gtk_widget_set_halign(setB, GTK_ALIGN_START);
+        gtk_widget_set_margin_start(setB, 10);
+        GtkWidget* setI = gtk_button_new_with_label("Set");
+        gtk_widget_set_halign(setI, GTK_ALIGN_START);
+        gtk_widget_set_margin_start(setI, 10);
+        GtkWidget* setN = gtk_button_new_with_label("Set");
+        gtk_widget_set_halign(setN, GTK_ALIGN_START);
+        gtk_widget_set_margin_start(setN, 10);
+        GtkWidget* advanced = gtk_button_new_with_label("Advanced");
+        gtk_widget_set_margin_start(advanced, 60);
+        gtk_widget_set_margin_end(advanced, 10);
+        gtk_widget_set_margin_top(advanced, 20);
+
+        GtkWidget* movesEntry = gtk_entry_new();
+        gtk_entry_set_text((GtkEntry*)movesEntry, "ex. 100");
+        gtk_widget_set_margin_bottom(movesEntry, 10);
+        GtkWidget* tempsEntry = gtk_entry_new();
+        gtk_entry_set_text((GtkEntry*)tempsEntry, "ex. 5");
+        gtk_widget_set_margin_bottom(tempsEntry, 10);
+        GtkWidget* blockEntry = gtk_entry_new();
+        gtk_entry_set_text((GtkEntry*)blockEntry, "ex. 83");
+        GtkWidget* iterEntry = gtk_entry_new();
+        gtk_entry_set_text((GtkEntry*)iterEntry, "ex. 3");
+        GtkWidget* netEntry = gtk_entry_new();
+        gtk_entry_set_text((GtkEntry*)netEntry, "ex. 12");
+
+        draw_debug_glob_vars.bpGrid = gtk_grid_new();
+        gtk_widget_set_margin_bottom(draw_debug_glob_vars.bpGrid, 20);
+        refresh_bpList();
+
+        auto* scrollArea = new QScrollArea();
+        scrollArea->setWidgetResizable(true);
+        scrollArea->setWidget(draw_debug_glob_vars.bpGrid);
+        scrollArea->setMinimumHeight(100);
+
+        gtk_grid_attach((GtkGrid*)mainGrid, placerOpts,  0, 0, 3, 1);
+        gtk_grid_attach((GtkGrid*)mainGrid, movesLabel,  0, 1, 1, 1);
+        gtk_grid_attach((GtkGrid*)mainGrid, movesEntry,  1, 1, 1, 1);
+        gtk_grid_attach((GtkGrid*)mainGrid, setM,        2, 1, 1, 1);
+        gtk_grid_attach((GtkGrid*)mainGrid, tempsLabel,  0, 2, 1, 1);
+        gtk_grid_attach((GtkGrid*)mainGrid, tempsEntry,  1, 2, 1, 1);
+        gtk_grid_attach((GtkGrid*)mainGrid, setT,        2, 2, 1, 1);
+        gtk_grid_attach((GtkGrid*)mainGrid, blockLabel,  0, 3, 1, 1);
+        gtk_grid_attach((GtkGrid*)mainGrid, blockEntry,  1, 3, 1, 1);
+        gtk_grid_attach((GtkGrid*)mainGrid, setB,        2, 3, 1, 1);
+        gtk_grid_attach((GtkGrid*)mainGrid, routerOpts,  0, 4, 3, 1);
+        gtk_grid_attach((GtkGrid*)mainGrid, iterLabel,   0, 5, 1, 1);
+        gtk_grid_attach((GtkGrid*)mainGrid, iterEntry,   1, 5, 1, 1);
+        gtk_grid_attach((GtkGrid*)mainGrid, setI,        2, 5, 1, 1);
+        gtk_grid_attach((GtkGrid*)mainGrid, netLabel,    0, 6, 1, 1);
+        gtk_grid_attach((GtkGrid*)mainGrid, netEntry,    1, 6, 1, 1);
+        gtk_grid_attach((GtkGrid*)mainGrid, setN,        2, 6, 1, 1);
+        gtk_grid_attach((GtkGrid*)mainGrid, bplist,      0, 7, 3, 1);
+        gtk_grid_attach((GtkGrid*)mainGrid, scrollArea,  0, 8, 3, 1);
+        gtk_grid_attach((GtkGrid*)mainGrid, advanced,    2, 9, 1, 1);
+        gtk_grid_attach((GtkGrid*)mainGrid, star,        0, 10, 3, 1);
+
+        QObject::connect(Q_BUTTON(setM), &QAbstractButton::clicked,
+                         [mainGrid]() { set_moves_button_callback(nullptr, mainGrid); });
+        QObject::connect(Q_BUTTON(setT), &QAbstractButton::clicked,
+                         [mainGrid]() { set_temp_button_callback(nullptr, mainGrid); });
+        QObject::connect(Q_BUTTON(setB), &QAbstractButton::clicked,
+                         [mainGrid]() { set_block_button_callback(nullptr, mainGrid); });
+        QObject::connect(Q_BUTTON(setI), &QAbstractButton::clicked,
+                         [mainGrid]() { set_router_iter_button_callback(nullptr, mainGrid); });
+        QObject::connect(Q_BUTTON(setN), &QAbstractButton::clicked,
+                         [mainGrid]() { set_net_id_button_callback(nullptr, mainGrid); });
+        QObject::connect(Q_BUTTON(advanced), &QAbstractButton::clicked,
+                         []() { advanced_button_callback(); });
+        QObject::connect(window, &QObject::destroyed,
+                         []() { close_debug_window(); });
+
+        gtk_container_add(GTK_CONTAINER(window), mainGrid);
+        gtk_widget_show_all(window);
+    }
+#else // VPR_QT
     if (!draw_debug_glob_vars.openWindows.debug_window) {
         draw_debug_glob_vars.openWindows.debug_window = true;
 
