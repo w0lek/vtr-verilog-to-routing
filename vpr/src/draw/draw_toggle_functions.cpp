@@ -452,7 +452,16 @@ void select_layer_cbk(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/
  */
 void transparency_cbk(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/) {
 #ifdef VPR_QT
-    ASSERT_QT_MIGRATION_TODO;
+    t_draw_state* draw_state = get_draw_state_vars();
+    int index = 0;
+    for (QSpinBox* spin_button : widget->parentWidget()->findChildren<QSpinBox*>(QString(), Qt::FindDirectChildrenOnly)) {
+        const QString name = spin_button->objectName();
+        if (name.contains("Transparency") && !name.contains("Cross")) {
+            draw_state->draw_layer_display[index].alpha = 255 - gtk_spin_button_get_value(spin_button);
+            index++;
+        }
+    }
+    application.refresh_drawing();
 #else // VPR_QT
     t_draw_state* draw_state = get_draw_state_vars();
 
