@@ -37,6 +37,12 @@ if (VPR_USE_EZGL STREQUAL "on")
         # Qt flow: enable CMAKE_AUTORCC so any .qrc added as a target source
         # is compiled automatically by rcc (same mechanism as libezgl).
         find_package(Qt6 REQUIRED COMPONENTS Core)
+        # Qt 6.8 contains a bug in the RHI backend where geometry buffers are not
+        # properly invalidated/refreshed after the MVP matrix changes, causing
+        # incorrect rendering artifacts. The bug is not seen in Qt 6.9.3.
+        if(Qt6_VERSION VERSION_LESS "6.9.3")
+            message(FATAL_ERROR "Qt 6.9.3 or higher is required (found ${Qt6_VERSION})")
+        endif()
         set(CMAKE_AUTORCC ON)
     endif()
 else()
