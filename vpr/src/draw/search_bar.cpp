@@ -35,10 +35,8 @@
 #include "physical_types.h"
 #include "place_macro.h"
 
-#ifdef VPR_QT
 #include "vpr_qtcompat.h"
 #include <QMessageBox>
-#endif // VPR_QT
 
 //To process key presses we need the X11 keysym definitions,
 //which are unavailable when building with MINGW
@@ -383,7 +381,6 @@ void highlight_nets(ClusterNetId net_id) {
 }
 
 void warning_dialog_box(const char* message) {
-#ifdef VPR_QT
     QWidget* main_window = application.get_widget(application.get_main_window_id().c_str());
     QMessageBox* box = new QMessageBox(QMessageBox::Warning,
                                        "Error",
@@ -392,32 +389,6 @@ void warning_dialog_box(const char* message) {
                                        main_window);
     box->setAttribute(Qt::WA_DeleteOnClose);
     box->show();
-#else // VPR_QT
-    GObject* main_window;    // parent window over which to add the dialog
-    GtkWidget* content_area; // content area of the dialog
-    GtkWidget* label;        // label to display a message
-    GtkWidget* dialog;
-    // get a pointer to the main window
-    main_window = application.get_object(application.get_main_window_id().c_str());
-
-    // create a dialog window modal with no button
-    dialog = gtk_message_dialog_new(GTK_WINDOW(main_window),
-                                    GTK_DIALOG_DESTROY_WITH_PARENT,
-                                    GTK_MESSAGE_INFO,
-                                    GTK_BUTTONS_NONE,
-                                    "Error");
-    // create a label and attach it to content area of the dialog
-    content_area = gtk_message_dialog_get_message_area(GTK_MESSAGE_DIALOG(dialog));
-    label = gtk_label_new(message);
-    gtk_container_add(GTK_CONTAINER(content_area), label);
-    // show the label & child widget of the dialog
-    gtk_widget_show_all(dialog);
-
-    g_signal_connect_swapped(dialog,
-                             "response",
-                             G_CALLBACK(gtk_widget_destroy),
-                             dialog);
-#endif // VPR_QT
 }
 
 /**
@@ -431,7 +402,6 @@ void warning_dialog_box(const char* message) {
  * @param app ezgl app used to access other objects
  */
 void search_type_changed(GtkComboBox* self, ezgl::application* app) {
-#ifdef VPR_QT
     if (!self) return;
     const QString searchType = self->currentText();
     if (searchType.isEmpty()) return;
@@ -446,31 +416,6 @@ void search_type_changed(GtkComboBox* self, ezgl::application* app) {
     } else {
         searchBar->setCompleter(nullptr);
     }
-#else // VPR_QT
-    auto type = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(self));
-    GtkEntry* searchBar = GTK_ENTRY(app->get_object("TextInput"));
-    GtkEntryCompletion* completion = GTK_ENTRY_COMPLETION(app->get_object("Completion"));
-    GtkTreeModel* netNames = GTK_TREE_MODEL(app->get_object("NetNames"));
-    GtkTreeModel* blockNames = GTK_TREE_MODEL(app->get_object("BlockNames"));
-    //Ensuring a valid type was selected
-    if (!type) return;
-    if (type[0] == '\0') return;
-    std::string searchType(type);
-
-    /*
-     * If search type is name, connecting search bar to completion,
-     * and connecting completion to the appropriate model (blocks or nets)
-     * Additionally, visibility of key length setter is toggled by these changes
-     */
-    if (searchType == "Block Name") {
-        gtk_entry_completion_set_model(completion, blockNames);
-    } else if (searchType == "Net Name") {
-        gtk_entry_completion_set_model(completion, netNames);
-    } else { //setting to null if option does not require auto-complete
-        gtk_entry_completion_set_model(completion, nullptr);
-        gtk_entry_set_completion(searchBar, nullptr);
-    }
-#endif // VPR_QT
 }
 
 /**
@@ -485,53 +430,6 @@ void search_type_changed(GtkComboBox* self, ezgl::application* app) {
  * @return false | if the string pointed to does not contain key
  */
 
-#ifndef VPR_QT
-gboolean customMatchingFunction(
-    GtkEntryCompletion* completer,
-    const gchar* key,
-    GtkTreeIter* iter,
-    gpointer /*user_data*/
-) {
-    GtkTreeModel* model = gtk_entry_completion_get_model(completer);
-    const gchar* text;
-    gtk_tree_model_get(model, iter, 0, &text, -1);
-    //Removing case information
-    g_utf8_casefold(text, -1);
-    g_utf8_normalize(text, -1, G_NORMALIZE_DEFAULT);
-    std::string cppText(text);
-    //If substring not found, returning false;
-    return (cppText.find(key, 0) != std::string::npos);
-}
-#endif
-
-#ifdef VPR_QT
-
-#else // VPR_QT
-/**
- * @brief Creates a GdkEvent that simulates user pressing key "key".
- * Currently used to fool GtkEntryCompletion into showing options w/o receiving a new input
- *
- * @param key character value
- * @param window GdkWindow
- * @return GdkEvent Keypress event
- */
-GdkEvent simulate_keypress(char key, GdkWindow* window) {
-    int charVal = (int)key;
-    //Creating event and adding properties
-    GdkEvent new_event;
-    new_event.key.type = GDK_KEY_PRESS;
-    new_event.key.window = window;
-    new_event.key.send_event = TRUE;
-    new_event.key.time = GDK_CURRENT_TIME;
-    new_event.key.keyval = gdk_unicode_to_keyval(charVal);
-    new_event.key.state = GDK_KEY_PRESS_MASK;
-    new_event.key.length = 0;
-    new_event.key.string = 0;
-    new_event.key.hardware_keycode = 0;
-    new_event.key.group = 0;
-    return new_event;
-}
-#endif // VPR_QT
 
 /**
  * @brief Turns on autocomplete
@@ -564,7 +462,6 @@ GdkEvent simulate_keypress(char key, GdkWindow* window) {
  * @param app ezgl app
  */
 void enable_autocomplete(ezgl::application* app) {
-#ifdef VPR_QT
     QLineEdit* searchBar = qobject_cast<QLineEdit*>(app->get_object("TextInput"));
     if (!searchBar) return;
 
@@ -590,43 +487,6 @@ void enable_autocomplete(ezgl::application* app) {
     // Directly trigger the popup — replaces the GTK hack of stripping and
     // re-typing the last character to force GtkEntryCompletion to show.
     completer->complete();
-#else // VPR_QT
-    GtkEntryCompletion* completion = GTK_ENTRY_COMPLETION(app->get_object("Completion"));
-    GtkEntry* searchBar = GTK_ENTRY(app->get_object("TextInput"));
-    auto draw_state = get_draw_state_vars();
-
-    std::string searchType = get_search_type(app);
-    if (searchType.empty())
-        return;
-    //Checking to make sure that we are on a mode that uses auto-complete
-    if (gtk_entry_completion_get_model(completion) == nullptr) {
-        std::cout << "NO MODEL SELECTED" << std::endl;
-        return;
-    }
-
-    //Getting input text
-    std::string oldText(gtk_entry_get_text(searchBar));
-
-    //Turning on completion
-    gtk_entry_set_completion(searchBar, completion);
-    gtk_entry_completion_complete(completion);
-
-    //Setting min key length to either 0 or 1 less than key length (max option)
-    gtk_entry_completion_set_minimum_key_length(completion, std::max(0, (int)(oldText.length() - 1)));
-    draw_state->justEnabled = true;
-
-    //If string len is 0, reutrning
-    if (oldText.length() == 0) return;
-
-    gtk_widget_grab_focus(GTK_WIDGET(searchBar));
-    std::string newText = (oldText.length() > 1) ? oldText.substr(0, oldText.length() - 1) : "";
-    gtk_entry_set_text(searchBar, newText.c_str());
-
-    //Creating a false event to insert the last character into the string
-    auto window = gtk_widget_get_parent_window(GTK_WIDGET(searchBar));
-    GdkEvent new_event = simulate_keypress(oldText.back(), window);
-    gdk_event_put(&new_event);
-#endif // VPR_QT
 }
 
 //Returns current search type. Returns empty string if fails

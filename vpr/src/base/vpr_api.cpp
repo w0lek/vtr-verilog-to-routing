@@ -1264,11 +1264,7 @@ void vpr_init_server(const t_vpr_setup& vpr_setup) {
         server::GateIO& gate_io = g_vpr_ctx.mutable_server().gate_io;
         if (!gate_io.is_running()) {
             gate_io.start(vpr_setup.ServerOpts.port_num);
-#ifdef VPR_QT
-            // timer is implemented inside the server::GateIO
-#else
-            g_timeout_add(SERVER_UPDATE_INTERVAL_MS, server::update, &application);
-#endif
+            // timer is implemented inside server::GateIO via QTimer
         }
     }
 #else

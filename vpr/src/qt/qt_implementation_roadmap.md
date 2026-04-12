@@ -2,7 +2,7 @@
 [DONE] - Deffered render + batch render optimization
 [IN_PROGRESS] - GPU close renderer
 [IN_PROGRESS] - stress test of new render impl, final performance test GTK vs Qt on complex graphic scene
-[ ] - Remove VPR_QT macro and GTK code sections under the #else ... #endif, from now Qt is only single framework used in backend.
+[DONE] - Remove VPR_QT macro and GTK code sections under the #else ... #endif, from now Qt is only single framework used in backend.
 [ ] - Rename and clean function arguments or use QWidget:: API directly for gtk calls -> remove qt_compat.h layer completely
 
 STEPS PLANNED TO BE DONE BEFORE Friday (10 April)

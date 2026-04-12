@@ -14,37 +14,22 @@ set(VPR_PGO_DATA_DIR "." CACHE PATH "Where to store and retrieve PGO data")
 
 set(VPR_ENABLE_OPEN_MP "on" CACHE STRING "Enable OpenMP when compiling VPR")
 
-option(VPR_QT "Use Qt backend for VPR graphics" ON) # QT_MIGRATION_TMP
-
 #Handle graphics setup
 set(GRAPHICS_DEFINES "")
 
 if (VPR_USE_EZGL STREQUAL "on")
     message(STATUS "EZGL: graphics enabled")
 
-    if(NOT VPR_QT)
-        set(
-            RESOURCE_LIST
-            # Strip all the whitespace characters from ui file
-            STRIPBLANKS main.ui
-        )
-
-        list(APPEND CMAKE_MODULE_PATH
-             ${CMAKE_CURRENT_SOURCE_DIR}/../libs/EXTERNAL/libezgl/gcr-cmake/macros)
-
-        include(GlibCompileResourcesSupport)
-    else()
-        # Qt flow: enable CMAKE_AUTORCC so any .qrc added as a target source
-        # is compiled automatically by rcc (same mechanism as libezgl).
-        find_package(Qt6 REQUIRED COMPONENTS Core)
-        # Qt 6.8 contains a bug in the RHI backend where geometry buffers are not
-        # properly invalidated/refreshed after the MVP matrix changes, causing
-        # incorrect rendering artifacts. The bug is not seen in Qt 6.9.3.
-        if(Qt6_VERSION VERSION_LESS "6.9.3")
-            message(FATAL_ERROR "Qt 6.9.3 or higher is required (found ${Qt6_VERSION})")
-        endif()
-        set(CMAKE_AUTORCC ON)
+    # Qt flow: enable CMAKE_AUTORCC so any .qrc added as a target source
+    # is compiled automatically by rcc (same mechanism as libezgl).
+    find_package(Qt6 REQUIRED COMPONENTS Core)
+    # Qt 6.8 contains a bug in the RHI backend where geometry buffers are not
+    # properly invalidated/refreshed after the MVP matrix changes, causing
+    # incorrect rendering artifacts. The bug is not seen in Qt 6.9.3.
+    if(Qt6_VERSION VERSION_LESS "6.9.3")
+        message(FATAL_ERROR "Qt 6.9.3 or higher is required (found ${Qt6_VERSION})")
     endif()
+    set(CMAKE_AUTORCC ON)
 else()
     list(APPEND GRAPHICS_DEFINES "-DNO_GRAPHICS")
     message(STATUS "EZGL: graphics disabled")
@@ -148,39 +133,9 @@ if (VPR_USE_EZGL STREQUAL "on")
     target_link_libraries(libvpr
 			     ezgl)
 
-    if(NOT VPR_QT)
-        compile_gresources(
-          # input: the name of our resources
-          RESOURCE_FILE
-          # output: the filename of the generated XML file
-          XML_OUT
-          # generate C code to be compiled with our program
-          TYPE
-            EMBED_C
-          # specify the name of the C file that is generated
-          TARGET
-            resources.C
-          # specify the resource prefix (used in the code)
-          PREFIX
-            /ezgl
-          # input: specify the list of files to compile into resources
-          RESOURCES
-            ${RESOURCE_LIST}
-        )
-
-        add_custom_target(
-          resource ALL
-          DEPENDS
-            ${RESOURCE_FILE}
-        )
-
-        #Create the executable with resources
-        list(APPEND EXEC_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/resources.C)
-    else()
-        # Qt: add vpr.qrc to the initial source list so CMAKE_AUTORCC processes it.
-        # Must be in add_executable's source list, not added via target_sources later.
-        list(APPEND EXEC_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/vpr.qrc)
-    endif()
+    # Qt: add vpr.qrc to the initial source list so CMAKE_AUTORCC processes it.
+    # Must be in add_executable's source list, not added via target_sources later.
+    list(APPEND EXEC_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/vpr.qrc)
 
 endif()
 
@@ -195,14 +150,6 @@ add_executable(vpr ${EXEC_SOURCES})
 
 target_link_libraries(vpr libvpr)
 
-if(VPR_QT)
-    target_compile_definitions(
-        libvpr
-        PUBLIC
-        VPR_QT
-        QT_MIGRATION_REDUNDANT
-    )
-endif()
 
 #
 # Profile Guilded Optimization Configuration

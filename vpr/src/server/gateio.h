@@ -16,9 +16,7 @@
 #include <utility>
 #include <optional>
 
-#ifdef VPR_QT
 #include <QTimer>
-#endif
 
 namespace server {
 
@@ -225,9 +223,7 @@ class GateIO {
 
     TLogger m_logger;
 
-#ifdef VPR_QT
     QTimer m_updateTimer;
-#endif
 
     void start_listening(); // thread worker function
 };
