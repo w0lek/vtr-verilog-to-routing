@@ -3,11 +3,7 @@
 
 #ifndef NO_GRAPHICS
 
-#ifdef VPR_QT
 #include "vpr_qtcompat.h"
-#else
-#include <gtk/gtk.h>
-#endif
 
 #include "ezgl/graphics.hpp"
 

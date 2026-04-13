@@ -19,11 +19,7 @@
 #include <cstring>
 #include <cmath>
 
-#ifdef VPR_QT
 #include "vpr_qtcompat.h"
-#else
-#include <gtk/gtk.h>
-#endif
 
 /**
  * @brief ManualMovesInfo struct

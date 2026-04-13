@@ -6,11 +6,7 @@
 #include "globals.h"
 #include "pathhelper.h"
 #include "telegramoptions.h"
-#ifdef VPR_QT
 #include "vpr_qtcompat.h"
-#else // VPR_QT
-#include <gtk/gtk.h>
-#endif // VPR_QT
 
 #include <ezgl/application.hpp>
 

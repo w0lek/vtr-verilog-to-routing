@@ -9,10 +9,8 @@
 #include "draw.h"
 #include "draw_global.h"
 
-#ifdef VPR_QT
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
-#endif
 
 //To process key presses we need the X11 keysym definitions,
 //which are unavailable when building with MINGW
@@ -242,7 +240,6 @@ enum {
 
 //Highlights partition clicked on in the legend.
 void highlight_selected_partition(GtkWidget* widget) {
-#ifdef VPR_QT
     QTreeWidget* tree = qobject_cast<QTreeWidget*>(widget);
     if (!tree) return;
 
@@ -272,90 +269,10 @@ void highlight_selected_partition(GtkWidget* widget) {
 
     tree->clearSelection();
     application.refresh_drawing();
-#else // VPR_QT
-    const FloorplanningContext& floorplanning_ctx = g_vpr_ctx.floorplanning();
-    auto constraints = floorplanning_ctx.constraints;
-    auto num_partitions = constraints.get_num_partitions();
-
-    ezgl::renderer* g = application.get_renderer();
-    GtkTreeIter iter;
-    GtkTreeModel* model;
-    gchar* row_value;
-
-    if (gtk_tree_selection_get_selected(GTK_TREE_SELECTION(widget), &model, &iter)) {
-        gtk_tree_model_get(model, &iter, COL_NAME, &row_value, -1);
-
-        std::string row_value_str(row_value);
-
-        //variable that represents the end of the partition's name in the row value
-        auto name_end = row_value_str.find('(');
-        if (name_end != std::string::npos) {
-            //Isolates the part of the row value that is the partition name
-            std::string partition_name = row_value_str.substr(0, name_end - 1);
-
-            for (auto partitionID = 0; partitionID < num_partitions; partitionID++) {
-                if (constraints.get_partition((PartitionId)partitionID).get_name() == partition_name) {
-                    if (highlight_alpha.empty())
-                        return;
-
-                    if (highlight_alpha[partitionID] == CLICKED_HIGHLIGHT_ALPHA) {
-                        highlight_alpha[partitionID] = DEFAULT_HIGHLIGHT_ALPHA;
-                    } else {
-                        highlight_alpha[partitionID] = CLICKED_HIGHLIGHT_ALPHA;
-                    }
-
-                    highlight_partition(g, partitionID, highlight_alpha[partitionID]);
-                    break;
-                }
-            }
-        }
-
-        g_free(row_value);
-        gtk_tree_selection_unselect_all(GTK_TREE_SELECTION(widget));
-    }
-    application.refresh_drawing();
-#endif // VPR_QT
 }
 
-#ifdef VPR_QT
-#else // VPR_QT
-//Fills in the legend
-static GtkTreeModel* create_and_fill_model() {
-    const AtomContext& atom_ctx = g_vpr_ctx.atom();
-    const FloorplanningContext& floorplanning_ctx = g_vpr_ctx.floorplanning();
-    const auto& constraints = floorplanning_ctx.constraints;
-    int num_partitions = constraints.get_num_partitions();
-
-    GtkTreeStore* store = gtk_tree_store_new(NUM_COLS, G_TYPE_STRING);
-
-    for (int partitionID = 0; partitionID < num_partitions; partitionID++) {
-        auto atoms = constraints.get_part_atoms((PartitionId)partitionID);
-        const auto& partition = constraints.get_partition((PartitionId)partitionID);
-
-        std::string partition_name(partition.get_name()
-                                   + " (" + std::to_string(atoms.size()) + " primitives)");
-
-        GtkTreeIter iter, child_iter;
-        gtk_tree_store_append(store, &iter, nullptr);
-        gtk_tree_store_set(store, &iter,
-                           COL_NAME, partition_name.c_str(),
-                           -1);
-
-        for (AtomBlockId const_atom : atoms) {
-            std::string atom_name = (atom_ctx.lookup().atom_pb_bimap().atom_pb(const_atom))->name;
-            gtk_tree_store_append(store, &child_iter, &iter);
-            gtk_tree_store_set(store, &child_iter,
-                               COL_NAME, atom_name.c_str(),
-                               -1);
-        }
-    }
-
-    return GTK_TREE_MODEL(store);
-}
-#endif // VPR_QT
 
 GtkWidget* setup_floorplanning_legend(GtkWidget* content_tree) {
-#ifdef VPR_QT
     QTreeWidget* tree = qobject_cast<QTreeWidget*>(content_tree);
     if (!tree) return content_tree;
 
@@ -381,24 +298,6 @@ GtkWidget* setup_floorplanning_legend(GtkWidget* content_tree) {
         }
     }
 
-    return content_tree;
-#else // VPR_QT
-    GtkCellRenderer* renderer;
-
-    renderer = gtk_cell_renderer_text_new();
-    gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(content_tree),
-                                                -1,
-                                                "Partition",
-                                                renderer,
-                                                "text", COL_NAME,
-                                                NULL);
-
-    GtkTreeModel* model = create_and_fill_model();
-
-    gtk_tree_view_set_model(GTK_TREE_VIEW(content_tree), model);
-
-    g_object_unref(model);
-#endif // VPR_QT
     return content_tree;
 }
 

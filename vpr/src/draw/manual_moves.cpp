@@ -23,9 +23,7 @@
 #include "buttons.h"
 #include "physical_types_util.h"
 
-#ifdef VPR_QT
 #include "vpr_qtcompat.h"
-#endif
 
 void draw_manual_moves_window(const std::string& block_id) {
     t_draw_state* draw_state = get_draw_state_vars();
@@ -87,15 +85,10 @@ void draw_manual_moves_window(const std::string& block_id) {
         gtk_widget_set_halign(calculate_cost_button, GTK_ALIGN_CENTER);
 
         //connect signals
-#ifdef VPR_QT
         QObject::connect(Q_BUTTON(calculate_cost_button), &QAbstractButton::clicked,
                          [grid]() { calculate_cost_callback(nullptr, grid); });
         QObject::connect(draw_state->manual_moves_state.manual_move_window, &QObject::destroyed,
                          []() { close_manual_moves_window(); });
-#else
-        g_signal_connect(calculate_cost_button, "clicked", G_CALLBACK(calculate_cost_callback), grid);
-        g_signal_connect(G_OBJECT(draw_state->manual_moves_state.manual_move_window), "destroy", G_CALLBACK(close_manual_moves_window), NULL);
-#endif
 
         gtk_container_add(GTK_CONTAINER(draw_state->manual_moves_state.manual_move_window), grid);
         gtk_widget_show_all(draw_state->manual_moves_state.manual_move_window);
@@ -222,7 +215,6 @@ void manual_move_cost_summary_dialog() {
     GtkWidget* dialog;
     GtkWidget* content_area;
 
-#ifdef VPR_QT
     const GtkDialogButton btns[] = {
         {"Accept", GTK_RESPONSE_ACCEPT},
         {"Reject", GTK_RESPONSE_REJECT}
@@ -231,17 +223,6 @@ void manual_move_cost_summary_dialog() {
                                          Q_WIDGET(draw_state->manual_moves_state.manual_move_window),
                                          GTK_DIALOG_MODAL,
                                          btns, 2);
-#else
-    //Creating the dialog window
-    dialog = gtk_dialog_new_with_buttons("Move Costs",
-                                         (GtkWindow*)draw_state->manual_moves_state.manual_move_window,
-                                         GTK_DIALOG_DESTROY_WITH_PARENT,
-                                         ("Accept"),
-                                         GTK_RESPONSE_ACCEPT,
-                                         ("Reject"),
-                                         GTK_RESPONSE_REJECT,
-                                         NULL);
-#endif
     gtk_window_set_transient_for((GtkWindow*)dialog, (GtkWindow*)draw_state->manual_moves_state.manual_move_window);
 
     //Create elements for the dialog and printing costs to the user.
