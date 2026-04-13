@@ -1145,7 +1145,7 @@ static void clip_routing_util(QWidget* widget, int /*response_id*/, void* /*data
     application.refresh_drawing();
 }
 
-static void on_dialog_response(GtkDialog* dialog, int response_id, void* /* user_data*/) {
+static void on_dialog_response(QDialog* dialog, int response_id, void* /* user_data*/) {
     switch (response_id) {
         case GTK_RESPONSE_ACCEPT:
             std::cout << "GTK_RESPONSE_ACCEPT ";
