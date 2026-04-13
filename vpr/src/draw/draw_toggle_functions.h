@@ -42,7 +42,7 @@ void toggle_show_nets_cbk(GtkSwitch*, bool state, ezgl::application* app);
  * @param self ptr to gtkComboBox
  * @param app ezgl::application
  */
-void toggle_draw_nets_cbk(GtkComboBox* self, ezgl::application* app);
+void toggle_draw_nets_cbk(QComboBox* self, ezgl::application* app);
 
 /* Callback function for main.ui created netMaxFanout widget in ui_setup.cpp.
  * Sets draw_state->draw_net_max_fanout to its corresponding value in the UI. */
@@ -62,11 +62,11 @@ void toggle_blk_internal_cbk(GtkSpinButton* self, ezgl::application* app);
 
 /* Callback function for main.ui created toggle_block_pin_util button in ui_setup.cpp.
  * Draws different types of routing block pin utils based on user input. Changes value of draw_state->show_blk_pin_util. */
-void toggle_blk_pin_util_cbk(GtkComboBoxText* self, ezgl::application* app);
+void toggle_blk_pin_util_cbk(QComboBox* self, ezgl::application* app);
 
 /* Callback function for main.ui created toggle_placement_macros button in ui_setup.cpp.
  * Controls if placement macros should be visualized. Changes value of draw_state->show_placement_macros. */
-void placement_macros_cbk(GtkComboBoxText* self, ezgl::application* app);
+void placement_macros_cbk(QComboBox* self, ezgl::application* app);
 
 /* Callback function for main.ui created toggle_rr button in ui_setup.cpp. Draws different groups of RRs depending on
  * user input. Changes value of draw_state->draw_rr_toggle. */
@@ -74,11 +74,11 @@ void toggle_rr_cbk(GtkSwitch*, bool state, ezgl::application* app);
 
 /* Callback function for main.ui created toggle_congestion button in ui_setup.cpp. Controls if congestion should be visualized.
  * Changes value of draw_state->show_congestion. */
-void toggle_cong_cbk(GtkComboBoxText* self, ezgl::application* app);
+void toggle_cong_cbk(QComboBox* self, ezgl::application* app);
 
 /* Callback function for main.ui created ToggleCongestionCost button in ui_setup.cpp. Controls if congestion cost should be visualized.
  * Changes value of draw_state->show_routing_cost. */
-void toggle_cong_cost_cbk(GtkComboBoxText* self, ezgl::application* app);
+void toggle_cong_cost_cbk(QComboBox* self, ezgl::application* app);
 
 /* Callback function for main.ui created toggle_routing_congestion_cost button in ui_setup.cpp.
  * Draws different types of routing costs based on user input. Changes value of draw_state->show_routing_costs. */
@@ -90,7 +90,7 @@ void toggle_routing_bbox_cbk(GtkSpinButton* self, ezgl::application* app);
 
 /* Callback function for main.ui created toggle_routing_util button in ui_setup.cpp.
  * Draws different types of routing utils based on user input: . Changes value of draw_state->show_routing_util. */
-void toggle_router_util_cbk(GtkComboBoxText* self, ezgl::application* app);
+void toggle_router_util_cbk(QComboBox* self, ezgl::application* app);
 
 /** 
  * @brief Master switch callback function for showing critical paths. 
@@ -100,12 +100,12 @@ void toggle_crit_path_cbk(GtkSwitch*, bool state, ezgl::application* app);
 
 /* Callback function for main.ui created toggle_router_expansion_costs in ui_setup.cpp.
  * Draws different router expansion costs based on user input. Changes value of draw_state->show_router_expansion_cost. */
-void toggle_expansion_cost_cbk(GtkComboBoxText* self, ezgl::application* app);
+void toggle_expansion_cost_cbk(QComboBox* self, ezgl::application* app);
 
 /* Callback function for main.ui created ToggleNocBox in ui_setup.cpp
  * Controls if the NoC on chip should be visualized and whether the link usage
  * in the NoC should be visualized. Changes value of draw_state->draw_noc */
-void toggle_noc_cbk(GtkComboBoxText* self, ezgl::application* app);
+void toggle_noc_cbk(QComboBox* self, ezgl::application* app);
 
 /* Callback function for main.ui created netMaxFanout widget in button.cpp.
  * Sets draw_state->draw_net_max_fanout to its corresponding value in the UI. */

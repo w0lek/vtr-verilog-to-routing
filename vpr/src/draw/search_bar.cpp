@@ -398,10 +398,10 @@ void warning_dialog_box(const char* message) {
  * from gtkComboBox SearchType. Currently only sets a completion model for Block Name options,
  * sets null for anything else. brh
  *
- * @param self GtkComboBox that holds current Search Setting
+ * @param self QComboBox that holds current Search Setting
  * @param app ezgl app used to access other objects
  */
-void search_type_changed(GtkComboBox* self, ezgl::application* app) {
+void search_type_changed(QComboBox* self, ezgl::application* app) {
     if (!self) return;
     const QString searchType = self->currentText();
     if (searchType.isEmpty()) return;

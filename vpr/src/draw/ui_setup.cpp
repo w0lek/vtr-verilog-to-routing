@@ -83,7 +83,7 @@ void net_button_setup(ezgl::application* app) {
     });
 
     // Manages net type
-    GtkComboBoxText* toggle_nets = GTK_COMBO_BOX_TEXT(app->get_object("ToggleNetType"));
+    QComboBox* toggle_nets = GTK_COMBO_BOX_TEXT(app->get_object("ToggleNetType"));
     QObject::connect(toggle_nets, &QComboBox::currentIndexChanged, toggle_nets, [toggle_nets, app]() {
         toggle_draw_nets_cbk(toggle_nets, app);
     });
@@ -131,13 +131,13 @@ void block_button_setup(ezgl::application* app) {
     gtk_spin_button_set_range(blk_internals_button, 0., (double)(draw_state->max_sub_blk_lvl));
 
     //Toggle Block Pin Util
-    GtkComboBoxText* blk_pin_util = GTK_COMBO_BOX_TEXT(app->get_object("ToggleBlkPinUtil"));
+    QComboBox* blk_pin_util = GTK_COMBO_BOX_TEXT(app->get_object("ToggleBlkPinUtil"));
     QObject::connect(blk_pin_util, &QComboBox::currentIndexChanged, blk_pin_util, [blk_pin_util, app]() {
         toggle_blk_pin_util_cbk(blk_pin_util, app);
     });
 
     //Toggle Placement Macros
-    GtkComboBoxText* placement_macros = GTK_COMBO_BOX_TEXT(app->get_object("TogglePlacementMacros"));
+    QComboBox* placement_macros = GTK_COMBO_BOX_TEXT(app->get_object("TogglePlacementMacros"));
     QObject::connect(placement_macros, &QComboBox::currentIndexChanged, placement_macros, [placement_macros, app]() {
         placement_macros_cbk(placement_macros, app);
     });
@@ -147,7 +147,7 @@ void block_button_setup(ezgl::application* app) {
         hide_widget("NocLabel", app);
         hide_widget("ToggleNocBox", app);
     } else {
-        GtkComboBoxText* toggleNocBox = GTK_COMBO_BOX_TEXT(app->get_object("ToggleNocBox"));
+        QComboBox* toggleNocBox = GTK_COMBO_BOX_TEXT(app->get_object("ToggleNocBox"));
         QObject::connect(toggleNocBox, &QComboBox::currentIndexChanged, toggleNocBox, [toggleNocBox, app]() {
             toggle_noc_cbk(toggleNocBox, app);
         });
@@ -182,13 +182,13 @@ void routing_button_setup(ezgl::application* app) {
     setup_checkbox_button("ToggleHighlightRR", app, &draw_state->highlight_rr_edges);
 
     //Toggle Congestion
-    GtkComboBoxText* toggle_congestion = GTK_COMBO_BOX_TEXT(app->get_object("ToggleCongestion"));
+    QComboBox* toggle_congestion = GTK_COMBO_BOX_TEXT(app->get_object("ToggleCongestion"));
     QObject::connect(toggle_congestion, &QComboBox::currentIndexChanged, toggle_congestion, [toggle_congestion, app]() {
         toggle_cong_cbk(toggle_congestion, app);
     });
 
     //Toggle Congestion Cost
-    GtkComboBoxText* toggle_cong_cost = GTK_COMBO_BOX_TEXT(app->get_object("ToggleCongestionCost"));
+    QComboBox* toggle_cong_cost = GTK_COMBO_BOX_TEXT(app->get_object("ToggleCongestionCost"));
     QObject::connect(toggle_cong_cost, &QComboBox::currentIndexChanged, toggle_cong_cost, [toggle_cong_cost, app]() {
         toggle_cong_cost_cbk(toggle_cong_cost, app);
     });
@@ -203,13 +203,13 @@ void routing_button_setup(ezgl::application* app) {
     gtk_spin_button_set_value(toggle_routing_bbox, -1.);
 
     //Toggle Routing Expansion Costs
-    GtkComboBoxText* toggle_expansion_cost = GTK_COMBO_BOX_TEXT(app->get_object("ToggleRoutingExpansionCost"));
+    QComboBox* toggle_expansion_cost = GTK_COMBO_BOX_TEXT(app->get_object("ToggleRoutingExpansionCost"));
     QObject::connect(toggle_expansion_cost, &QComboBox::currentIndexChanged, toggle_expansion_cost, [toggle_expansion_cost, app]() {
         toggle_expansion_cost_cbk(toggle_expansion_cost, app);
     });
 
     //Toggle Router Util
-    GtkComboBoxText* toggle_router_util = GTK_COMBO_BOX_TEXT(app->get_object("ToggleRoutingUtil"));
+    QComboBox* toggle_router_util = GTK_COMBO_BOX_TEXT(app->get_object("ToggleRoutingUtil"));
     QObject::connect(toggle_router_util, &QComboBox::currentIndexChanged, toggle_router_util, [toggle_router_util, app]() {
         toggle_router_util_cbk(toggle_router_util, app);
     });
@@ -326,7 +326,7 @@ void hide_crit_path_routing(ezgl::application* app) {
 
 void hide_draw_routing(ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
-    GtkComboBoxText* toggle_nets = GTK_COMBO_BOX_TEXT(app->get_object("ToggleNetType"));
+    QComboBox* toggle_nets = GTK_COMBO_BOX_TEXT(app->get_object("ToggleNetType"));
 
     // Enable the option to draw routing only during the routing stage
     int route_item_index = get_item_index_by_text(toggle_nets, "Routing");

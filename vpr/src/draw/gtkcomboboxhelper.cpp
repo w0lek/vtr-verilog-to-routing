@@ -12,7 +12,7 @@
  * @return The number of items in the combo box.
  */
 static int get_items_count(void* combo_box) {
-    GtkComboBoxText* combo = GTK_COMBO_BOX_TEXT(combo_box);
+    QComboBox* combo = GTK_COMBO_BOX_TEXT(combo_box);
     int count = combo->count();
     return count;
 }
@@ -29,7 +29,7 @@ static int get_items_count(void* combo_box) {
  */
 int get_item_index_by_text(void* combo_box, const char* target_item) {
     int result_index = -1;
-    GtkComboBoxText* combo = GTK_COMBO_BOX_TEXT(combo_box);
+    QComboBox* combo = GTK_COMBO_BOX_TEXT(combo_box);
     result_index = combo->findText(target_item);
     return result_index;
 }

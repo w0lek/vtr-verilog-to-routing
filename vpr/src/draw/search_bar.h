@@ -29,7 +29,7 @@ void highlight_atom_block(AtomBlockId block_id);
 
 
 //Function to manage entry completions when search type is changed
-void search_type_changed(GtkComboBox* /*self*/, ezgl::application* app);
+void search_type_changed(QComboBox* /*self*/, ezgl::application* app);
 
 /*function below pops up a dialog box with no button, showing the input warning message*/
 void warning_dialog_box(const char* message);

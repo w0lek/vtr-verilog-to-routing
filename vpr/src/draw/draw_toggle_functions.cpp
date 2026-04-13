@@ -48,7 +48,7 @@ void toggle_show_nets_cbk(GtkSwitch*, bool state, ezgl::application* app) {
     app->refresh_drawing();
 }
 
-void toggle_draw_nets_cbk(GtkComboBox* self, ezgl::application* app) {
+void toggle_draw_nets_cbk(QComboBox* self, ezgl::application* app) {
     enum e_draw_nets new_state;
     t_draw_state* draw_state = get_draw_state_vars();
     char* setting = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(self));
@@ -111,10 +111,10 @@ void toggle_rr_cbk(GtkSwitch*, bool state, ezgl::application* app) {
  * @brief cbk function for toggle congestion comboBox. Updates shown cong. based on selected option
  * updates draw_state->show_congestion
  * 
- * @param self self ptr to GtkComboBoxText
+ * @param self self ptr to QComboBox
  * @param app ezgl application
  */
-void toggle_cong_cbk(GtkComboBoxText* self, ezgl::application* app) {
+void toggle_cong_cbk(QComboBox* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
     enum e_draw_congestion new_state;
     char* combo_box_content = gtk_combo_box_text_get_active_text(self);
@@ -141,7 +141,7 @@ void toggle_cong_cbk(GtkComboBoxText* self, ezgl::application* app) {
  * @param self self ptr
  * @param app ezgl app
  */
-void toggle_cong_cost_cbk(GtkComboBoxText* self, ezgl::application* app) {
+void toggle_cong_cost_cbk(QComboBox* self, ezgl::application* app) {
     /* this is the callback function for runtime created toggle_routing_congestion_cost button
      * which is written in button.cpp                                         */
     t_draw_state* draw_state = get_draw_state_vars();
@@ -213,7 +213,7 @@ void toggle_routing_bbox_cbk(GtkSpinButton* self, ezgl::application* app) {
  * @param self self ptr
  * @param app ezgl app
  */
-void toggle_router_util_cbk(GtkComboBoxText* self, ezgl::application* app) {
+void toggle_router_util_cbk(QComboBox* self, ezgl::application* app) {
     /* this is the callback function for runtime created toggle_routing_util button
      * which is written in button.cpp                                         */
     t_draw_state* draw_state = get_draw_state_vars();
@@ -266,7 +266,7 @@ void toggle_blk_internal_cbk(GtkSpinButton* self, ezgl::application* app) {
  * @param self ptr to self
  * @param app ezgl::app
  */
-void toggle_blk_pin_util_cbk(GtkComboBoxText* self, ezgl::application* app) {
+void toggle_blk_pin_util_cbk(QComboBox* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
     char* combo_box_content = gtk_combo_box_text_get_active_text(self);
     if (strcmp(combo_box_content, "None") == 0) {
@@ -291,7 +291,7 @@ void toggle_blk_pin_util_cbk(GtkComboBoxText* self, ezgl::application* app) {
  * @param self ptr to self
  * @param app ezgl::app
  */
-void placement_macros_cbk(GtkComboBoxText* self, ezgl::application* app) {
+void placement_macros_cbk(QComboBox* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
     char* combo_box_content = gtk_combo_box_text_get_active_text(self);
     if (strcmp(combo_box_content, "None") == 0)
@@ -326,7 +326,7 @@ void toggle_crit_path_cbk(GtkSwitch*, bool state, ezgl::application* app) {
  * @param self self ptr
  * @param app ezgl::application
  */
-void toggle_expansion_cost_cbk(GtkComboBoxText* self, ezgl::application* app) {
+void toggle_expansion_cost_cbk(QComboBox* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
     e_draw_router_expansion_cost new_state;
     char* combo_box_content = gtk_combo_box_text_get_active_text(self);
@@ -366,7 +366,7 @@ void toggle_expansion_cost_cbk(GtkComboBoxText* self, ezgl::application* app) {
  * @param self ptr to combo box
  * @param app ezgl application
  */
-void toggle_noc_cbk(GtkComboBoxText* self, ezgl::application* app) {
+void toggle_noc_cbk(QComboBox* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
 
     char* combo_box_content = gtk_combo_box_text_get_active_text(self);
