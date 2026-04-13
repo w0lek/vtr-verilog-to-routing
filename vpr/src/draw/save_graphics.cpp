@@ -8,7 +8,7 @@
 
 extern ezgl::rectangle initial_world;
 
-void save_graphics_from_button(GtkWidget* /*widget*/, [[maybe_unused]] int response_id, void* data) {
+void save_graphics_from_button(QWidget* /*widget*/, [[maybe_unused]] int response_id, void* data) {
     QDialog* dialog = Q_DIALOG(static_cast<QObject*>(data));
     QLineEdit* text_entry = dialog->findChild<QLineEdit*>("file_name_text_entry");
     QComboBox* combo_box = dialog->findChild<QComboBox*>("file_name_combo_box");
@@ -45,14 +45,14 @@ void save_graphics(std::string extension, std::string file_name) {
     VTR_ASSERT_MSG(result == true, "Failed to save graphics");
 }
 
-void save_graphics_dialog_box(GtkWidget* /*widget*/, ezgl::application* /*app*/) {
+void save_graphics_dialog_box(QWidget* /*widget*/, ezgl::application* /*app*/) {
     QObject* main_window;
-    GtkWidget* content_area;
-    GtkWidget* text_entry;
-    GtkWidget* name_label;
-    GtkWidget* type_label;
-    GtkWidget* dialog;
-    GtkWidget* combo_box;
+    QWidget* content_area;
+    QWidget* text_entry;
+    QWidget* name_label;
+    QWidget* type_label;
+    QWidget* dialog;
+    QWidget* combo_box;
 
     // get a pointer to the main window
     main_window = application.get_object(application.get_main_window_id().c_str());

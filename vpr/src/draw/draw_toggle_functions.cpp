@@ -410,7 +410,7 @@ void set_net_alpha_value_cbk(GtkSpinButton* self, ezgl::application* app) {
 /**
  * @brief Callback function for 3d layer checkboxes
  */
-void select_layer_cbk(GtkWidget* widget, int /*response_id*/, void* /*data*/) {
+void select_layer_cbk(QWidget* widget, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
     int index = 0;
     for (QCheckBox* checkbox : widget->parentWidget()->findChildren<QCheckBox*>(QString(), Qt::FindDirectChildrenOnly)) {
@@ -425,7 +425,7 @@ void select_layer_cbk(GtkWidget* widget, int /*response_id*/, void* /*data*/) {
 /**
  * @brief Callback function for 3d layer transparency spin buttons
  */
-void transparency_cbk(GtkWidget* widget, int /*response_id*/, void* /*data*/) {
+void transparency_cbk(QWidget* widget, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
     int index = 0;
     for (QSpinBox* spin_button : widget->parentWidget()->findChildren<QSpinBox*>(QString(), Qt::FindDirectChildrenOnly)) {
@@ -441,7 +441,7 @@ void transparency_cbk(GtkWidget* widget, int /*response_id*/, void* /*data*/) {
 /**
  * @brief Callback function for cross layer connection checkbox
  */
-void cross_layer_checkbox_cbk(GtkWidget* widget, int /*response_id*/, void* /*data*/) {
+void cross_layer_checkbox_cbk(QWidget* widget, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
 
     bool state = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
@@ -458,7 +458,7 @@ void cross_layer_checkbox_cbk(GtkWidget* widget, int /*response_id*/, void* /*da
 /**
  * @brief Callback function for cross layer connection spin button
  */
-void cross_layer_transparency_cbk(GtkWidget* widget, int /*response_id*/, void* /*data*/) {
+void cross_layer_transparency_cbk(QWidget* widget, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
 
     int value = gtk_spin_button_get_value(GTK_SPIN_BUTTON(widget));

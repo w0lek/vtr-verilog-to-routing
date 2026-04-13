@@ -82,7 +82,7 @@ void toggle_cong_cost_cbk(GtkComboBoxText* self, ezgl::application* app);
 
 /* Callback function for main.ui created toggle_routing_congestion_cost button in ui_setup.cpp.
  * Draws different types of routing costs based on user input. Changes value of draw_state->show_routing_costs. */
-void toggle_routing_congestion_cost(GtkWidget* /*widget*/, int /*response_id*/, void* /*data*/);
+void toggle_routing_congestion_cost(QWidget* /*widget*/, int /*response_id*/, void* /*data*/);
 
 /* Callback function for main.ui created toggle_routing_bounding_box button in ui_setup.cpp.
  * Controls if routing bounding box should be visualized. Changes value of draw_state->show_routing_bb */
@@ -109,12 +109,12 @@ void toggle_noc_cbk(GtkComboBoxText* self, ezgl::application* app);
 
 /* Callback function for main.ui created netMaxFanout widget in button.cpp.
  * Sets draw_state->draw_net_max_fanout to its corresponding value in the UI. */
-void net_max_fanout(GtkWidget* /*widget*/, int /*response_id*/, void* /*data*/);
+void net_max_fanout(QWidget* /*widget*/, int /*response_id*/, void* /*data*/);
 
 /* Callback function for main.ui created netAlpha widget in button.cpp.
  * Sets draw_state->net_alpha (a value from 0 to 1 representing transparency) to
  * its corresponding value in the UI. */
-void set_net_alpha_value(GtkWidget* /*widget*/, int /*response_id*/, void* /*data*/);
+void set_net_alpha_value(QWidget* /*widget*/, int /*response_id*/, void* /*data*/);
 
 /**
  * @brief Callback function for 3d layer checkboxes
@@ -122,7 +122,7 @@ void set_net_alpha_value(GtkWidget* /*widget*/, int /*response_id*/, void* /*dat
  *
  * @param widget: pointer to the gtk widget for 3d layer checkboxes
  */
-void select_layer_cbk(GtkWidget* widget, int /*response_id*/, void* /*data*/);
+void select_layer_cbk(QWidget* widget, int /*response_id*/, void* /*data*/);
 
 /**
  * @brief Callback function for 3d layer transparency spin buttons
@@ -130,7 +130,7 @@ void select_layer_cbk(GtkWidget* widget, int /*response_id*/, void* /*data*/);
  *
  * @param widget: gtk widget for layer transparency spin buttons
  */
-void transparency_cbk(GtkWidget* widget, int /*response_id*/, void* /*data*/);
+void transparency_cbk(QWidget* widget, int /*response_id*/, void* /*data*/);
 
 /**
  * @brief Callback function for cross layer connection checkbox
@@ -139,7 +139,7 @@ void transparency_cbk(GtkWidget* widget, int /*response_id*/, void* /*data*/);
  *
  * @param widget: gtk widget for the cross layer connection checkbox
  */
-void cross_layer_checkbox_cbk(GtkWidget* widget, int /*response_id*/, void* /*data*/);
+void cross_layer_checkbox_cbk(QWidget* widget, int /*response_id*/, void* /*data*/);
 
 /**
  * @brief Callback function for cross layer connection spin button
@@ -147,5 +147,5 @@ void cross_layer_checkbox_cbk(GtkWidget* widget, int /*response_id*/, void* /*da
  *
  * @param widget: gtk widget for the cross layer connection transparency spin button
  */
-void cross_layer_transparency_cbk(GtkWidget* widget, int /*response_id*/, void* /*data*/);
+void cross_layer_transparency_cbk(QWidget* widget, int /*response_id*/, void* /*data*/);
 #endif /* NO_GRAPHICS */

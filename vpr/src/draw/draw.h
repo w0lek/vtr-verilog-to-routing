@@ -156,7 +156,7 @@ ezgl::color get_block_type_color(t_physical_tile_type_ptr type);
 /* Lightens a color's luminance [0, 1] by an absolute 'amount' */
 ezgl::color lighten_color(ezgl::color color, float amount);
 
-void toggle_window_mode(GtkWidget* /*widget*/, ezgl::application* /*app*/);
+void toggle_window_mode(QWidget* /*widget*/, ezgl::application* /*app*/);
 
 size_t get_max_fanout();
 

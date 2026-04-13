@@ -46,7 +46,7 @@
 
 extern std::string rr_highlight_message;
 
-void search_and_highlight(GtkWidget* /*widget*/, ezgl::application* app) {
+void search_and_highlight(QWidget* /*widget*/, ezgl::application* app) {
     const DeviceContext& device_ctx = g_vpr_ctx.device();
     const ClusteringContext& cluster_ctx = g_vpr_ctx.clustering();
     const AtomContext& atom_ctx = g_vpr_ctx.atom();

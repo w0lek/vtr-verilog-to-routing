@@ -37,26 +37,26 @@ void draw_manual_moves_window(const std::string& block_id) {
         gtk_window_set_title((GtkWindow*)draw_state->manual_moves_state.manual_move_window, "Manual Moves Generator");
         gtk_widget_set_name(draw_state->manual_moves_state.manual_move_window, "manual_move_window");
 
-        GtkWidget* grid = gtk_grid_new();
-        GtkWidget* block_entry = gtk_entry_new();
+        QWidget* grid = gtk_grid_new();
+        QWidget* block_entry = gtk_entry_new();
 
         if (draw_state->manual_moves_state.user_highlighted_block) {
             gtk_entry_set_text((GtkEntry*)block_entry, block_id.c_str());
             draw_state->manual_moves_state.user_highlighted_block = false;
         }
 
-        GtkWidget* x_position_entry = gtk_entry_new();
-        GtkWidget* y_position_entry = gtk_entry_new();
-        GtkWidget* layer_position_entry = gtk_entry_new();
-        GtkWidget* subtile_position_entry = gtk_entry_new();
-        GtkWidget* block_label = gtk_label_new("Block ID/Block Name:");
-        GtkWidget* to_label = gtk_label_new("To Location:");
-        GtkWidget* x = gtk_label_new("x:");
-        GtkWidget* y = gtk_label_new("y:");
-        GtkWidget* layer = gtk_label_new("layer:");
-        GtkWidget* subtile = gtk_label_new("Subtile:");
+        QWidget* x_position_entry = gtk_entry_new();
+        QWidget* y_position_entry = gtk_entry_new();
+        QWidget* layer_position_entry = gtk_entry_new();
+        QWidget* subtile_position_entry = gtk_entry_new();
+        QWidget* block_label = gtk_label_new("Block ID/Block Name:");
+        QWidget* to_label = gtk_label_new("To Location:");
+        QWidget* x = gtk_label_new("x:");
+        QWidget* y = gtk_label_new("y:");
+        QWidget* layer = gtk_label_new("layer:");
+        QWidget* subtile = gtk_label_new("Subtile:");
 
-        GtkWidget* calculate_cost_button = gtk_button_new_with_label("Calculate Costs");
+        QWidget* calculate_cost_button = gtk_button_new_with_label("Calculate Costs");
 
         //Add all to grid
         gtk_grid_attach((GtkGrid*)grid, block_label, 0, 0, 1, 1);
@@ -95,7 +95,7 @@ void draw_manual_moves_window(const std::string& block_id) {
     }
 }
 
-void calculate_cost_callback(GtkWidget* /*widget*/, GtkWidget* grid) {
+void calculate_cost_callback(QWidget* /*widget*/, QWidget* grid) {
     int block_id = -1;
     bool valid_input = true;
 
@@ -105,7 +105,7 @@ void calculate_cost_callback(GtkWidget* /*widget*/, GtkWidget* grid) {
     const ClusteringContext& cluster_ctx = g_vpr_ctx.clustering();
 
     //Getting entry values
-    GtkWidget* block_entry = gtk_grid_get_child_at((GtkGrid*)grid, 0, 1);
+    QWidget* block_entry = gtk_grid_get_child_at((GtkGrid*)grid, 0, 1);
     std::string block_id_string = gtk_entry_get_text((GtkEntry*)block_entry);
 
     if (string_is_a_number(block_id_string)) { //for block ID
@@ -114,10 +114,10 @@ void calculate_cost_callback(GtkWidget* /*widget*/, GtkWidget* grid) {
         block_id = size_t(cluster_ctx.clb_nlist.find_block(gtk_entry_get_text((GtkEntry*)block_entry)));
     }
 
-    GtkWidget* x_position_entry = gtk_grid_get_child_at((GtkGrid*)grid, 2, 1);
-    GtkWidget* y_position_entry = gtk_grid_get_child_at((GtkGrid*)grid, 2, 2);
-    GtkWidget* layer_position_entry = gtk_grid_get_child_at((GtkGrid*)grid, 2, 3);
-    GtkWidget* subtile_position_entry = gtk_grid_get_child_at((GtkGrid*)grid, 2, 4);
+    QWidget* x_position_entry = gtk_grid_get_child_at((GtkGrid*)grid, 2, 1);
+    QWidget* y_position_entry = gtk_grid_get_child_at((GtkGrid*)grid, 2, 2);
+    QWidget* layer_position_entry = gtk_grid_get_child_at((GtkGrid*)grid, 2, 3);
+    QWidget* subtile_position_entry = gtk_grid_get_child_at((GtkGrid*)grid, 2, 4);
 
     int x_location = std::atoi(gtk_entry_get_text((GtkEntry*)x_position_entry));
     int y_location = std::atoi(gtk_entry_get_text((GtkEntry*)y_position_entry));
@@ -148,7 +148,7 @@ void calculate_cost_callback(GtkWidget* /*widget*/, GtkWidget* grid) {
         application.refresh_drawing();
 
         //Continues to move costs window.
-        GtkWidget* proceed = find_button("ProceedButton");
+        QWidget* proceed = find_button("ProceedButton");
         ezgl::press_proceed(proceed, &application);
 
     } else {
@@ -212,8 +212,8 @@ bool manual_move_is_selected() {
 
 void manual_move_cost_summary_dialog() {
     t_draw_state* draw_state = get_draw_state_vars();
-    GtkWidget* dialog;
-    GtkWidget* content_area;
+    QWidget* dialog;
+    QWidget* content_area;
 
     const GtkDialogButton btns[] = {
         {"Accept", GTK_RESPONSE_ACCEPT},
@@ -226,19 +226,19 @@ void manual_move_cost_summary_dialog() {
     gtk_window_set_transient_for((GtkWindow*)dialog, (GtkWindow*)draw_state->manual_moves_state.manual_move_window);
 
     //Create elements for the dialog and printing costs to the user.
-    GtkWidget* title_label = gtk_label_new(nullptr);
+    QWidget* title_label = gtk_label_new(nullptr);
     gtk_label_set_markup((GtkLabel*)title_label, "<b>Move Costs and Outcomes</b>");
     std::string delta_cost = "Delta Cost: " + std::to_string(draw_state->manual_moves_state.manual_move_info.delta_cost) + "   ";
-    GtkWidget* delta_cost_label = gtk_label_new(delta_cost.c_str());
+    QWidget* delta_cost_label = gtk_label_new(delta_cost.c_str());
     std::string delta_timing = "   Delta Timing: " + std::to_string(draw_state->manual_moves_state.manual_move_info.delta_timing) + "   ";
-    GtkWidget* delta_timing_label = gtk_label_new(delta_timing.c_str());
+    QWidget* delta_timing_label = gtk_label_new(delta_timing.c_str());
     std::string delta_bounding_box = "  Delta Bounding Box Cost: " + std::to_string(draw_state->manual_moves_state.manual_move_info.delta_bounding_box) + "   ";
-    GtkWidget* delta_bounding_box_label = gtk_label_new(delta_bounding_box.c_str());
+    QWidget* delta_bounding_box_label = gtk_label_new(delta_bounding_box.c_str());
     std::string outcome = e_move_result_to_string(draw_state->manual_moves_state.manual_move_info.placer_move_outcome);
     std::string move_outcome = "  Annealing Decision: " + outcome + "   ";
-    GtkWidget* move_outcome_label = gtk_label_new(move_outcome.c_str());
-    GtkWidget* space_label1 = gtk_label_new("    ");
-    GtkWidget* space_label2 = gtk_label_new("    ");
+    QWidget* move_outcome_label = gtk_label_new(move_outcome.c_str());
+    QWidget* space_label1 = gtk_label_new("    ");
+    QWidget* space_label2 = gtk_label_new("    ");
 
     //Attach elements to the content area of the dialog.
     content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));

@@ -18,7 +18,7 @@
 #include <QCompleter>
 #include "vpr_qtcompat.h"
 
-void search_and_highlight(GtkWidget* /*widget*/, ezgl::application* app);
+void search_and_highlight(QWidget* /*widget*/, ezgl::application* app);
 bool highlight_rr_nodes(RRNodeId hit_node);
 void auto_zoom_rr_node(RRNodeId rr_node_id);
 void highlight_cluster_block(ClusterBlockId clb_index);

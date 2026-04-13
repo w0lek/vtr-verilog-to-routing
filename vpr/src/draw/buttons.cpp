@@ -26,7 +26,7 @@ int button_row = 2; // 2 is the row num of the window button in main.ui, add but
 void delete_button(const char* button_name) {
     QWidget* main_window_grid = application.get_widget("InnerGrid");
     QList<QWidget*> list_of_widgets = gtk_container_get_children(GTK_CONTAINER(main_window_grid));
-    GtkWidget* target_button = nullptr;
+    QWidget* target_button = nullptr;
 
     // loop through the list to find the button
     for (QWidget* widget : list_of_widgets) {
@@ -42,7 +42,7 @@ void delete_button(const char* button_name) {
 }
 
 [[deprecated("todo: move to ezgl")]]
-GtkWidget* find_button(const char* button_name) {
+QWidget* find_button(const char* button_name) {
     QWidget* main_window_grid = application.get_widget("InnerGrid");
     QList<QWidget*> list_of_widgets = gtk_container_get_children(GTK_CONTAINER(main_window_grid));
 

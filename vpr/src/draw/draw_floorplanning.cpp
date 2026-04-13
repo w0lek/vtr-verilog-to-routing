@@ -239,7 +239,7 @@ enum {
 };
 
 //Highlights partition clicked on in the legend.
-void highlight_selected_partition(GtkWidget* widget) {
+void highlight_selected_partition(QWidget* widget) {
     QTreeWidget* tree = qobject_cast<QTreeWidget*>(widget);
     if (!tree) return;
 
@@ -272,7 +272,7 @@ void highlight_selected_partition(GtkWidget* widget) {
 }
 
 
-GtkWidget* setup_floorplanning_legend(GtkWidget* content_tree) {
+QWidget* setup_floorplanning_legend(QWidget* content_tree) {
     QTreeWidget* tree = qobject_cast<QTreeWidget*>(content_tree);
     if (!tree) return content_tree;
 

@@ -98,11 +98,11 @@ static void draw_main_canvas(ezgl::renderer* g);
 static void on_stage_change_setup(ezgl::application* app, bool is_new_window);
 
 static void setup_default_ezgl_callbacks(ezgl::application* app);
-static void set_force_pause(GtkWidget* /*widget*/, int /*response_id*/, void* /*data*/);
-static void set_block_outline(GtkWidget* widget, int /*response_id*/, void* /*data*/);
-static void set_block_text(GtkWidget* widget, int /*response_id*/, void* /*data*/);
-static void set_draw_partitions(GtkWidget* widget, int /*response_id*/, void* /*data*/);
-static void clip_routing_util(GtkWidget* widget, int /*response_id*/, void* /*data*/);
+static void set_force_pause(QWidget* /*widget*/, int /*response_id*/, void* /*data*/);
+static void set_block_outline(QWidget* widget, int /*response_id*/, void* /*data*/);
+static void set_block_text(QWidget* widget, int /*response_id*/, void* /*data*/);
+static void set_draw_partitions(QWidget* widget, int /*response_id*/, void* /*data*/);
+static void clip_routing_util(QWidget* widget, int /*response_id*/, void* /*data*/);
 static void run_graphics_commands(const std::string& commands);
 
 /************************** File Scope Variables ****************************/
@@ -397,7 +397,7 @@ void update_screen(ScreenUpdatePriority priority,
 }
 
 #ifndef NO_GRAPHICS
-void toggle_window_mode(GtkWidget* /*widget*/,
+void toggle_window_mode(QWidget* /*widget*/,
                         ezgl::application* app) {
     window_mode = true;
     app->update_message("Zoom to Selection: Click on two points to define a rectangle to zoom into.");
@@ -1102,7 +1102,7 @@ static void setup_default_ezgl_callbacks(ezgl::application* app) {
 }
 
 // Callback function for Block Outline checkbox
-static void set_block_outline(GtkWidget* widget, int /*response_id*/, void* /*data*/) {
+static void set_block_outline(QWidget* widget, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
 
     // assign corresponding bool value to draw_state->draw_block_outlines
@@ -1116,7 +1116,7 @@ static void set_block_outline(GtkWidget* widget, int /*response_id*/, void* /*da
 }
 
 // Callback function for Block Text checkbox
-static void set_block_text(GtkWidget* widget, int /*response_id*/, void* /*data*/) {
+static void set_block_text(QWidget* widget, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
 
     // assign corresponding bool value to draw_state->draw_block_text
@@ -1131,7 +1131,7 @@ static void set_block_text(GtkWidget* widget, int /*response_id*/, void* /*data*
 }
 
 // Callback function for Clip Routing Util checkbox
-static void clip_routing_util(GtkWidget* widget, int /*response_id*/, void* /*data*/) {
+static void clip_routing_util(QWidget* widget, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
 
     // assign corresponding bool value to draw_state->clip_routing_util
@@ -1165,7 +1165,7 @@ static void on_dialog_response(GtkDialog* dialog, int response_id, void* /* user
 }
 
 // Callback function for Draw Partitions checkbox
-static void set_draw_partitions(GtkWidget* widget, int /*response_id*/, void* /*data*/) {
+static void set_draw_partitions(QWidget* widget, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget))) {
@@ -1200,7 +1200,7 @@ static void set_draw_partitions(GtkWidget* widget, int /*response_id*/, void* /*
     application.refresh_drawing();
 }
 
-static void set_force_pause(GtkWidget* /*widget*/, int /*response_id*/, void* /*data*/) {
+static void set_force_pause(QWidget* /*widget*/, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
 
     draw_state->forced_pause = true;

@@ -107,7 +107,7 @@ struct GtkDialogButton {
     const char* text;
     int response;
 };
-GtkWidget* gtk_dialog_new_with_buttons(
+QWidget* gtk_dialog_new_with_buttons(
     const char* title,
     QWidget* parent,
     int flags,

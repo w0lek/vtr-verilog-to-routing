@@ -234,14 +234,14 @@ void view_button_setup(ezgl::application* app) {
             std::string label = "Layer " + std::to_string(i);
             std::string trans_label = "Transparency " + std::to_string(i);
 
-            GtkWidget* checkbox = gtk_check_button_new_with_label(label.c_str());
+            QWidget* checkbox = gtk_check_button_new_with_label(label.c_str());
             // Add margins to checkboxes to match the transparency spin button height
             gtk_widget_set_margin_top(checkbox, 7);
             gtk_widget_set_margin_bottom(checkbox, 7);
 
             gtk_box_pack_start(GTK_BOX(box), checkbox, FALSE, FALSE, 0);
 
-            GtkWidget* spin_button = gtk_spin_button_new_with_range(0, 255, 1);
+            QWidget* spin_button = gtk_spin_button_new_with_range(0, 255, 1);
             gtk_widget_set_name(spin_button, g_strdup(trans_label.c_str()));
             gtk_box_pack_start(GTK_BOX(trans_box), spin_button, FALSE, FALSE, 0);
 
@@ -261,12 +261,12 @@ void view_button_setup(ezgl::application* app) {
         std::string label = "Cross Layer Connections";
         std::string trans_label = "CrossLayerConnectionsTransparency";
 
-        GtkWidget* checkbox = gtk_check_button_new_with_label(label.c_str());
+        QWidget* checkbox = gtk_check_button_new_with_label(label.c_str());
         gtk_widget_set_margin_top(checkbox, 7);
         gtk_widget_set_margin_bottom(checkbox, 7);
         gtk_box_pack_start(GTK_BOX(box), checkbox, FALSE, FALSE, 0);
 
-        GtkWidget* spin_button = gtk_spin_button_new_with_range(0, 255, 1);
+        QWidget* spin_button = gtk_spin_button_new_with_range(0, 255, 1);
         gtk_widget_set_name(spin_button, g_strdup(trans_label.c_str()));
         gtk_box_pack_start(GTK_BOX(trans_box), spin_button, FALSE, FALSE, 0);
 
@@ -348,7 +348,7 @@ void hide_draw_routing(ezgl::application* app) {
  * @param app ezgl app
  */
 void hide_widget(std::string widgetName, ezgl::application* app) {
-    GtkWidget* widget = GTK_WIDGET(app->get_object(widgetName.c_str()));
+    QWidget* widget = GTK_WIDGET(app->get_object(widgetName.c_str()));
     gtk_widget_hide(widget);
 }
 
@@ -356,7 +356,7 @@ void hide_widget(std::string widgetName, ezgl::application* app) {
  * @brief Hides the widget with the given name
  */
 void show_widget(std::string widgetName, ezgl::application* app) {
-    GtkWidget* widget = GTK_WIDGET(app->get_object(widgetName.c_str()));
+    QWidget* widget = GTK_WIDGET(app->get_object(widgetName.c_str()));
     gtk_widget_show(widget);
 }
 
