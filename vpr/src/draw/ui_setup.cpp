@@ -41,20 +41,20 @@ static void setup_checkbox_button(std::string button_id, ezgl::application* app,
 
 void basic_button_setup(ezgl::application* app) {
     //button to enter window_mode, created in main.ui
-    GtkButton* window = (GtkButton*)app->get_object("Window");
+    QAbstractButton* window = app->get_abstract_button("Window");
     QObject::connect(window, &QAbstractButton::clicked, window, [app]() {
         toggle_window_mode(/*widget=*/nullptr, app);
     });
 
     //button to search, created in main.ui
-    GtkButton* search = (GtkButton*)app->get_object("Search");
+    QAbstractButton* search = app->get_abstract_button("Search");
     gtk_button_set_label(search, "Search");
     QObject::connect(search, &QAbstractButton::clicked, search, [app]() {
         search_and_highlight(/*widget=*/nullptr, app);
     });
 
     //button for save graphics, created in main.ui
-    GtkButton* save = (GtkButton*)app->get_object("SaveGraphics");
+    QAbstractButton* save = app->get_abstract_button("SaveGraphics");
     QObject::connect(save, &QAbstractButton::clicked, save, []() {
         save_graphics_dialog_box(/*widget=*/nullptr, /*app=*/nullptr);
     });
