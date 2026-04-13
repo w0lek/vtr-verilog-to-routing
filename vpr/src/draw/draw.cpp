@@ -98,11 +98,11 @@ static void draw_main_canvas(ezgl::renderer* g);
 static void on_stage_change_setup(ezgl::application* app, bool is_new_window);
 
 static void setup_default_ezgl_callbacks(ezgl::application* app);
-static void set_force_pause(GtkWidget* /*widget*/, gint /*response_id*/, gpointer /*data*/);
-static void set_block_outline(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/);
-static void set_block_text(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/);
-static void set_draw_partitions(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/);
-static void clip_routing_util(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/);
+static void set_force_pause(GtkWidget* /*widget*/, int /*response_id*/, void* /*data*/);
+static void set_block_outline(GtkWidget* widget, int /*response_id*/, void* /*data*/);
+static void set_block_text(GtkWidget* widget, int /*response_id*/, void* /*data*/);
+static void set_draw_partitions(GtkWidget* widget, int /*response_id*/, void* /*data*/);
+static void clip_routing_util(GtkWidget* widget, int /*response_id*/, void* /*data*/);
 static void run_graphics_commands(const std::string& commands);
 
 /************************** File Scope Variables ****************************/
@@ -1102,7 +1102,7 @@ static void setup_default_ezgl_callbacks(ezgl::application* app) {
 }
 
 // Callback function for Block Outline checkbox
-static void set_block_outline(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/) {
+static void set_block_outline(GtkWidget* widget, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
 
     // assign corresponding bool value to draw_state->draw_block_outlines
@@ -1116,7 +1116,7 @@ static void set_block_outline(GtkWidget* widget, gint /*response_id*/, gpointer 
 }
 
 // Callback function for Block Text checkbox
-static void set_block_text(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/) {
+static void set_block_text(GtkWidget* widget, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
 
     // assign corresponding bool value to draw_state->draw_block_text
@@ -1131,7 +1131,7 @@ static void set_block_text(GtkWidget* widget, gint /*response_id*/, gpointer /*d
 }
 
 // Callback function for Clip Routing Util checkbox
-static void clip_routing_util(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/) {
+static void clip_routing_util(GtkWidget* widget, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
 
     // assign corresponding bool value to draw_state->clip_routing_util
@@ -1145,7 +1145,7 @@ static void clip_routing_util(GtkWidget* widget, gint /*response_id*/, gpointer 
     application.refresh_drawing();
 }
 
-static void on_dialog_response(GtkDialog* dialog, gint response_id, gpointer /* user_data*/) {
+static void on_dialog_response(GtkDialog* dialog, int response_id, void* /* user_data*/) {
     switch (response_id) {
         case GTK_RESPONSE_ACCEPT:
             std::cout << "GTK_RESPONSE_ACCEPT ";
@@ -1165,7 +1165,7 @@ static void on_dialog_response(GtkDialog* dialog, gint response_id, gpointer /* 
 }
 
 // Callback function for Draw Partitions checkbox
-static void set_draw_partitions(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/) {
+static void set_draw_partitions(GtkWidget* widget, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget))) {
@@ -1200,7 +1200,7 @@ static void set_draw_partitions(GtkWidget* widget, gint /*response_id*/, gpointe
     application.refresh_drawing();
 }
 
-static void set_force_pause(GtkWidget* /*widget*/, gint /*response_id*/, gpointer /*data*/) {
+static void set_force_pause(GtkWidget* /*widget*/, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
 
     draw_state->forced_pause = true;

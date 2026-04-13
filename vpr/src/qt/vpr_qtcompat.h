@@ -69,12 +69,12 @@ QLabel* gtk_label_new(const QString& text);
 void gtk_label_set_markup(QLabel* label, const QString& text);
 void gtk_entry_set_text(QLineEdit* lineEdit, const QString& text);
 QLineEdit* gtk_entry_new();
-const gchar* gtk_entry_get_text(QLineEdit* lineEdit);
+const char* gtk_entry_get_text(QLineEdit* lineEdit);
 void gtk_widget_set_name(QWidget* w, const QString& name);
 void gtk_widget_set_sensitive(QWidget* w, bool flag);
-const gchar* gtk_button_get_label(QPushButton* button);
+const char* gtk_button_get_label(QPushButton* button);
 QPushButton* gtk_button_new_with_label(const char* text);
-const gchar* gtk_widget_get_name(QWidget* w);
+const char* gtk_widget_get_name(QWidget* w);
 void gtk_window_set_title(QWidget* w, const char* title);
 
 #define GTK_WINDOW_TOPLEVEL 0

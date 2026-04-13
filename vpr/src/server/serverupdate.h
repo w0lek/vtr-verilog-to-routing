@@ -12,7 +12,7 @@ namespace server {
  * It acts as the central control point for processing client interactions and orchestrating server-side operations 
  * within the specified time intervals.
  */
-gboolean update(gpointer);
+bool update(void*);
 
 } // namespace server
 

@@ -15,6 +15,6 @@
  * @return The index of the item if found, or -1 if not found.
  */
 [[deprecated("todo: move to ezgl")]]
-gint get_item_index_by_text(gpointer combo_box, const gchar* target_item);
+int get_item_index_by_text(void* combo_box, const char* target_item);
 
 #endif // NO_GRAPHICS

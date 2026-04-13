@@ -60,7 +60,7 @@ void basic_button_setup(ezgl::application* app) {
     });
 
     //combo box for search type, created in main.ui
-    GObject* search_type = (GObject*)app->get_object("SearchType");
+    QObject* search_type = (QObject*)app->get_object("SearchType");
     QComboBox* search_type_combo = qobject_cast<QComboBox*>(search_type);
     QObject::connect(search_type_combo, &QComboBox::currentIndexChanged, search_type_combo, [search_type_combo, app]() {
         search_type_changed(search_type_combo, app);

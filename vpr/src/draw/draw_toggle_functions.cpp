@@ -31,7 +31,7 @@ void toggle_checkbox_cbk(GtkToggleButton* self, t_checkbox_data* data) {
     data->app->refresh_drawing();
 }
 
-void toggle_show_nets_cbk(GtkSwitch*, gboolean state, ezgl::application* app) {
+void toggle_show_nets_cbk(GtkSwitch*, bool state, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
 
     draw_state->show_nets = state;
@@ -51,7 +51,7 @@ void toggle_show_nets_cbk(GtkSwitch*, gboolean state, ezgl::application* app) {
 void toggle_draw_nets_cbk(GtkComboBox* self, ezgl::application* app) {
     enum e_draw_nets new_state;
     t_draw_state* draw_state = get_draw_state_vars();
-    gchar* setting = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(self));
+    char* setting = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(self));
 
     // assign corresponding enum value to draw_state->show_nets
     if (strcmp(setting, "Routing") == 0) {
@@ -86,7 +86,7 @@ void toggle_draw_nets_cbk(GtkComboBox* self, ezgl::application* app) {
  * @param self ptr to gtkComboBoxText object
  * @param app ezgl application
  */
-void toggle_rr_cbk(GtkSwitch*, gboolean state, ezgl::application* app) {
+void toggle_rr_cbk(GtkSwitch*, bool state, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
 
     draw_state->show_rr = state;
@@ -117,7 +117,7 @@ void toggle_rr_cbk(GtkSwitch*, gboolean state, ezgl::application* app) {
 void toggle_cong_cbk(GtkComboBoxText* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
     enum e_draw_congestion new_state;
-    gchar* combo_box_content = gtk_combo_box_text_get_active_text(self);
+    char* combo_box_content = gtk_combo_box_text_get_active_text(self);
     if (strcmp(combo_box_content, "None") == 0)
         new_state = DRAW_NO_CONGEST;
     else if (strcmp(combo_box_content, "Congested") == 0)
@@ -146,7 +146,7 @@ void toggle_cong_cost_cbk(GtkComboBoxText* self, ezgl::application* app) {
      * which is written in button.cpp                                         */
     t_draw_state* draw_state = get_draw_state_vars();
     enum e_draw_routing_costs new_state;
-    gchar* combo_box_content = gtk_combo_box_text_get_active_text(self);
+    char* combo_box_content = gtk_combo_box_text_get_active_text(self);
     if (strcmp(combo_box_content, "None") == 0)
         new_state = DRAW_NO_ROUTING_COSTS;
     else if (strcmp(combo_box_content, "Total Routing Costs") == 0)
@@ -219,7 +219,7 @@ void toggle_router_util_cbk(GtkComboBoxText* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
     enum e_draw_routing_util new_state;
 
-    gchar* combo_box_content = gtk_combo_box_text_get_active_text(self);
+    char* combo_box_content = gtk_combo_box_text_get_active_text(self);
     if (strcmp(combo_box_content, "None") == 0)
         new_state = DRAW_NO_ROUTING_UTIL;
     else if (strcmp(combo_box_content, "Routing Util") == 0)
@@ -268,7 +268,7 @@ void toggle_blk_internal_cbk(GtkSpinButton* self, ezgl::application* app) {
  */
 void toggle_blk_pin_util_cbk(GtkComboBoxText* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
-    gchar* combo_box_content = gtk_combo_box_text_get_active_text(self);
+    char* combo_box_content = gtk_combo_box_text_get_active_text(self);
     if (strcmp(combo_box_content, "None") == 0) {
         draw_state->show_blk_pin_util = DRAW_NO_BLOCK_PIN_UTIL;
         draw_reset_blk_colors();
@@ -293,7 +293,7 @@ void toggle_blk_pin_util_cbk(GtkComboBoxText* self, ezgl::application* app) {
  */
 void placement_macros_cbk(GtkComboBoxText* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
-    gchar* combo_box_content = gtk_combo_box_text_get_active_text(self);
+    char* combo_box_content = gtk_combo_box_text_get_active_text(self);
     if (strcmp(combo_box_content, "None") == 0)
         draw_state->show_placement_macros = DRAW_NO_PLACEMENT_MACROS;
     else
@@ -303,7 +303,7 @@ void placement_macros_cbk(GtkComboBoxText* self, ezgl::application* app) {
     app->refresh_drawing();
 }
 
-void toggle_crit_path_cbk(GtkSwitch*, gboolean state, ezgl::application* app) {
+void toggle_crit_path_cbk(GtkSwitch*, bool state, ezgl::application* app) {
 
     t_draw_state* draw_state = get_draw_state_vars();
 
@@ -329,7 +329,7 @@ void toggle_crit_path_cbk(GtkSwitch*, gboolean state, ezgl::application* app) {
 void toggle_expansion_cost_cbk(GtkComboBoxText* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
     e_draw_router_expansion_cost new_state;
-    gchar* combo_box_content = gtk_combo_box_text_get_active_text(self);
+    char* combo_box_content = gtk_combo_box_text_get_active_text(self);
     if (strcmp(combo_box_content, "None") == 0) {
         new_state = DRAW_NO_ROUTER_EXPANSION_COST;
     } else if (strcmp(combo_box_content, "Total") == 0) {
@@ -369,7 +369,7 @@ void toggle_expansion_cost_cbk(GtkComboBoxText* self, ezgl::application* app) {
 void toggle_noc_cbk(GtkComboBoxText* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
 
-    gchar* combo_box_content = gtk_combo_box_text_get_active_text(self);
+    char* combo_box_content = gtk_combo_box_text_get_active_text(self);
     if (strcmp(combo_box_content, "None") == 0) {
         draw_state->draw_noc = DRAW_NO_NOC;
     } else if (strcmp(combo_box_content, "NoC Links") == 0)
@@ -410,7 +410,7 @@ void set_net_alpha_value_cbk(GtkSpinButton* self, ezgl::application* app) {
 /**
  * @brief Callback function for 3d layer checkboxes
  */
-void select_layer_cbk(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/) {
+void select_layer_cbk(GtkWidget* widget, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
     int index = 0;
     for (QCheckBox* checkbox : widget->parentWidget()->findChildren<QCheckBox*>(QString(), Qt::FindDirectChildrenOnly)) {
@@ -425,7 +425,7 @@ void select_layer_cbk(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/
 /**
  * @brief Callback function for 3d layer transparency spin buttons
  */
-void transparency_cbk(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/) {
+void transparency_cbk(GtkWidget* widget, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
     int index = 0;
     for (QSpinBox* spin_button : widget->parentWidget()->findChildren<QSpinBox*>(QString(), Qt::FindDirectChildrenOnly)) {
@@ -441,10 +441,10 @@ void transparency_cbk(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/
 /**
  * @brief Callback function for cross layer connection checkbox
  */
-void cross_layer_checkbox_cbk(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/) {
+void cross_layer_checkbox_cbk(GtkWidget* widget, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
 
-    gboolean state = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
+    bool state = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
 
     if (state) {
         draw_state->cross_layer_display.visible = true;
@@ -458,10 +458,10 @@ void cross_layer_checkbox_cbk(GtkWidget* widget, gint /*response_id*/, gpointer 
 /**
  * @brief Callback function for cross layer connection spin button
  */
-void cross_layer_transparency_cbk(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/) {
+void cross_layer_transparency_cbk(GtkWidget* widget, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
 
-    gint value = gtk_spin_button_get_value(GTK_SPIN_BUTTON(widget));
+    int value = gtk_spin_button_get_value(GTK_SPIN_BUTTON(widget));
     draw_state->cross_layer_display.alpha = 255 - value;
 
     application.refresh_drawing();

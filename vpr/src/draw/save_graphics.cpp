@@ -8,7 +8,7 @@
 
 extern ezgl::rectangle initial_world;
 
-void save_graphics_from_button(GtkWidget* /*widget*/, [[maybe_unused]] gint response_id, gpointer data) {
+void save_graphics_from_button(GtkWidget* /*widget*/, [[maybe_unused]] int response_id, void* data) {
     QDialog* dialog = Q_DIALOG(static_cast<QObject*>(data));
     QLineEdit* text_entry = dialog->findChild<QLineEdit*>("file_name_text_entry");
     QComboBox* combo_box = dialog->findChild<QComboBox*>("file_name_combo_box");
@@ -46,7 +46,7 @@ void save_graphics(std::string extension, std::string file_name) {
 }
 
 void save_graphics_dialog_box(GtkWidget* /*widget*/, ezgl::application* /*app*/) {
-    GObject* main_window;
+    QObject* main_window;
     GtkWidget* content_area;
     GtkWidget* text_entry;
     GtkWidget* name_label;

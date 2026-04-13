@@ -11,7 +11,7 @@
  * @param combo_box A pointer to the combo box widget.
  * @return The number of items in the combo box.
  */
-static gint get_items_count(gpointer combo_box) {
+static int get_items_count(void* combo_box) {
     GtkComboBoxText* combo = GTK_COMBO_BOX_TEXT(combo_box);
     int count = combo->count();
     return count;
@@ -27,8 +27,8 @@ static gint get_items_count(gpointer combo_box) {
  * @param target_item The text of the item to search for.
  * @return The index of the item if found, or -1 if not found.
  */
-gint get_item_index_by_text(gpointer combo_box, const gchar* target_item) {
-    gint result_index = -1;
+int get_item_index_by_text(void* combo_box, const char* target_item) {
+    int result_index = -1;
     GtkComboBoxText* combo = GTK_COMBO_BOX_TEXT(combo_box);
     result_index = combo->findText(target_item);
     return result_index;

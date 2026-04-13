@@ -491,8 +491,8 @@ void enable_autocomplete(ezgl::application* app) {
 
 //Returns current search type. Returns empty string if fails
 std::string get_search_type(ezgl::application* app) {
-    GObject* combo_box = (GObject*)app->get_object("SearchType");
-    gchar* type = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(combo_box));
+    QObject* combo_box = (QObject*)app->get_object("SearchType");
+    char* type = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(combo_box));
     //Checking that a type is selected
     if (!type || (type && type[0] == '\0')) {
         warning_dialog_box("Please select a search type");

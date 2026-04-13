@@ -178,7 +178,7 @@ QLineEdit* gtk_entry_new()
   return new QLineEdit;
 }
 
-const gchar* gtk_entry_get_text(QLineEdit* lineEdit)
+const char* gtk_entry_get_text(QLineEdit* lineEdit)
 {
   return lineEdit->text().toStdString().c_str();
 }
@@ -193,7 +193,7 @@ void gtk_widget_set_sensitive(QWidget* w, bool flag)
   w->setEnabled(flag);
 }
 
-const gchar* gtk_button_get_label(QPushButton* button)
+const char* gtk_button_get_label(QPushButton* button)
 {
   return button->text().toStdString().c_str();
 }
@@ -204,7 +204,7 @@ QPushButton* gtk_button_new_with_label(const char* text)
   return button;
 }
 
-const gchar* gtk_widget_get_name(QWidget* w)
+const char* gtk_widget_get_name(QWidget* w)
 {
   return w->objectName().toStdString().c_str();
 }
