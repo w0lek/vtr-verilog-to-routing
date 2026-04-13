@@ -24,7 +24,6 @@ gint button_row = 2; // 2 is the row num of the window button in main.ui, add bu
 
 [[deprecated("todo: move to ezgl")]]
 void delete_button(const char* button_name) {
-#ifdef VPR_QT
     QWidget* main_window_grid = application.get_widget("InnerGrid");
     QList<QWidget*> list_of_widgets = gtk_container_get_children(GTK_CONTAINER(main_window_grid));
     GtkWidget* target_button = nullptr;
@@ -40,32 +39,10 @@ void delete_button(const char* button_name) {
 
     if (target_button)
         target_button->deleteLater();
-#else // VPR_QT
-    GObject* main_window_grid = application.get_object("InnerGrid");
-    GList* list_of_widgets = gtk_container_get_children(GTK_CONTAINER(main_window_grid));
-    GtkWidget* target_button = NULL;
-
-    // loop through the list to find the button
-    GList* current = list_of_widgets;
-    while (current != NULL) {
-        GList* next = current->next;
-        if (strcmp(gtk_widget_get_name(static_cast<GtkWidget*>(current->data)), button_name) == 0) {
-            // found text entry
-            target_button = static_cast<GtkWidget*>(current->data);
-            break;
-        }
-        current = next;
-    }
-
-    //free the list and destroy the button
-    g_list_free(list_of_widgets);
-    gtk_widget_destroy(target_button);
-#endif // VPR_QT
 }
 
 [[deprecated("todo: move to ezgl")]]
 GtkWidget* find_button(const char* button_name) {
-#ifdef VPR_QT
     QWidget* main_window_grid = application.get_widget("InnerGrid");
     QList<QWidget*> list_of_widgets = gtk_container_get_children(GTK_CONTAINER(main_window_grid));
 
@@ -77,26 +54,6 @@ GtkWidget* find_button(const char* button_name) {
     }
 
     return nullptr;
-#else // VPR_QT
-    GObject* main_window_grid = application.get_object("InnerGrid");
-    GList* list_of_widgets = gtk_container_get_children(GTK_CONTAINER(main_window_grid));
-    GtkWidget* target_button = NULL;
-
-    // loop through the list to find the button
-    GList* current = list_of_widgets;
-    while (current != NULL) {
-        GList* next = current->next;
-        if (strcmp(gtk_widget_get_name(static_cast<GtkWidget*>(current->data)), button_name) == 0) {
-            target_button = static_cast<GtkWidget*>(current->data);
-            break;
-        }
-        current = next;
-    }
-
-    //free the list and destroy the button
-    g_list_free(list_of_widgets);
-    return target_button;
-#endif // VPR_QT
 }
 
 #endif /* NO_GRAPHICS */

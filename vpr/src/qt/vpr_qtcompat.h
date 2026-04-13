@@ -1,8 +1,6 @@
 #ifndef VPR_QTCOMPAT_H
 #define VPR_QTCOMPAT_H
 
-#ifdef VPR_QT
-
 #include <ezgl/qt/ezgl_qtcompat.hpp>
 
 #include <QCheckBox>
@@ -140,5 +138,4 @@ void gtk_spin_button_set_increments(QSpinBox* spin_box, int step, int page);
 void gtk_spin_button_set_range(QSpinBox* spin_box, double min, double max);
 void gtk_spin_button_set_value(QSpinBox* spin_box, double value);
 
-#endif // VPR_QT
 #endif // VPR_QTCOMPAT_H

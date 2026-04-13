@@ -2,11 +2,7 @@
 
 #ifndef NO_GRAPHICS
 
-#ifdef VPR_QT
 #include "vpr_qtcompat.h"
-#else // VPR_QT
-#include <glib.h>
-#endif // VPR_QT
 
 /**
  * @brief Get the index of an item in a combo box by its text.

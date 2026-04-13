@@ -1,5 +1,3 @@
-#ifdef VPR_QT
-
 #include <vpr_qtcompat.h>
 
 void gtk_button_set_label(QAbstractButton* button, const char* text)
@@ -428,5 +426,3 @@ void gtk_spin_button_set_value(QSpinBox* spin_box, double value)
 
   spin_box->setValue(value);
 }
-
-#endif // VPR_QT

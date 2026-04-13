@@ -59,13 +59,11 @@
 
 #include "ui_setup.h"
 
-#ifdef VPR_QT
 #include "vpr_qtcompat.h"
 #include <QLineEdit>
 #include <QTreeWidget>
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
-#endif
 
 //To process key presses we need the X11 keysym definitions,
 //which are unavailable when building with MINGW
@@ -82,15 +80,9 @@ static constexpr ezgl::color OLD_BLK_LOC_COLOR = blk_GOLD;
 static constexpr ezgl::color NEW_BLK_LOC_COLOR = blk_GREEN;
 //#define TIME_DRAWSCREEN /* Enable if want to track runtime for drawscreen() */
 
-#ifdef VPR_QT
 void act_on_key_press(ezgl::application* /*app*/, QKeyEvent* event, const char* key_name);
 void act_on_mouse_press(ezgl::application* app, QMouseEvent* event, double x, double y);
 void act_on_mouse_move(ezgl::application* app, QMouseEvent* event, double x, double y);
-#else // VPR_QT
-void act_on_key_press(ezgl::application* /*app*/, GdkEventKey* /*event*/, char* key_name);
-void act_on_mouse_press(ezgl::application* app, GdkEventButton* event, double x, double y);
-void act_on_mouse_move(ezgl::application* app, GdkEventButton* event, double x, double y);
-#endif // VPR_QT
 
 static void highlight_blocks(double x, double y);
 
@@ -145,20 +137,12 @@ const std::vector<ezgl::color> kelly_max_contrast_colors = {
     ezgl::color(43, 61, 38)     //olive green
 };
 
-#ifdef VPR_QT
 ezgl::application::settings settings(":/ezgl/main.ui", "MainWindow", "MainCanvas", "org.verilogtorouting.vpr.PID" + std::to_string(vtr::get_pid()), setup_default_ezgl_callbacks);
-#else
-ezgl::application::settings settings("/ezgl/main.ui", "MainWindow", "MainCanvas", "org.verilogtorouting.vpr.PID" + std::to_string(vtr::get_pid()), setup_default_ezgl_callbacks);
-#endif
-#ifdef VPR_QT
-// provide fake argc and argc required for QApplication initialization
+// provide fake argc and argv required for QApplication initialization
 int argc = 1;
 char appName[] = "vpr";
 char* argv[] = { appName, nullptr };
 ezgl::application application(settings, argc, argv);
-#else
-ezgl::application application(settings);
-#endif
 
 bool window_mode = false;
 bool window_point_1_collected = false;
@@ -666,8 +650,7 @@ bool draw_if_net_highlighted(ParentNetId inet) {
  * At the moment, only does something if user is currently typing in searchBar and
  * hits enter, at which point it runs autocomplete
  */
-#ifdef VPR_QT
-void act_on_key_press(ezgl::application* app, QKeyEvent* event, const char* key_name)
+void act_on_key_press(ezgl::application* app, QKeyEvent* /*event*/, const char* key_name)
 {
     std::string key(key_name);
     QLineEdit* searchBar = qobject_cast<QLineEdit*>(app->get_object("TextInput"));
@@ -692,31 +675,7 @@ void act_on_key_press(ezgl::application* app, QKeyEvent* event, const char* key_
         deselect_all();
     }
 }
-#else // VPR_QT
-void act_on_key_press(ezgl::application* app, GdkEventKey* /*event*/, char* key_name) {
-    std::string key(key_name);
-    GtkWidget* searchBar = GTK_WIDGET(app->get_object("TextInput"));
-    std::string text(gtk_entry_get_text(GTK_ENTRY(searchBar)));
-    t_draw_state* draw_state = get_draw_state_vars();
-    if (gtk_widget_is_focus(searchBar)) {
-        if (key == "Return" || key == "Tab") {
-            enable_autocomplete(app);
-            gtk_editable_set_position(GTK_EDITABLE(searchBar), text.length());
-            return;
-        }
-    }
-    if (draw_state->justEnabled) {
-        draw_state->justEnabled = false;
-    } else {
-        gtk_entry_set_completion(GTK_ENTRY(searchBar), nullptr);
-    }
-    if (key == "Escape") {
-        deselect_all();
-    }
-}
-#endif // VPR_QT
 
-#ifdef VPR_QT
 void act_on_mouse_press(ezgl::application* app, QMouseEvent* event, double x, double y) {
     if (event->button() == Qt::LeftButton) {
 
@@ -786,79 +745,7 @@ void act_on_mouse_press(ezgl::application* app, QMouseEvent* event, double x, do
         }
     }
 }
-#else // VPR_QT
-void act_on_mouse_press(ezgl::application* app, GdkEventButton* event, double x, double y) {
-    if (event->button == 1) {
 
-        if (window_mode) {
-            //click on any two points to form new window rectangle bound
-
-            if (!window_point_1_collected) {
-                //collect first point data
-
-                window_point_1_collected = true;
-                point_1 = {x, y};
-            } else {
-                //collect second point data
-
-                //click on any two points to form new window rectangle bound
-                ezgl::point2d point_2 = {x, y};
-                ezgl::rectangle current_window = (app->get_canvas(
-                                                      app->get_main_canvas_id()))
-                                                     ->get_camera()
-                                                     .get_world();
-
-                //calculate a rectangle with the same ratio based on the two clicks
-                double window_ratio = current_window.height()
-                                      / current_window.width();
-                double new_height = abs(point_1.y - point_2.y);
-                double new_width = new_height / window_ratio;
-
-                //zoom in
-                ezgl::rectangle new_window = {point_1, {point_1.x + new_width, point_2.y}};
-                (app->get_canvas(app->get_main_canvas_id()))->get_camera().set_world(new_window);
-
-                //reset flags
-                window_mode = false;
-                window_point_1_collected = false;
-                app->update_message(get_draw_state_vars()->default_message);
-                app->refresh_drawing();
-            }
-            app->refresh_drawing();
-        } else {
-            // regular clicking mode
-
-            /* This routine is called when the user clicks in the graphics area. *
-             * It determines if a clb was clicked on.  If one was, it is         *
-             * highlighted in green, it's fanin nets and clbs are highlighted in *
-             * blue and it's fanout is highlighted in red.  If no clb was        *
-             * clicked on (user clicked on white space) any old highlighting is  *
-             * removed.  Note that even though global nets are not drawn, their  *
-             * fanins and fanouts are highlighted when you click on a block      *
-             * attached to them.                                                 */
-
-            if (get_draw_state_vars()->pic_on_screen == e_pic_type::ANALYTICAL_PLACEMENT) {
-                // No selection in analytical placement mode yet
-                return;
-            }
-
-            /* Control + mouse click to select multiple nets. */
-            if (!(event->state & GDK_CONTROL_MASK))
-                deselect_all();
-
-            //Check if we hit an rr node
-            // Note that we check this before checking for a block, since pins and routing may appear overtop of a multi-width/height block
-            if (highlight_rr_nodes(x, y)) {
-                return; //Selected an rr node
-            }
-
-            highlight_blocks(x, y);
-        }
-    }
-}
-#endif // VPR_QT
-
-#ifdef VPR_QT
 void act_on_mouse_move(ezgl::application* app, QMouseEvent* /* event */, double x, double y) {
     // user has clicked the window button, in window mode
     if (window_point_1_collected) {
@@ -895,44 +782,6 @@ void act_on_mouse_move(ezgl::application* app, QMouseEvent* /* event */, double 
         }
     }
 }
-#else // VPR_QT
-void act_on_mouse_move(ezgl::application* app, GdkEventButton* /* event */, double x, double y) {
-    // user has clicked the window button, in window mode
-    if (window_point_1_collected) {
-        // draw a grey, dashed-line box to indicate the zoom-in region
-        app->refresh_drawing();
-        ezgl::renderer* g = app->get_renderer();
-        g->set_line_dash(ezgl::line_dash::asymmetric_5_3);
-        g->set_color(blk_GREY);
-        g->set_line_width(2);
-        g->draw_rectangle(point_1, {x, y});
-        return;
-    }
-
-    // user has not clicked the window button, in regular mode
-    t_draw_state* draw_state = get_draw_state_vars();
-
-    if (!draw_state->show_rr) {
-        return;
-    }
-
-    RRNodeId hit_node = draw_check_rr_node_hit(x, y);
-
-    if (hit_node) {
-        //Update message
-        const DeviceContext& device_ctx = g_vpr_ctx.device();
-        std::string info = describe_rr_node(device_ctx.rr_graph, device_ctx.grid, device_ctx.rr_indexed_data, hit_node, draw_state->is_flat);
-        std::string msg = vtr::string_fmt("Moused over %s", info.c_str());
-        app->update_message(msg.c_str());
-    } else {
-        if (!rr_highlight_message.empty()) {
-            app->update_message(rr_highlight_message.c_str());
-        } else {
-            app->update_message(draw_state->default_message);
-        }
-    }
-}
-#endif // VPR_QT
 
 ezgl::point2d atom_pin_draw_coord(AtomPinId pin) {
     const AtomContext& atom_ctx = g_vpr_ctx.atom();
@@ -1203,7 +1052,6 @@ ClusterBlockId get_cluster_block_id_from_xy_loc(double x, double y) {
 }
 
 static void setup_default_ezgl_callbacks(ezgl::application* app) {
-#ifdef VPR_QT
     // Connect press_proceed function to the Proceed button
     QAbstractButton* proceed_button = app->get_abstract_button("ProceedButton");
     QObject::connect(proceed_button, &QAbstractButton::clicked, [app](){
@@ -1227,13 +1075,13 @@ static void setup_default_ezgl_callbacks(ezgl::application* app) {
     QObject::connect(block_outline, &QAbstractButton::toggled, [app](){
         set_block_outline(/*unused*/nullptr, /*unused*/-1, app);
     });
-        
+
     // Connect Block Text checkbox
     QAbstractButton* block_text = app->get_abstract_button("blockText");
     QObject::connect(block_text, &QAbstractButton::toggled, [app](){
         set_block_text(/*unused*/nullptr, /*unused*/-1, app);
     });
-    
+
     // Connect Clip Routing Util checkbox
     QAbstractButton* clip_routing = app->get_abstract_button("clipRoutingUtil");
     QObject::connect(clip_routing, &QAbstractButton::toggled, [app](){
@@ -1245,49 +1093,12 @@ static void setup_default_ezgl_callbacks(ezgl::application* app) {
     QObject::connect(debugger, &QAbstractButton::clicked, [app](){
         draw_debug_window();
     });
-        
+
     // Connect Draw Partitions Checkbox
     QAbstractButton* draw_partitions = app->get_abstract_button("drawPartitions");
     QObject::connect(draw_partitions, &QAbstractButton::toggled, [app](){
         set_draw_partitions(/*unused*/nullptr, /*unused*/-1, app);
     });
-#else // VPR_QT
-    // Connect press_proceed function to the Proceed button
-    GObject* proceed_button = app->get_object("ProceedButton");
-    g_signal_connect(proceed_button, "clicked", G_CALLBACK(ezgl::press_proceed),
-                     app);
-
-    // Connect press_zoom_fit function to the Zoom-fit button
-    GObject* zoom_fit_button = app->get_object("ZoomFitButton");
-    g_signal_connect(zoom_fit_button, "clicked",
-                     G_CALLBACK(ezgl::press_zoom_fit), app);
-
-    // Connect Pause button
-    GObject* pause_button = app->get_object("PauseButton");
-    g_signal_connect(pause_button, "clicked", G_CALLBACK(set_force_pause), app);
-
-    // Connect Block Outline checkbox
-    GObject* block_outline = app->get_object("blockOutline");
-    g_signal_connect(block_outline, "toggled", G_CALLBACK(set_block_outline),
-                     app);
-
-    // Connect Block Text checkbox
-    GObject* block_text = app->get_object("blockText");
-    g_signal_connect(block_text, "toggled", G_CALLBACK(set_block_text), app);
-
-    // Connect Clip Routing Util checkbox
-    GObject* clip_routing = app->get_object("clipRoutingUtil");
-    g_signal_connect(clip_routing, "toggled", G_CALLBACK(clip_routing_util),
-                     app);
-
-    // Connect Debug Button
-    GObject* debugger = app->get_object("debugButton");
-    g_signal_connect(debugger, "clicked", G_CALLBACK(draw_debug_window), NULL);
-
-    // Connect Draw Partitions Checkbox
-    GObject* draw_partitions = app->get_object("drawPartitions");
-    g_signal_connect(draw_partitions, "toggled", G_CALLBACK(set_draw_partitions), app);
-#endif // VPR_QT
 }
 
 // Callback function for Block Outline checkbox
@@ -1355,7 +1166,6 @@ static void on_dialog_response(GtkDialog* dialog, gint response_id, gpointer /* 
 
 // Callback function for Draw Partitions checkbox
 static void set_draw_partitions(GtkWidget* widget, gint /*response_id*/, gpointer /*data*/) {
-#ifdef VPR_QT
     t_draw_state* draw_state = get_draw_state_vars();
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget))) {
@@ -1388,55 +1198,6 @@ static void set_draw_partitions(GtkWidget* widget, gint /*response_id*/, gpointe
 
     application.update_message(draw_state->default_message);
     application.refresh_drawing();
-#else // VPR_QT
-    t_draw_state* draw_state = get_draw_state_vars();
-
-    GObject* window;
-    GtkWidget* dialog;
-
-    window = application.get_object(application.get_main_window_id().c_str());
-
-    dialog = gtk_dialog_new_with_buttons(
-        "Floorplanning Legend",
-        (GtkWindow*)window,
-        GTK_DIALOG_DESTROY_WITH_PARENT,
-        ("CLOSE"),
-        GTK_RESPONSE_ACCEPT,
-        NULL);
-
-    GtkWidget* content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-    GtkWidget* content_tree = gtk_tree_view_new();
-    content_tree = setup_floorplanning_legend(content_tree);
-
-    gtk_container_add(GTK_CONTAINER(content_area), content_tree);
-
-    GtkTreeSelection* selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(content_tree));
-    g_signal_connect(selection,
-                     "changed",
-                     G_CALLBACK(highlight_selected_partition),
-                     NULL);
-
-    // assign corresponding bool value to draw_state->draw_partitions
-    if (gtk_toggle_button_get_active((GtkToggleButton*)widget)) {
-        gtk_widget_show_all(dialog);
-
-        g_signal_connect(
-            GTK_DIALOG(dialog),
-            "response",
-            G_CALLBACK(on_dialog_response),
-            NULL);
-
-        draw_state->draw_partitions = true;
-
-    } else {
-        gtk_widget_destroy(GTK_WIDGET(dialog));
-        draw_state->draw_partitions = false;
-    }
-
-    //redraw
-    application.update_message(draw_state->default_message);
-    application.refresh_drawing();
-#endif // VPR_QT
 }
 
 static void set_force_pause(GtkWidget* /*widget*/, gint /*response_id*/, gpointer /*data*/) {

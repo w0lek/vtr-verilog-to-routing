@@ -2,11 +2,7 @@
 
 #ifndef NO_GRAPHICS
 
-#ifdef VPR_QT
 #include "vpr_qtcompat.h"
-#else // VPR_QT
-#include <gtk/gtk.h>
-#endif // VPR_QT
 
 [[deprecated("todo: move to ezgl")]]
 void delete_button(const char* button_name);
