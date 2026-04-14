@@ -205,8 +205,8 @@ bool is_manual_move_legal(ClusterBlockId block_id, t_pl_loc to) {
 
 bool manual_move_is_selected() {
     t_draw_state* draw_state = get_draw_state_vars();
-    QWidget* manual_moves = application.find_widget("manualMove");
-    draw_state->manual_moves_state.manual_move_enabled = gtk_toggle_button_get_active((GtkToggleButton*)manual_moves);
+    QCheckBox* manual_moves = application.find_check_box("manualMove");
+    draw_state->manual_moves_state.manual_move_enabled = gtk_toggle_button_get_active(manual_moves);
     return draw_state->manual_moves_state.manual_move_enabled;
 }
 
@@ -226,8 +226,8 @@ void manual_move_cost_summary_dialog() {
     gtk_window_set_transient_for((GtkWindow*)dialog, (GtkWindow*)draw_state->manual_moves_state.manual_move_window);
 
     //Create elements for the dialog and printing costs to the user.
-    QWidget* title_label = gtk_label_new(nullptr);
-    gtk_label_set_markup((GtkLabel*)title_label, "<b>Move Costs and Outcomes</b>");
+    QLabel* title_label = gtk_label_new(nullptr);
+    gtk_label_set_markup(title_label, "<b>Move Costs and Outcomes</b>");
     std::string delta_cost = "Delta Cost: " + std::to_string(draw_state->manual_moves_state.manual_move_info.delta_cost) + "   ";
     QWidget* delta_cost_label = gtk_label_new(delta_cost.c_str());
     std::string delta_timing = "   Delta Timing: " + std::to_string(draw_state->manual_moves_state.manual_move_info.delta_timing) + "   ";

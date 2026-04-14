@@ -26,7 +26,7 @@
  * @param self ptr to gtkToggleButton
  * @param data ptr to t_checkbox_data struct containing the ezgl::application and the boolean to toggle
  */
-void toggle_checkbox_cbk(GtkToggleButton* self, t_checkbox_data* data);
+void toggle_checkbox_cbk(QCheckBox* self, t_checkbox_data* data);
 
 /**
  * @brief Callback function for toggle_nets button in main.ui.

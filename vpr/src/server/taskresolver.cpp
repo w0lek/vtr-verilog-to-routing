@@ -136,9 +136,9 @@ void TaskResolver::process_draw_critical_path_task(ezgl::application* app, const
 
         // get GTK widgets
         GtkSwitch* crit_path_switch = GTK_SWITCH(app->find_widget("ToggleCritPath"));
-        GtkToggleButton* crit_path_flylines_button = GTK_TOGGLE_BUTTON(app->find_widget("ToggleCritPathFlylines"));
-        GtkToggleButton* crit_path_routing_button = GTK_TOGGLE_BUTTON(app->find_widget("ToggleCritPathRouting"));
-        GtkToggleButton* crit_path_delays_button = GTK_TOGGLE_BUTTON(app->find_widget("ToggleCritPathDelays"));
+        QCheckBox* crit_path_flylines_button = app->find_check_box("ToggleCritPathFlylines");
+        QCheckBox* crit_path_routing_button = app->find_check_box("ToggleCritPathRouting");
+        QCheckBox* crit_path_delays_button = app->find_check_box("ToggleCritPathDelays");
 
         if (crit_path_switch && crit_path_flylines_button && crit_path_routing_button && crit_path_delays_button) {
             bool draw_flylines = (high_light_mode.find("flylines") != std::string::npos);

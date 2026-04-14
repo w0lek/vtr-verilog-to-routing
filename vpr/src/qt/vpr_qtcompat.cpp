@@ -69,7 +69,7 @@ void gtk_widget_show_all(QWidget* w)
     }
 }
 
-bool gtk_toggle_button_get_active(GtkToggleButton* button)
+bool gtk_toggle_button_get_active(QCheckBox* button)
 {
   if (!button) {
     return false;
@@ -77,7 +77,7 @@ bool gtk_toggle_button_get_active(GtkToggleButton* button)
   return button->isChecked();
 }
 
-void gtk_toggle_button_set_active(GtkToggleButton* button, bool flag)
+void gtk_toggle_button_set_active(QCheckBox* button, bool flag)
 {
   if (!button) {
     return;

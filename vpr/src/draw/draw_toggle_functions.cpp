@@ -20,7 +20,7 @@
 #include <X11/keysym.h>
 #endif
 
-void toggle_checkbox_cbk(GtkToggleButton* self, t_checkbox_data* data) {
+void toggle_checkbox_cbk(QCheckBox* self, t_checkbox_data* data) {
 
     if (gtk_toggle_button_get_active(self)) {
         *data->toggle_state = true;

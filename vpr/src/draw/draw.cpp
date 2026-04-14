@@ -1106,7 +1106,7 @@ static void set_block_outline(QWidget* widget, int /*response_id*/, void* /*data
     t_draw_state* draw_state = get_draw_state_vars();
 
     // assign corresponding bool value to draw_state->draw_block_outlines
-    if (gtk_toggle_button_get_active((GtkToggleButton*)widget))
+    if (gtk_toggle_button_get_active(Q_CHECKBOX(widget)))
         draw_state->draw_block_outlines = true;
     else
         draw_state->draw_block_outlines = false;
@@ -1120,7 +1120,7 @@ static void set_block_text(QWidget* widget, int /*response_id*/, void* /*data*/)
     t_draw_state* draw_state = get_draw_state_vars();
 
     // assign corresponding bool value to draw_state->draw_block_text
-    if (gtk_toggle_button_get_active((GtkToggleButton*)widget))
+    if (gtk_toggle_button_get_active(Q_CHECKBOX(widget)))
         draw_state->draw_block_text = true;
     else
         draw_state->draw_block_text = false;
@@ -1135,7 +1135,7 @@ static void clip_routing_util(QWidget* widget, int /*response_id*/, void* /*data
     t_draw_state* draw_state = get_draw_state_vars();
 
     // assign corresponding bool value to draw_state->clip_routing_util
-    if (gtk_toggle_button_get_active((GtkToggleButton*)widget))
+    if (gtk_toggle_button_get_active(Q_CHECKBOX(widget)))
         draw_state->clip_routing_util = true;
     else
         draw_state->clip_routing_util = false;
