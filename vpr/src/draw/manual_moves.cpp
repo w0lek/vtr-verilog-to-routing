@@ -207,7 +207,7 @@ bool is_manual_move_legal(ClusterBlockId block_id, t_pl_loc to) {
 bool manual_move_is_selected() {
     t_draw_state* draw_state = get_draw_state_vars();
     QCheckBox* manual_moves = application.find_check_box("manualMove");
-    draw_state->manual_moves_state.manual_move_enabled = gtk_toggle_button_get_active(manual_moves);
+    draw_state->manual_moves_state.manual_move_enabled = manual_moves->isChecked();
     return draw_state->manual_moves_state.manual_move_enabled;
 }
 

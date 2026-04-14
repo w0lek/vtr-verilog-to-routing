@@ -61,14 +61,6 @@ void gtk_switch_set_active(QAbstractButton* button, bool flag)
   button->setChecked(flag);
 }
 
-bool gtk_toggle_button_get_active(QCheckBox* button)
-{
-  if (!button) {
-    return false;
-  }
-  return button->isChecked();
-}
-
 void gtk_toggle_button_set_active(QCheckBox* button, bool flag)
 {
   if (!button) {

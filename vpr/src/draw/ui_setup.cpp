@@ -263,7 +263,7 @@ void view_button_setup(ezgl::application* app) {
         std::string label = "Cross Layer Connections";
         std::string trans_label = "CrossLayerConnectionsTransparency";
 
-        QWidget* checkbox = gtk_check_button_new_with_label(label.c_str());
+        QCheckBox* checkbox = gtk_check_button_new_with_label(label.c_str());
         gtk_widget_set_margin_top(checkbox, 7);
         gtk_widget_set_margin_bottom(checkbox, 7);
         gtk_box_pack_start(box, checkbox, FALSE, FALSE, 0);
@@ -272,7 +272,7 @@ void view_button_setup(ezgl::application* app) {
         gtk_widget_set_name(spin_button, g_strdup(trans_label.c_str()));
         gtk_box_pack_start(trans_box, spin_button, FALSE, FALSE, 0);
 
-        QObject::connect(GTK_BUTTON(checkbox), &QAbstractButton::toggled, GTK_BUTTON(checkbox), [checkbox]() {
+        QObject::connect(checkbox, &QAbstractButton::toggled, checkbox, [checkbox]() {
             cross_layer_checkbox_cbk(checkbox, /*response_id=*/0, /*data=*/nullptr);
         });
         QObject::connect(GTK_SPIN_BUTTON(spin_button), &QSpinBox::valueChanged, GTK_SPIN_BUTTON(spin_button), [spin_button]() {

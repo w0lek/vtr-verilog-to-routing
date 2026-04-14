@@ -1102,28 +1102,23 @@ static void setup_default_ezgl_callbacks(ezgl::application* app) {
 }
 
 // Callback function for Block Outline checkbox
-static void set_block_outline(QWidget* widget, int /*response_id*/, void* /*data*/) {
+static void set_block_outline(QCheckBox* checkbox, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
 
     // assign corresponding bool value to draw_state->draw_block_outlines
-    if (gtk_toggle_button_get_active(Q_CHECKBOX(widget)))
-        draw_state->draw_block_outlines = true;
-    else
-        draw_state->draw_block_outlines = false;
+    draw_state->draw_block_outlines = checkbox->isChecked();
+
     //redraw
     application.update_message(draw_state->default_message);
     application.refresh_drawing();
 }
 
 // Callback function for Block Text checkbox
-static void set_block_text(QWidget* widget, int /*response_id*/, void* /*data*/) {
+static void set_block_text(QCheckBox* checkbox, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
 
     // assign corresponding bool value to draw_state->draw_block_text
-    if (gtk_toggle_button_get_active(Q_CHECKBOX(widget)))
-        draw_state->draw_block_text = true;
-    else
-        draw_state->draw_block_text = false;
+    draw_state->draw_block_text = checkbox->isChecked();
 
     //redraw
     application.update_message(draw_state->default_message);
@@ -1131,14 +1126,11 @@ static void set_block_text(QWidget* widget, int /*response_id*/, void* /*data*/)
 }
 
 // Callback function for Clip Routing Util checkbox
-static void clip_routing_util(QWidget* widget, int /*response_id*/, void* /*data*/) {
+static void clip_routing_util(QCheckBox* checkbox, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
 
     // assign corresponding bool value to draw_state->clip_routing_util
-    if (gtk_toggle_button_get_active(Q_CHECKBOX(widget)))
-        draw_state->clip_routing_util = true;
-    else
-        draw_state->clip_routing_util = false;
+    draw_state->clip_routing_util = checkbox->isChecked();
 
     //redraw
     application.update_message(draw_state->default_message);
@@ -1165,10 +1157,10 @@ static void on_dialog_response(QDialog* dialog, int response_id, void* /* user_d
 }
 
 // Callback function for Draw Partitions checkbox
-static void set_draw_partitions(QWidget* widget, int /*response_id*/, void* /*data*/) {
+static void set_draw_partitions(QCheckBox* checkbox, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
 
-    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget))) {
+    if (checkbox->isChecked()) {
         QWidget* window = application.find_widget(application.get_main_window_id().c_str());
 
         QDialog* dialog = new QDialog(window);

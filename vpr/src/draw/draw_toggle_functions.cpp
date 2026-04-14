@@ -21,13 +21,7 @@
 #endif
 
 void toggle_checkbox_cbk(QCheckBox* self, t_checkbox_data* data) {
-
-    if (gtk_toggle_button_get_active(self)) {
-        *data->toggle_state = true;
-    } else {
-        *data->toggle_state = false;
-    }
-
+    *data->toggle_state = self->isChecked();
     data->app->refresh_drawing();
 }
 
@@ -431,17 +425,10 @@ void transparency_cbk(QWidget* widget, int /*response_id*/, void* /*data*/) {
 /**
  * @brief Callback function for cross layer connection checkbox
  */
-void cross_layer_checkbox_cbk(QWidget* widget, int /*response_id*/, void* /*data*/) {
+void cross_layer_checkbox_cbk(QCheckBox* checkbox, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
 
-    bool state = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
-
-    if (state) {
-        draw_state->cross_layer_display.visible = true;
-    } else {
-        draw_state->cross_layer_display.visible = false;
-    }
-
+    draw_state->cross_layer_display.visible = checkbox->isChecked();
     application.refresh_drawing();
 }
 
