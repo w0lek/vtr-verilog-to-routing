@@ -418,7 +418,7 @@ void transparency_cbk(QWidget* widget, int /*response_id*/, void* /*data*/) {
     for (QSpinBox* spin_button : widget->parentWidget()->findChildren<QSpinBox*>(QString(), Qt::FindDirectChildrenOnly)) {
         const QString name = spin_button->objectName();
         if (name.contains("Transparency") && !name.contains("Cross")) {
-            draw_state->draw_layer_display[index].alpha = 255 - gtk_spin_button_get_value(spin_button);
+            draw_state->draw_layer_display[index].alpha = 255 - spin_button->value();
             index++;
         }
     }
@@ -438,10 +438,10 @@ void cross_layer_checkbox_cbk(QCheckBox* checkbox, int /*response_id*/, void* /*
 /**
  * @brief Callback function for cross layer connection spin button
  */
-void cross_layer_transparency_cbk(QWidget* widget, int /*response_id*/, void* /*data*/) {
+void cross_layer_transparency_cbk(QSpinBox* spinbox, int /*response_id*/, void* /*data*/) {
     t_draw_state* draw_state = get_draw_state_vars();
 
-    int value = gtk_spin_button_get_value(GTK_SPIN_BUTTON(widget));
+    int value = spinbox->value();
     draw_state->cross_layer_display.alpha = 255 - value;
 
     application.refresh_drawing();

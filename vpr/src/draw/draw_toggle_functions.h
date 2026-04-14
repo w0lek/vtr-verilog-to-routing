@@ -147,5 +147,5 @@ void cross_layer_checkbox_cbk(QCheckBox* checkbox, int /*response_id*/, void* /*
  *
  * @param widget: gtk widget for the cross layer connection transparency spin button
  */
-void cross_layer_transparency_cbk(QWidget* widget, int /*response_id*/, void* /*data*/);
+void cross_layer_transparency_cbk(QSpinBox* spinbox, int /*response_id*/, void* /*data*/);
 #endif /* NO_GRAPHICS */

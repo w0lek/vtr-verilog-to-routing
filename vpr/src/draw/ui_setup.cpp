@@ -243,7 +243,9 @@ void view_button_setup(ezgl::application* app) {
 
             gtk_box_pack_start(box, checkbox, FALSE, FALSE, 0);
 
-            QWidget* spin_button = gtk_spin_button_new_with_range(0, 255, 1);
+            QSpinBox* spin_button = new QSpinBox;
+            spin_button->setRange(0, 255);
+            spin_button->setSingleStep(1);
             spin_button->setObjectName(g_strdup(trans_label.c_str()));
             gtk_box_pack_start(trans_box, spin_button, FALSE, FALSE, 0);
 
@@ -268,14 +270,16 @@ void view_button_setup(ezgl::application* app) {
         widget_set_margin_bottom(checkbox, 7);
         gtk_box_pack_start(box, checkbox, FALSE, FALSE, 0);
 
-        QWidget* spin_button = gtk_spin_button_new_with_range(0, 255, 1);
+        QSpinBox* spin_button = new QSpinBox;
+        spin_button->setRange(0, 255);
+        spin_button->setSingleStep(1);
         spin_button->setObjectName(g_strdup(trans_label.c_str()));
         gtk_box_pack_start(trans_box, spin_button, FALSE, FALSE, 0);
 
         QObject::connect(checkbox, &QAbstractButton::toggled, checkbox, [checkbox]() {
             cross_layer_checkbox_cbk(checkbox, /*response_id=*/0, /*data=*/nullptr);
         });
-        QObject::connect(GTK_SPIN_BUTTON(spin_button), &QSpinBox::valueChanged, GTK_SPIN_BUTTON(spin_button), [spin_button]() {
+        QObject::connect(spin_button, &QSpinBox::valueChanged, spin_button, [spin_button]() {
             cross_layer_transparency_cbk(spin_button, /*response_id=*/0, /*data=*/nullptr);
         });
 

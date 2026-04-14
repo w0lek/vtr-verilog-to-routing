@@ -92,11 +92,6 @@ void widget_set_margin_bottom(QWidget* w, int m)
   w->setContentsMargins(margins);
 }
 
-int gtk_spin_button_get_value(QSpinBox* spinBox)
-{
-  return static_cast<int>(spinBox->value());
-}
-
 void gtk_label_set_markup(QLabel* label, const QString& text)
 {
   label->setTextFormat(Qt::RichText);
@@ -270,14 +265,6 @@ void gtk_window_set_transient_for(QWidget* dialog, QWidget* parent)
   dialog->setParent(parent);
   dialog->setWindowFlag(Qt::Dialog);
   dialog->setWindowModality(Qt::WindowModal);
-}
-
-QSpinBox* gtk_spin_button_new_with_range(int min, int max, int step)
-{
-  QSpinBox* spin_box = new QSpinBox();
-  spin_box->setRange(min, max);
-  spin_box->setSingleStep(step);
-  return spin_box;
 }
 
 QWidget* gtk_widget_get_parent_window(QWidget* w)

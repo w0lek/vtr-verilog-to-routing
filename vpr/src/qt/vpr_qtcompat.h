@@ -41,7 +41,6 @@ void widget_set_margin_end(QWidget*, int);
 void widget_set_margin_top(QWidget*, int);
 void widget_set_margin_bottom(QWidget*, int);
 
-int gtk_spin_button_get_value(QSpinBox* spinBox);
 void gtk_label_set_markup(QLabel* label, const QString& text);
 const char* gtk_button_get_label(QPushButton* button);
 QPushButton* gtk_button_new_with_label(const char* text);
@@ -90,7 +89,6 @@ QList<QWidget*> gtk_container_get_children(QWidget* container);
 #define GTK_ALIGN_CENTER 3
 void gtk_widget_set_halign(QWidget* w, int flag);
 void gtk_window_set_transient_for(QWidget* dialog, QWidget* parent);
-QSpinBox* gtk_spin_button_new_with_range(int min, int max, int step);
 QWidget* gtk_widget_get_parent_window(QWidget* w);
 
 void gtk_spin_button_set_increments(QSpinBox* spin_box, int step, int page);
