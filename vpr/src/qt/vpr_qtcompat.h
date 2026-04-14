@@ -63,7 +63,7 @@ void gtk_grid_attach(QWidget* widget, QWidget* child, int col, int row, int w, i
 void gtk_container_add(QWidget* container, QWidget* w);
 QWidget* gtk_grid_new();
 int gtk_dialog_run(QDialog* dialog);
-int gtk_spin_button_get_value_as_int(QSpinBox* spinBox);
+// int gtk_spin_button_get_value_as_int(QSpinBox* spinBox);
 
 #define GTK_DIALOG_MODAL 0x1
 #define GTK_RESPONSE_ACCEPT QDialog::Accepted
@@ -97,6 +97,7 @@ void gtk_widget_set_halign(QWidget* w, int flag);
 void gtk_window_set_transient_for(QWidget* dialog, QWidget* parent);
 QSpinBox* gtk_spin_button_new_with_range(int min, int max, int step);
 QWidget* gtk_widget_get_parent_window(QWidget* w);
+
 void gtk_spin_button_set_increments(QSpinBox* spin_box, int step, int page);
 void gtk_spin_button_set_range(QSpinBox* spin_box, double min, double max);
 void gtk_spin_button_set_value(QSpinBox* spin_box, double value);

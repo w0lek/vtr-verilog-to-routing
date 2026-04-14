@@ -187,11 +187,6 @@ int gtk_dialog_run(QDialog* dialog)
   return dialog->exec();
 }
 
-int gtk_spin_button_get_value_as_int(QSpinBox* spinBox)
-{
-  return static_cast<int>(spinBox->value());
-}
-
 QWidget* gtk_dialog_new_with_buttons(
     const char* title,
     QWidget* parent,

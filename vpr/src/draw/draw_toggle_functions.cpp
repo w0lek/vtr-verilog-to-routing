@@ -180,7 +180,7 @@ void toggle_routing_bbox_cbk(QSpinBox* self, ezgl::application* app) {
         return; //Nothing to draw
 
     // use the pointer to get the active value
-    int new_value = gtk_spin_button_get_value_as_int(self);
+    int new_value = self->value();
 
     // assign value to draw_state->show_routing_bb, bound check + set UNDEFINED when it's -1 (draw nothing)
     if (new_value <= -1)
@@ -240,7 +240,7 @@ void toggle_router_util_cbk(QComboBox* self, ezgl::application* app) {
  */
 void toggle_blk_internal_cbk(QSpinBox* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
-    int new_value = gtk_spin_button_get_value_as_int(self);
+    int new_value = self->value();
     if (new_value < 0)
         draw_state->show_blk_internal = 0;
     else if (new_value >= draw_state->max_sub_blk_lvl)
@@ -377,7 +377,7 @@ void toggle_noc_cbk(QComboBox* self, ezgl::application* app) {
  */
 void set_net_max_fanout_cbk(QSpinBox* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
-    draw_state->draw_net_max_fanout = gtk_spin_button_get_value_as_int(self);
+    draw_state->draw_net_max_fanout = self->value();
     app->refresh_drawing();
 }
 
@@ -390,7 +390,7 @@ void set_net_max_fanout_cbk(QSpinBox* self, ezgl::application* app) {
  */
 void set_net_alpha_value_cbk(QSpinBox* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
-    draw_state->net_alpha = 255 - gtk_spin_button_get_value_as_int(self);
+    draw_state->net_alpha = 255 - self->value();
     app->refresh_drawing();
 }
 
