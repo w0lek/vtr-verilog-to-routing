@@ -91,8 +91,4 @@ void gtk_widget_set_halign(QWidget* w, int flag);
 void gtk_window_set_transient_for(QWidget* dialog, QWidget* parent);
 QWidget* gtk_widget_get_parent_window(QWidget* w);
 
-void gtk_spin_button_set_increments(QSpinBox* spin_box, int step, int page);
-void gtk_spin_button_set_range(QSpinBox* spin_box, double min, double max);
-void gtk_spin_button_set_value(QSpinBox* spin_box, double value);
-
 #endif // VPR_QTCOMPAT_H

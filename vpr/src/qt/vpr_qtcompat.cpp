@@ -271,30 +271,3 @@ QWidget* gtk_widget_get_parent_window(QWidget* w)
 {
   return qobject_cast<QWidget*>(w->parent());
 }
-
-void gtk_spin_button_set_increments(QSpinBox* spin_box, int step, int page)
-{
-  if (!spin_box) {
-    return;
-  }
-
-  spin_box->setSingleStep(step);
-}
-
-void gtk_spin_button_set_range(QSpinBox* spin_box, double min, double max)
-{
-  if (!spin_box) {
-    return;
-  }
-
-  spin_box->setRange(min, max);
-}
-
-void gtk_spin_button_set_value(QSpinBox* spin_box, double value)
-{
-  if (!spin_box) {
-    return;
-  }
-
-  spin_box->setValue(value);
-}

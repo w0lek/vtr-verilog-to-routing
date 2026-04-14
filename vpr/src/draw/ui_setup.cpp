@@ -98,16 +98,16 @@ void net_button_setup(ezgl::application* app) {
     QObject::connect(net_alpha, &QSpinBox::valueChanged, net_alpha, [net_alpha, app]() {
         set_net_alpha_value_cbk(net_alpha, app);
     });
-    gtk_spin_button_set_increments(net_alpha, 1, 1);
-    gtk_spin_button_set_range(net_alpha, 0, 255);
+    net_alpha->setSingleStep(1);
+    net_alpha->setRange(0, 255);
 
     //Manages net max fanout
     QSpinBox* max_fanout = app->find_spin_box("NetMaxFanout");
     QObject::connect(max_fanout, &QSpinBox::valueChanged, max_fanout, [max_fanout, app]() {
         set_net_max_fanout_cbk(max_fanout, app);
     });
-    gtk_spin_button_set_increments(max_fanout, 1, 1);
-    gtk_spin_button_set_range(max_fanout, 0., (double)get_max_fanout());
+    max_fanout->setSingleStep(1);
+    max_fanout->setRange(0, get_max_fanout());
 }
 
 /*
@@ -126,8 +126,8 @@ void block_button_setup(ezgl::application* app) {
     QObject::connect(blk_internals_button, &QSpinBox::valueChanged, blk_internals_button, [blk_internals_button, app]() {
         toggle_blk_internal_cbk(blk_internals_button, app);
     });
-    gtk_spin_button_set_increments(blk_internals_button, 1, 1);
-    gtk_spin_button_set_range(blk_internals_button, 0., (double)(draw_state->max_sub_blk_lvl));
+    blk_internals_button->setSIngleStep(1);
+    blk_internals_button->setRange(0, draw_state->max_sub_blk_lvl);
 
     //Toggle Block Pin Util
     QComboBox* blk_pin_util = app->find_combo_box("ToggleBlkPinUtil");
@@ -197,9 +197,9 @@ void routing_button_setup(ezgl::application* app) {
     QObject::connect(toggle_routing_bbox, &QSpinBox::valueChanged, toggle_routing_bbox, [toggle_routing_bbox, app]() {
         toggle_routing_bbox_cbk(toggle_routing_bbox, app);
     });
-    gtk_spin_button_set_increments(toggle_routing_bbox, 1, 1);
-    gtk_spin_button_set_range(toggle_routing_bbox, -1., (double)(route_ctx.route_bb.size() - 1));
-    gtk_spin_button_set_value(toggle_routing_bbox, -1.);
+    toggle_routing_bbox->setSinglStep(1);
+    toggle_routing_bbox->setRange(-1, route_ctx.route_bb.size() - 1);
+    toggle_routing_bbox->setValue(-1);
 
     //Toggle Routing Expansion Costs
     QComboBox* toggle_expansion_cost = app->find_combo_box("ToggleRoutingExpansionCost");
