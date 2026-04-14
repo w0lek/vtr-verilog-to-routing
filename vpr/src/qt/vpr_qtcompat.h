@@ -10,8 +10,6 @@ void gtk_combo_box_text_append(QComboBox* combo,
                                const char* id,
                                const char* text);
 
-QString g_strdup(const char* str);
-
 void gtk_box_pack_start(QBoxLayout* box,
                         QWidget* widget,
                         bool expand,
@@ -27,8 +25,9 @@ void gtk_box_pack_start(QBoxLayout* box,
 #include <QDialog>
 #include <QDialogButtonBox>
 
-using GtkWindow = QWidget;
 using GtkGrid = QWidget; //QGridLayout is laying inside the widget
+
+void center_window(QWidget* w);
 
 void widget_set_margin_start(QWidget*, int);
 void widget_set_margin_end(QWidget*, int);
@@ -58,8 +57,6 @@ QDialog* gtk_dialog_new_with_buttons(
 );
 
 QWidget* gtk_dialog_get_content_area(QWidget* dialog);
-
-void center_window(QWidget* w);
 
 QList<QWidget*> gtk_container_get_children(QWidget* container);
 

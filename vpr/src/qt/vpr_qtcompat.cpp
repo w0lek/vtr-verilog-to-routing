@@ -10,12 +10,6 @@ void gtk_combo_box_text_append(QComboBox* combo,
   combo->addItem(QString::fromUtf8(text), QString::fromUtf8(id));
 }
 
-QString g_strdup(const char* str)
-{
-    QString s = str ? QString::fromUtf8(str) : QString();
-    return s;
-}
-
 void gtk_box_pack_start(QBoxLayout* box,
                         QWidget* widget,
                         bool expand,
@@ -38,6 +32,53 @@ void gtk_box_pack_start(QBoxLayout* box,
   if (padding > 0) {
     box->setSpacing(padding);
   }
+}
+
+static QScreen* screen_for_widget(QWidget* w)
+{
+    if (!w)
+        return QGuiApplication::primaryScreen();
+
+    // If the widget already has a native window handle, use its actual screen.
+    if (w->windowHandle() && w->windowHandle()->screen())
+        return w->windowHandle()->screen();
+
+    // Fallback: use the widget's associated screen if available.
+    if (w->screen())
+        return w->screen();
+
+    return QGuiApplication::primaryScreen();
+}
+
+void center_window(QWidget* window)
+{
+    if (!window)
+        return;
+
+    // Important: before show(), size may not be final yet.
+    // adjustSize() makes layout-based widgets get a sensible size.
+    if (!window->isVisible() && !window->testAttribute(Qt::WA_Resized))
+        window->adjustSize();
+
+    QScreen* screen = screen_for_widget(window);
+    if (!screen)
+        return;
+
+    // availableGeometry() excludes taskbars / system UI.
+    const QRect avail = screen->availableGeometry();
+
+    // frameGeometry() is better than width()/height() because it includes
+    // the outer window frame for top-level widgets.
+    QRect frame = window->frameGeometry();
+
+    // If the frame size is still empty, fall back to sizeHint().
+    if (frame.size().isEmpty()) {
+        const QSize sz = window->sizeHint().isValid() ? window->sizeHint() : QSize(400, 300);
+        frame.setSize(sz);
+    }
+
+    frame.moveCenter(avail.center());
+    window->move(frame.topLeft());
 }
 
 void widget_set_margin_start(QWidget* w, int m)
@@ -187,16 +228,6 @@ QWidget* gtk_dialog_get_content_area(QWidget* dialog)
   }
 
   return dialog;
-}
-
-void center_window(QWidget* w)
-{
-  QRect screenGeometry = w->screen()->availableGeometry();
-
-  int x = (screenGeometry.width() - w->width()) / 2;
-  int y = (screenGeometry.height() - w->height()) / 2;
-
-  w->move(x, y);
 }
 
 QList<QWidget*> gtk_container_get_children(QWidget* container)

@@ -246,7 +246,7 @@ void view_button_setup(ezgl::application* app) {
             QSpinBox* spin_button = new QSpinBox;
             spin_button->setRange(0, 255);
             spin_button->setSingleStep(1);
-            spin_button->setObjectName(g_strdup(trans_label.c_str()));
+            spin_button->setObjectName(QString::fromStdString(trans_label));
             gtk_box_pack_start(trans_box, spin_button, FALSE, FALSE, 0);
 
             if (i == 0) {
@@ -273,7 +273,7 @@ void view_button_setup(ezgl::application* app) {
         QSpinBox* spin_button = new QSpinBox;
         spin_button->setRange(0, 255);
         spin_button->setSingleStep(1);
-        spin_button->setObjectName(g_strdup(trans_label.c_str()));
+        spin_button->setObjectName(QString::fromStdString(trans_label));
         gtk_box_pack_start(trans_box, spin_button, FALSE, FALSE, 0);
 
         QObject::connect(checkbox, &QAbstractButton::toggled, checkbox, [checkbox]() {
