@@ -74,15 +74,15 @@ void draw_manual_moves_window(const std::string& block_id) {
         gtk_grid_attach((GtkGrid*)grid, calculate_cost_button, 0, 5, 3, 1); //spans three columns
 
         //Set margins
-        gtk_widget_set_margin_bottom(grid, 20);
-        gtk_widget_set_margin_top(grid, 20);
-        gtk_widget_set_margin_start(grid, 20);
-        gtk_widget_set_margin_end(grid, 20);
-        gtk_widget_set_margin_bottom(block_label, 5);
-        gtk_widget_set_margin_bottom(to_label, 5);
-        gtk_widget_set_margin_top(calculate_cost_button, 15);
-        gtk_widget_set_margin_start(x, 13);
-        gtk_widget_set_margin_start(y, 13);
+        widget_set_margin_bottom(grid, 20);
+        widget_set_margin_top(grid, 20);
+        widget_set_margin_start(grid, 20);
+        widget_set_margin_end(grid, 20);
+        widget_set_margin_bottom(block_label, 5);
+        widget_set_margin_bottom(to_label, 5);
+        widget_set_margin_top(calculate_cost_button, 15);
+        widget_set_margin_start(x, 13);
+        widget_set_margin_start(y, 13);
         gtk_widget_set_halign(calculate_cost_button, GTK_ALIGN_CENTER);
 
         //connect signals

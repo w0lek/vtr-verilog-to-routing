@@ -64,7 +64,7 @@ void gtk_toggle_button_set_active(QCheckBox* button, bool flag)
   button->setChecked(flag);
 }
 
-void gtk_widget_set_margin_start(QWidget* w, int m)
+void widget_set_margin_start(QWidget* w, int m)
 {
   if (!w) {
     return;
@@ -75,7 +75,7 @@ void gtk_widget_set_margin_start(QWidget* w, int m)
   w->setContentsMargins(margins);
 }
 
-void gtk_widget_set_margin_end(QWidget* w, int m)
+void widget_set_margin_end(QWidget* w, int m)
 {
   if (!w) {
     return;
@@ -86,7 +86,7 @@ void gtk_widget_set_margin_end(QWidget* w, int m)
   w->setContentsMargins(margins);
 }
 
-void gtk_widget_set_margin_top(QWidget* w, int m)
+void widget_set_margin_top(QWidget* w, int m)
 {
   if (!w) {
     return;
@@ -97,7 +97,7 @@ void gtk_widget_set_margin_top(QWidget* w, int m)
   w->setContentsMargins(margins);
 }
 
-void gtk_widget_set_margin_bottom(QWidget* w, int m)
+void widget_set_margin_bottom(QWidget* w, int m)
 {
   if (!w) {
     return;
@@ -106,14 +106,6 @@ void gtk_widget_set_margin_bottom(QWidget* w, int m)
   QMargins margins = w->contentsMargins();
   margins.setBottom(m);
   w->setContentsMargins(margins);
-}
-
-void gtk_window_close(QWidget* w)
-{
-  if (!w) {
-    return;
-  }
-  w->close();
 }
 
 int gtk_spin_button_get_value(QSpinBox* spinBox)
