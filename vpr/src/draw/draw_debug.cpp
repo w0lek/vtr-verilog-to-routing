@@ -105,17 +105,17 @@ void draw_debug_window() {
         gtk_widget_set_margin_top(advanced, 20);
 
         QLineEdit* movesEntry = new QLineEdit;
-        gtk_entry_set_text((GtkEntry*)movesEntry, "ex. 100");
+        movesEntry->setText("ex. 100");
         gtk_widget_set_margin_bottom(movesEntry, 10);
         QLineEdit* tempsEntry = new QLineEdit;
-        gtk_entry_set_text((GtkEntry*)tempsEntry, "ex. 5");
+        tempsEntry->setText("ex. 5");
         gtk_widget_set_margin_bottom(tempsEntry, 10);
         QLineEdit* blockEntry = new QLineEdit;
-        gtk_entry_set_text((GtkEntry*)blockEntry, "ex. 83");
+        blockEntry->setText("ex. 83");
         QLineEdit* iterEntry = new QLineEdit;
-        gtk_entry_set_text((GtkEntry*)iterEntry, "ex. 3");
+        iterEntry->setText("ex. 3");
         QLineEdit* netEntry = new QLineEdit;
-        gtk_entry_set_text((GtkEntry*)netEntry, "ex. 12");
+        netEntry->setText("ex. 12");
 
         draw_debug_glob_vars.bpGrid = gtk_grid_new();
         gtk_widget_set_margin_bottom(draw_debug_glob_vars.bpGrid, 20);

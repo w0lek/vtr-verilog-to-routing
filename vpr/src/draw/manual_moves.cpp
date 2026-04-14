@@ -42,7 +42,7 @@ void draw_manual_moves_window(const std::string& block_id) {
         QLineEdit* block_entry = new QLineEdit;
 
         if (draw_state->manual_moves_state.user_highlighted_block) {
-            gtk_entry_set_text((GtkEntry*)block_entry, block_id.c_str());
+            block_entry->setText(block_id.c_str());
             draw_state->manual_moves_state.user_highlighted_block = false;
         }
 

@@ -52,7 +52,6 @@ void gtk_widget_set_margin_bottom(QWidget*, int);
 void gtk_window_close(QWidget*);
 int gtk_spin_button_get_value(QSpinBox* spinBox);
 void gtk_label_set_markup(QLabel* label, const QString& text);
-void gtk_entry_set_text(QLineEdit* lineEdit, const QString& text);
 const char* gtk_entry_get_text(QLineEdit* lineEdit);
 void gtk_widget_set_name(QWidget* w, const QString& name);
 void gtk_widget_set_sensitive(QWidget* w, bool flag);

@@ -75,8 +75,8 @@ void save_graphics_dialog_box(QWidget* /*widget*/, ezgl::application* /*app*/) {
     combo_box->addItem("svg"); // index 2
 
     // set default values
-    combo_box->setCurrentIndex(0);                             // default set to pdf which has an index 0
-    gtk_entry_set_text((GtkEntry*)text_entry, "vpr_graphics"); // default text set to vpr_graphics
+    combo_box->setCurrentIndex(0);        // default set to pdf which has an index 0
+    text_entry->setText("vpr_graphics");  // default text set to vpr_graphics
 
     // attach elements to the content area of the dialog
     content_area = gtk_dialog_get_content_area(dialog);
