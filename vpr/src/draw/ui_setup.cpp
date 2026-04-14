@@ -48,7 +48,7 @@ void basic_button_setup(ezgl::application* app) {
 
     //button to search, created in main.ui
     QPushButton* search = app->find_push_button("Search");
-    gtk_button_set_label(search, "Search");
+    search->setText("Search");
     QObject::connect(search, &QPushButton::clicked, search, [app]() {
         search_and_highlight(/*widget=*/nullptr, app);
     });

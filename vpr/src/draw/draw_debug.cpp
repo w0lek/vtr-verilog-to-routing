@@ -45,7 +45,7 @@ void draw_debug_window() {
         QWidget* window = new QWidget;
         window->setAttribute(Qt::WA_DeleteOnClose);
         window->setWindowTitle("Debugger");
-        gtk_window_set_position(window, GTK_WIN_POS_CENTER);
+        center_window(window);
 
         QWidget* mainGrid = gtk_grid_new();
         widget_set_margin_top(mainGrid, 30);
@@ -178,7 +178,7 @@ void advanced_button_callback() {
 
         QWidget* window = new QWidget;
         window->setAttribute(Qt::WA_DeleteOnClose);
-        gtk_window_set_position(window, GTK_WIN_POS_CENTER);
+        center_window(window);
         window->setWindowTitle("Advanced Debugger Options");
 
         QPushButton* set = new QPushButton("set");
@@ -423,7 +423,7 @@ void set_expression_button_callback(QWidget* /*widget*/, QWidget* grid) {
 void invalid_breakpoint_entry_window(std::string error) {
     QWidget* window = new QWidget;
     window->setAttribute(Qt::WA_DeleteOnClose);
-    gtk_window_set_position(window, GTK_WIN_POS_CENTER);
+    center_window(window);
     window->setWindowTitle("ERROR");
     window->setWindowModality(Qt::ApplicationModal);
 
@@ -453,7 +453,7 @@ void invalid_breakpoint_entry_window(std::string error) {
 void breakpoint_info_window(std::string bpDescription, BreakpointState draw_breakpoint_state, bool in_placer) {
     QWidget* window = new QWidget;
     window->setAttribute(Qt::WA_DeleteOnClose);
-    gtk_window_set_position(window, GTK_WIN_POS_CENTER);
+    center_window(window);
     window->setWindowTitle("Breakpoint");
 
     QWidget* grid = gtk_grid_new();

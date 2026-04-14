@@ -6,8 +6,6 @@
 #include <QCheckBox>
 #include <QBoxLayout>
 
-void gtk_button_set_label(QAbstractButton* button, const char* text);
-
 void gtk_combo_box_text_append(QComboBox* combo,
                                const char* id,
                                const char* text);
@@ -19,8 +17,6 @@ void gtk_box_pack_start(QBoxLayout* box,
                         bool expand,
                         bool fill,
                         int padding);
-
-using GtkBox = QBoxLayout;
 
 #include <QRadioButton>
 #include <QSpinBox>
@@ -66,10 +62,7 @@ QDialog* gtk_dialog_new_with_buttons(
 
 QWidget* gtk_dialog_get_content_area(QWidget* dialog);
 
-#define GTK_WIN_POS_CENTER 0
-void gtk_window_set_position(QWidget* w, int key);
-
-#define g_list_free(x) ((void)0)
+void center_window(QWidget* w);
 
 QList<QWidget*> gtk_container_get_children(QWidget* container);
 

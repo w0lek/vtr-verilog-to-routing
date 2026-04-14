@@ -1,13 +1,5 @@
 #include <vpr_qtcompat.h>
 
-void gtk_button_set_label(QAbstractButton* button, const char* text)
-{
-    if (!button) {
-        return;
-    }
-    button->setText(text);
-}
-
 void gtk_combo_box_text_append(QComboBox* combo,
                                const char* id,
                                const char* text)
@@ -197,18 +189,14 @@ QWidget* gtk_dialog_get_content_area(QWidget* dialog)
   return dialog;
 }
 
-void gtk_window_set_position(QWidget* w, int key)
+void center_window(QWidget* w)
 {
-  if (key == GTK_WIN_POS_CENTER) {
-    QRect screenGeometry = w->screen()->availableGeometry();
+  QRect screenGeometry = w->screen()->availableGeometry();
 
-    int x = (screenGeometry.width() - w->width()) / 2;
-    int y = (screenGeometry.height() - w->height()) / 2;
+  int x = (screenGeometry.width() - w->width()) / 2;
+  int y = (screenGeometry.height() - w->height()) / 2;
 
-    w->move(x, y);
-  } else {
-    qWarning() << key << "for gtk_window_set_position is not implemented";
-  }
+  w->move(x, y);
 }
 
 QList<QWidget*> gtk_container_get_children(QWidget* container)
