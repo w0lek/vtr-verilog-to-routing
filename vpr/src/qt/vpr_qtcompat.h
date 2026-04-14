@@ -49,10 +49,7 @@ const char* gtk_widget_get_name(QWidget* w);
 void gtk_window_set_title(QWidget* w, const char* title);
 
 #define GTK_SPIN_BUTTON(w) qobject_cast<QSpinBox*>(w)
-#define GTK_TOGGLE_BUTTON(w) qobject_cast<QCheckBox*>(w)
 #define GTK_COMBO_BOX_TEXT(w) qobject_cast<QComboBox*>(reinterpret_cast<QObject*>(w))
-#define GTK_DIALOG(w) qobject_cast<QDialog*>(w)
-#define GTK_ENTRY(w) qobject_cast<QLineEdit*>(w)
 #define GTK_GRID(w) qobject_cast<QWidget*>(w)
 #define GTK_CONTAINER(w) (w)
 #define GTK_BOX(l) qobject_cast<QBoxLayout*>(l)
@@ -70,7 +67,7 @@ struct GtkDialogButton {
     const char* text;
     int response;
 };
-QWidget* gtk_dialog_new_with_buttons(
+QDialog* gtk_dialog_new_with_buttons(
     const char* title,
     QWidget* parent,
     int flags,

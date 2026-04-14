@@ -312,7 +312,7 @@ void checkbox_callback(QWidget* widget) {
     std::string name = gtk_widget_get_name(widget);
     name.erase(name.begin());
     int location = stoi(name);
-    activate_breakpoint_by_index(location, GTK_TOGGLE_BUTTON(widget)->isChecked());
+    activate_breakpoint_by_index(location, Q_CHECKBOX(widget)->isChecked());
 }
 
 //deletes breakpoint when indicated by the user using the delete button in the ui

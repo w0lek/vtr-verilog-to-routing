@@ -182,7 +182,7 @@ QWidget* gtk_grid_new()
   return w;
 }
 
-QWidget* gtk_dialog_new_with_buttons(
+QDialog* gtk_dialog_new_with_buttons(
     const char* title,
     QWidget* parent,
     int flags,
