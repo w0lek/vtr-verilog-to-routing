@@ -25,7 +25,7 @@ void set_temp_button_callback(QWidget* /*widgets*/, QWidget* grid);
 void set_block_button_callback(QWidget* /*widget*/, QWidget* grid);
 void set_router_iter_button_callback(QWidget* /*widget*/, QWidget* grid);
 void set_net_id_button_callback(QWidget* /*widget*/, QWidget* grid);
-void checkbox_callback(QWidget* widget);
+void checkbox_callback(QCheckBox* widget);
 void delete_bp_callback(QWidget* widget);
 void advanced_button_callback();
 void set_expression_button_callback(QWidget* /*widget*/, QWidget* grid);

@@ -114,11 +114,6 @@ const char* gtk_widget_get_name(QWidget* w)
   return w->objectName().toStdString().c_str();
 }
 
-void gtk_window_set_title(QWidget* w, const char* title)
-{
-  w->setWindowTitle(title);
-}
-
 QGridLayout* get_grid_layout(QWidget* grid)
 {
   if (!grid) {

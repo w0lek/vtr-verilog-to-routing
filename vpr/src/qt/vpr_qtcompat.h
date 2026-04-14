@@ -22,8 +22,6 @@ void gtk_box_pack_start(QBoxLayout* box,
 
 using GtkBox = QBoxLayout;
 
-#define Q_ABSTRACT_BUTTON(w) qobject_cast<QAbstractButton*>(w);
-
 #include <QRadioButton>
 #include <QSpinBox>
 #include <QCheckBox>
@@ -45,7 +43,6 @@ void gtk_label_set_markup(QLabel* label, const QString& text);
 const char* gtk_button_get_label(QPushButton* button);
 QPushButton* gtk_button_new_with_label(const char* text);
 const char* gtk_widget_get_name(QWidget* w);
-void gtk_window_set_title(QWidget* w, const char* title);
 
 #define GTK_COMBO_BOX_TEXT(w) qobject_cast<QComboBox*>(reinterpret_cast<QObject*>(w))
 #define GTK_GRID(w) qobject_cast<QWidget*>(w)

@@ -256,7 +256,7 @@ void view_button_setup(ezgl::application* app) {
             QObject::connect(checkbox, &QAbstractButton::toggled, checkbox, [checkbox]() {
                 select_layer_cbk(checkbox, /*response_id=*/0, /*data=*/nullptr);
             });
-            QObject::connect(GTK_SPIN_BUTTON(spin_button), &QSpinBox::valueChanged, GTK_SPIN_BUTTON(spin_button), [spin_button]() {
+            QObject::connect(spin_button, &QSpinBox::valueChanged, spin_button, [spin_button]() {
                 transparency_cbk(spin_button, /*response_id=*/0, /*data=*/nullptr);
             });
         }

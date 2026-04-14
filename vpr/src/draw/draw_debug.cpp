@@ -44,7 +44,7 @@ void draw_debug_window() {
 
         QWidget* window = new QWidget;
         window->setAttribute(Qt::WA_DeleteOnClose);
-        gtk_window_set_title(window, "Debugger");
+        window->setWindowTitle("Debugger");
         gtk_window_set_position(window, GTK_WIN_POS_CENTER);
 
         QWidget* mainGrid = gtk_grid_new();
@@ -176,7 +176,7 @@ void advanced_button_callback() {
         QWidget* window = new QWidget;
         window->setAttribute(Qt::WA_DeleteOnClose);
         gtk_window_set_position(window, GTK_WIN_POS_CENTER);
-        gtk_window_set_title(window, "Advanced Debugger Options");
+        window->setWindowTitle("Advanced Debugger Options");
 
         QWidget* set = gtk_button_new_with_label("set");
         QLineEdit* entry = new QLineEdit;
@@ -308,11 +308,11 @@ void add_to_bpList(std::string bpDescription) {
 }
 
 //enables and disables a breakpoint when the checkbox is activated
-void checkbox_callback(QWidget* widget) {
-    std::string name = gtk_widget_get_name(widget);
+void checkbox_callback(QCheckBox* checkbox) {
+    std::string name = checkbox->objectName().toStdString();
     name.erase(name.begin());
     int location = stoi(name);
-    activate_breakpoint_by_index(location, Q_CHECKBOX(widget)->isChecked());
+    activate_breakpoint_by_index(location, checkbox->isChecked());
 }
 
 //deletes breakpoint when indicated by the user using the delete button in the ui
@@ -419,7 +419,7 @@ void invalid_breakpoint_entry_window(std::string error) {
     QWidget* window = new QWidget;
     window->setAttribute(Qt::WA_DeleteOnClose);
     gtk_window_set_position(window, GTK_WIN_POS_CENTER);
-    gtk_window_set_title(window, "ERROR");
+    window->setWindowTitle("ERROR");
     window->setWindowModality(Qt::ApplicationModal);
 
     QWidget* grid = gtk_grid_new();
@@ -449,7 +449,7 @@ void breakpoint_info_window(std::string bpDescription, BreakpointState draw_brea
     QWidget* window = new QWidget;
     window->setAttribute(Qt::WA_DeleteOnClose);
     gtk_window_set_position(window, GTK_WIN_POS_CENTER);
-    gtk_window_set_title(window, "Breakpoint");
+    window->setWindowTitle("Breakpoint");
 
     QWidget* grid = gtk_grid_new();
 
