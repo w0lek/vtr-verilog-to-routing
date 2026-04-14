@@ -32,7 +32,8 @@ void draw_manual_moves_window(const std::string& block_id) {
         draw_state->manual_moves_state.manual_move_window_is_open = true;
 
         //Window settings-
-        draw_state->manual_moves_state.manual_move_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+        draw_state->manual_moves_state.manual_move_window = new QWidget;
+        draw_state->manual_moves_state.manual_move_window->setAttribute(Qt::WA_DeleteOnClose);
         gtk_window_set_position((GtkWindow*)draw_state->manual_moves_state.manual_move_window, GTK_WIN_POS_CENTER);
         gtk_window_set_title((GtkWindow*)draw_state->manual_moves_state.manual_move_window, "Manual Moves Generator");
         gtk_widget_set_name(draw_state->manual_moves_state.manual_move_window, "manual_move_window");

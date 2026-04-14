@@ -194,11 +194,6 @@ void gtk_window_set_title(QWidget* w, const char* title)
   w->setWindowTitle(title);
 }
 
-QWidget* gtk_window_new(int)
-{
-  return new QWidget;
-}
-
 QGridLayout* get_grid_layout(QWidget* grid)
 {
   if (!grid) {

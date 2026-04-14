@@ -66,9 +66,6 @@ QPushButton* gtk_button_new_with_label(const char* text);
 const char* gtk_widget_get_name(QWidget* w);
 void gtk_window_set_title(QWidget* w, const char* title);
 
-#define GTK_WINDOW_TOPLEVEL 0
-QWidget* gtk_window_new(int);
-
 #define GTK_SPIN_BUTTON(w) qobject_cast<QSpinBox*>(w)
 #define GTK_BUTTON(w) qobject_cast<QAbstractButton*>(w)
 #define GTK_TOGGLE_BUTTON(w) qobject_cast<QCheckBox*>(w)

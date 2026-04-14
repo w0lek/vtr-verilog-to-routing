@@ -1147,14 +1147,14 @@ static void clip_routing_util(QWidget* widget, int /*response_id*/, void* /*data
 
 static void on_dialog_response(QDialog* dialog, int response_id, void* /* user_data*/) {
     switch (response_id) {
-        case GTK_RESPONSE_ACCEPT:
-            std::cout << "GTK_RESPONSE_ACCEPT ";
+        case RESPONSE_ACCEPT:
+            std::cout << "RESPONSE_ACCEPT ";
             break;
-        case GTK_RESPONSE_DELETE_EVENT:
-            std::cout << "GTK_RESPONSE_DELETE_EVENT (i.e. ’X’ button) ";
+        case RESPONSE_DELETE_EVENT:
+            std::cout << "RESPONSE_DELETE_EVENT (i.e. ’X’ button) ";
             break;
-        case GTK_RESPONSE_REJECT:
-            std::cout << "GTK_RESPONSE_REJECT ";
+        case RESPONSE_REJECT:
+            std::cout << "RESPONSE_REJECT ";
             break;
         default:
             std::cout << "UNKNOWN ";

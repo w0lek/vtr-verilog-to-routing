@@ -42,7 +42,8 @@ void draw_debug_window() {
     if (!draw_debug_glob_vars.openWindows.debug_window) {
         draw_debug_glob_vars.openWindows.debug_window = true;
 
-        QWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+        QWidget* window = new QWidget;
+        window->setAttribute(Qt::WA_DeleteOnClose);
         gtk_window_set_title(window, "Debugger");
         gtk_window_set_position(window, GTK_WIN_POS_CENTER);
 
@@ -172,7 +173,8 @@ void advanced_button_callback() {
     if (!draw_debug_glob_vars.openWindows.advanced_window) {
         draw_debug_glob_vars.openWindows.advanced_window = true;
 
-        QWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+        QWidget* window = new QWidget;
+        window->setAttribute(Qt::WA_DeleteOnClose);
         gtk_window_set_position(window, GTK_WIN_POS_CENTER);
         gtk_window_set_title(window, "Advanced Debugger Options");
 
@@ -408,7 +410,8 @@ void set_expression_button_callback(QWidget* /*widget*/, QWidget* grid) {
 
 //window that pops up when an entry is not valid
 void invalid_breakpoint_entry_window(std::string error) {
-    QWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    QWidget* window = new QWidget;
+    window->setAttribute(Qt::WA_DeleteOnClose);
     gtk_window_set_position(window, GTK_WIN_POS_CENTER);
     gtk_window_set_title(window, "ERROR");
     window->setWindowModality(Qt::ApplicationModal);
@@ -437,7 +440,8 @@ void invalid_breakpoint_entry_window(std::string error) {
 //window that pops up when a breakpoint is reached
 //shows which breakpoint the program has stopped at and gives an info summary
 void breakpoint_info_window(std::string bpDescription, BreakpointState draw_breakpoint_state, bool in_placer) {
-    QWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    QWidget* window = new QWidget;
+    window->setAttribute(Qt::WA_DeleteOnClose);
     gtk_window_set_position(window, GTK_WIN_POS_CENTER);
     gtk_window_set_title(window, "Breakpoint");
 
