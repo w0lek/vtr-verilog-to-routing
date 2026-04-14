@@ -111,11 +111,6 @@ void gtk_label_set_markup(QLabel* label, const QString& text)
   label->setText(text);
 }
 
-const char* gtk_entry_get_text(QLineEdit* lineEdit)
-{
-  return lineEdit->text().toStdString().c_str();
-}
-
 void gtk_widget_set_name(QWidget* w, const QString& name)
 {
   w->setObjectName(name);

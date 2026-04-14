@@ -106,26 +106,36 @@ void calculate_cost_callback(QWidget* /*widget*/, QWidget* grid) {
     const ClusteringContext& cluster_ctx = g_vpr_ctx.clustering();
 
     //Getting entry values
-    QWidget* block_entry = gtk_grid_get_child_at((GtkGrid*)grid, 0, 1);
-    std::string block_id_string = gtk_entry_get_text((GtkEntry*)block_entry);
+    QWidget* block_entry_widget = gtk_grid_get_child_at((GtkGrid*)grid, 0, 1);
+    QLineEdit* block_entry = Q_LINEEDIT(block_entry_widget);
+    std::string block_id_string = block_entry->text().toStdString();
 
     if (string_is_a_number(block_id_string)) { //for block ID
         block_id = std::atoi(block_id_string.c_str());
     } else { //for block name
-        block_id = size_t(cluster_ctx.clb_nlist.find_block(gtk_entry_get_text((GtkEntry*)block_entry)));
+        block_id = size_t(cluster_ctx.clb_nlist.find_block(block_id_string));
     }
 
-    QWidget* x_position_entry = gtk_grid_get_child_at((GtkGrid*)grid, 2, 1);
-    QWidget* y_position_entry = gtk_grid_get_child_at((GtkGrid*)grid, 2, 2);
-    QWidget* layer_position_entry = gtk_grid_get_child_at((GtkGrid*)grid, 2, 3);
-    QWidget* subtile_position_entry = gtk_grid_get_child_at((GtkGrid*)grid, 2, 4);
+    QWidget* x_position_entry_widget = gtk_grid_get_child_at((GtkGrid*)grid, 2, 1);
+    QWidget* y_position_entry_widget = gtk_grid_get_child_at((GtkGrid*)grid, 2, 2);
+    QWidget* layer_position_entry_widget = gtk_grid_get_child_at((GtkGrid*)grid, 2, 3);
+    QWidget* subtile_position_entry_widget = gtk_grid_get_child_at((GtkGrid*)grid, 2, 4);
 
-    int x_location = std::atoi(gtk_entry_get_text((GtkEntry*)x_position_entry));
-    int y_location = std::atoi(gtk_entry_get_text((GtkEntry*)y_position_entry));
-    int layer_location = std::atoi(gtk_entry_get_text((GtkEntry*)layer_position_entry));
-    int subtile_location = std::atoi(gtk_entry_get_text((GtkEntry*)subtile_position_entry));
+    QLineEdit* x_position_entry = Q_LINEEDIT(x_position_entry_widget);
+    QLineEdit* y_position_entry = Q_LINEEDIT(y_position_entry_widget);
+    QLineEdit* layer_position_entry = Q_LINEEDIT(layer_position_entry_widget);
+    QLineEdit* subtile_position_entry = Q_LINEEDIT(subtile_position_entry_widget);
 
-    if (std::string(gtk_entry_get_text((GtkEntry*)block_entry)).empty() || std::string(gtk_entry_get_text((GtkEntry*)x_position_entry)).empty() || std::string(gtk_entry_get_text((GtkEntry*)y_position_entry)).empty() || std::string(gtk_entry_get_text((GtkEntry*)layer_position_entry)).empty() || std::string(gtk_entry_get_text((GtkEntry*)subtile_position_entry)).empty()) {
+    int x_location = x_position_entry->text().toInt();
+    int y_location = y_position_entry->text().toInt();
+    int layer_location = layer_position_entry->text().toInt();
+    int subtile_location = subtile_position_entry->text().toInt();
+
+    if (block_entry->text().isEmpty() 
+    || x_position_entry->text().isEmpty() 
+    || y_position_entry->text().isEmpty() 
+    || layer_position_entry->text().isEmpty() 
+    || subtile_position_entry->text().isEmpty()) {
         invalid_breakpoint_entry_window("Not all fields are complete");
         valid_input = false;
     }

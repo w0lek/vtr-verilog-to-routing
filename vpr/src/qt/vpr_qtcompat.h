@@ -39,7 +39,6 @@ using GtkBox = QBoxLayout;
 
 using GtkSwitch = QAbstractButton;
 using GtkWindow = QWidget;
-using GtkEntry = QLineEdit;
 using GtkGrid = QWidget; //QGridLayout is laying inside the widget
 
 void widget_set_margin_start(QWidget*, int);
@@ -49,7 +48,6 @@ void widget_set_margin_bottom(QWidget*, int);
 
 int gtk_spin_button_get_value(QSpinBox* spinBox);
 void gtk_label_set_markup(QLabel* label, const QString& text);
-const char* gtk_entry_get_text(QLineEdit* lineEdit);
 void gtk_widget_set_name(QWidget* w, const QString& name);
 void gtk_widget_set_sensitive(QWidget* w, bool flag);
 const char* gtk_button_get_label(QPushButton* button);

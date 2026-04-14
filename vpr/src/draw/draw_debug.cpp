@@ -329,11 +329,12 @@ void delete_bp_callback(QWidget* widget) {
 //sets a new move type breakpoint
 void set_moves_button_callback(QWidget* /*widget*/, QWidget* grid) {
     t_draw_state* draw_state = get_draw_state_vars();
-    QWidget* entry = gtk_grid_get_child_at(GTK_GRID(grid), 1, 1);
+    QWidget* entry_widget = gtk_grid_get_child_at(GTK_GRID(grid), 1, 1);
+    QLineEdit* entry = Q_LINEEDIT(entry_widget);
 
     //check for input validity
-    int moves = atoi(gtk_entry_get_text((GtkEntry*)entry));
-    if (moves >= 1 && strchr(gtk_entry_get_text((GtkEntry*)entry), '.') == NULL) {
+    int moves = entry->text().toInt();
+    if (moves >= 1 && entry->text().contains('.')) {
         draw_state->list_of_breakpoints.push_back(Breakpoint(BT_MOVE_NUM, moves));
         std::string bpDescription = "Breakpoint at move_num += " + std::to_string(moves);
         add_to_bpList(bpDescription);
@@ -344,11 +345,12 @@ void set_moves_button_callback(QWidget* /*widget*/, QWidget* grid) {
 //sets a new temperature type breakpoint
 void set_temp_button_callback(QWidget* /*widget*/, QWidget* grid) {
     t_draw_state* draw_state = get_draw_state_vars();
-    QWidget* entry = gtk_grid_get_child_at((GtkGrid*)grid, 1, 2);
+    QWidget* entry_widget = gtk_grid_get_child_at((GtkGrid*)grid, 1, 2);
+    QLineEdit* entry = Q_LINEEDIT(entry_widget);
 
     //input validity
-    int temps = atoi(gtk_entry_get_text((GtkEntry*)entry));
-    if (temps >= 1 && strchr(gtk_entry_get_text((GtkEntry*)entry), '.') == NULL) {
+    int temps = entry->text().toInt();
+    if (temps >= 1 && entry->text().contains('.')) {
         draw_state->list_of_breakpoints.push_back(Breakpoint(BT_TEMP_NUM, temps));
         std::string bpDescription = "Breakpoint at temp_count += " + std::to_string(temps);
         add_to_bpList(bpDescription);
@@ -359,10 +361,11 @@ void set_temp_button_callback(QWidget* /*widget*/, QWidget* grid) {
 //sets a new block type breakpoint
 void set_block_button_callback(QWidget* /*widget*/, QWidget* grid) {
     t_draw_state* draw_state = get_draw_state_vars();
-    QWidget* entry = gtk_grid_get_child_at((GtkGrid*)grid, 1, 3);
+    QWidget* entry_widget = gtk_grid_get_child_at((GtkGrid*)grid, 1, 3);
+    QLineEdit* entry = Q_LINEEDIT(entry_widget);
 
-    draw_state->list_of_breakpoints.push_back(Breakpoint(BT_FROM_BLOCK, atoi(gtk_entry_get_text((GtkEntry*)entry))));
-    std::string s(gtk_entry_get_text((GtkEntry*)entry));
+    std::string s(entry->text().toStdString());
+    draw_state->list_of_breakpoints.push_back(Breakpoint(BT_FROM_BLOCK, entry->text().toInt()));
     std::string bpDescription = "Breakpoint from_block == " + s;
     add_to_bpList(bpDescription);
 }
@@ -370,11 +373,12 @@ void set_block_button_callback(QWidget* /*widget*/, QWidget* grid) {
 //sets a new router_iter type breakpoint
 void set_router_iter_button_callback(QWidget* /*widget*/, QWidget* grid) {
     t_draw_state* draw_state = get_draw_state_vars();
-    QWidget* entry = gtk_grid_get_child_at(GTK_GRID(grid), 1, 5);
+    QWidget* entry_widget = gtk_grid_get_child_at(GTK_GRID(grid), 1, 5);
+    QLineEdit* entry = Q_LINEEDIT(entry_widget);
 
     //check for input validity
-    int iters = atoi(gtk_entry_get_text((GtkEntry*)entry));
-    if (iters >= 1 && strchr(gtk_entry_get_text((GtkEntry*)entry), '.') == NULL) {
+    int iters = entry->text().toInt();
+    if (iters >= 1 && entry->text().contains('.')) {
         draw_state->list_of_breakpoints.push_back(Breakpoint(BT_ROUTER_ITER, iters));
         std::string bpDescription = "Breakpoint at router_iter == " + std::to_string(iters);
         add_to_bpList(bpDescription);
@@ -385,10 +389,11 @@ void set_router_iter_button_callback(QWidget* /*widget*/, QWidget* grid) {
 //sets a new net_id type breakpoint
 void set_net_id_button_callback(QWidget* /*widget*/, QWidget* grid) {
     t_draw_state* draw_state = get_draw_state_vars();
-    QWidget* entry = gtk_grid_get_child_at((GtkGrid*)grid, 1, 6);
+    QWidget* entry_widget = gtk_grid_get_child_at((GtkGrid*)grid, 1, 6);
+    QLineEdit* entry = Q_LINEEDIT(entry_widget);
 
-    draw_state->list_of_breakpoints.push_back(Breakpoint(BT_ROUTE_NET_ID, atoi(gtk_entry_get_text((GtkEntry*)entry))));
-    std::string s(gtk_entry_get_text((GtkEntry*)entry));
+    draw_state->list_of_breakpoints.push_back(Breakpoint(BT_ROUTE_NET_ID, entry->text().toInt()));
+    std::string s(entry->text().toStdString());
     std::string bpDescription = "Breakpoint route_net_id == " + s;
     add_to_bpList(bpDescription);
 }
@@ -396,10 +401,11 @@ void set_net_id_button_callback(QWidget* /*widget*/, QWidget* grid) {
 //sets a new expression type breakpoint
 void set_expression_button_callback(QWidget* /*widget*/, QWidget* grid) {
     t_draw_state* draw_state = get_draw_state_vars();
-    QWidget* entry = gtk_grid_get_child_at((GtkGrid*)grid, 1, 2);
+    QWidget* entry_widget = gtk_grid_get_child_at((GtkGrid*)grid, 1, 2);
+    QLineEdit* entry = Q_LINEEDIT(entry_widget);
 
     //check input validity
-    std::string expr = gtk_entry_get_text((GtkEntry*)entry);
+    std::string expr = entry->text().toStdString();
     if (valid_expression(expr)) {
         draw_state->list_of_breakpoints.push_back(Breakpoint(BT_EXPRESSION, expr));
         std::string bpDescription = "Breakpoint at " + expr;
