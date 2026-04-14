@@ -351,7 +351,7 @@ void hide_draw_routing(ezgl::application* app) {
  */
 void hide_widget(std::string widgetName, ezgl::application* app) {
     QWidget* widget = app->find_widget(widgetName.c_str());
-    gtk_widget_hide(widget);
+    widget->hide();
 }
 
 /**
@@ -359,7 +359,7 @@ void hide_widget(std::string widgetName, ezgl::application* app) {
  */
 void show_widget(std::string widgetName, ezgl::application* app) {
     QWidget* widget = app->find_widget(widgetName.c_str());
-    gtk_widget_show(widget);
+    widget->show();
 }
 
 /**

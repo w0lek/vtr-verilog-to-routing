@@ -282,16 +282,6 @@ void gtk_window_set_transient_for(QWidget* dialog, QWidget* parent)
   dialog->setWindowModality(Qt::WindowModal);
 }
 
-void gtk_widget_show(QWidget* widget)
-{
-  widget->show();
-}
-
-void gtk_widget_hide(QWidget* widget)
-{
-  widget->hide();
-}
-
 QSpinBox* gtk_spin_button_new_with_range(int min, int max, int step)
 {
   QSpinBox* spin_box = new QSpinBox();
