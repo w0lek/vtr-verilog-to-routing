@@ -99,10 +99,10 @@ static void on_stage_change_setup(ezgl::application* app, bool is_new_window);
 
 static void setup_default_ezgl_callbacks(ezgl::application* app);
 static void set_force_pause(QWidget* /*widget*/, int /*response_id*/, void* /*data*/);
-static void set_block_outline(QWidget* widget, int /*response_id*/, void* /*data*/);
-static void set_block_text(QWidget* widget, int /*response_id*/, void* /*data*/);
-static void set_draw_partitions(QWidget* widget, int /*response_id*/, void* /*data*/);
-static void clip_routing_util(QWidget* widget, int /*response_id*/, void* /*data*/);
+static void set_block_outline(QCheckBox* checkbox, int /*response_id*/, void* /*data*/);
+static void set_block_text(QCheckBox* checkbox, int /*response_id*/, void* /*data*/);
+static void set_draw_partitions(QCheckBox* checkbox, int /*response_id*/, void* /*data*/);
+static void clip_routing_util(QCheckBox* checkbox, int /*response_id*/, void* /*data*/);
 static void run_graphics_commands(const std::string& commands);
 
 /************************** File Scope Variables ****************************/
@@ -1071,20 +1071,20 @@ static void setup_default_ezgl_callbacks(ezgl::application* app) {
     });
 
     // Connect Block Outline checkbox
-    QAbstractButton* block_outline = app->find_button("blockOutline");
-    QObject::connect(block_outline, &QAbstractButton::toggled, [app](){
+    QCheckBox* block_outline = app->find_check_box("blockOutline");
+    QObject::connect(block_outline, &QCheckBox::toggled, [app](){
         set_block_outline(/*unused*/nullptr, /*unused*/-1, app);
     });
 
     // Connect Block Text checkbox
-    QAbstractButton* block_text = app->find_button("blockText");
-    QObject::connect(block_text, &QAbstractButton::toggled, [app](){
+    QCheckBox* block_text = app->find_check_box("blockText");
+    QObject::connect(block_text, &QCheckBox::toggled, [app](){
         set_block_text(/*unused*/nullptr, /*unused*/-1, app);
     });
 
     // Connect Clip Routing Util checkbox
-    QAbstractButton* clip_routing = app->find_button("clipRoutingUtil");
-    QObject::connect(clip_routing, &QAbstractButton::toggled, [app](){
+    QCheckBox* clip_routing = app->find_check_box("clipRoutingUtil");
+    QObject::connect(clip_routing, &QCheckBox::toggled, [app](){
         clip_routing_util(/*unused*/nullptr, /*unused*/-1, app);
     });
 
@@ -1095,8 +1095,8 @@ static void setup_default_ezgl_callbacks(ezgl::application* app) {
     });
 
     // Connect Draw Partitions Checkbox
-    QAbstractButton* draw_partitions = app->find_button("drawPartitions");
-    QObject::connect(draw_partitions, &QAbstractButton::toggled, [app](){
+    QCheckBox* draw_partitions = app->find_check_box("drawPartitions");
+    QObject::connect(draw_partitions, &QCheckBox::toggled, [app](){
         set_draw_partitions(/*unused*/nullptr, /*unused*/-1, app);
     });
 }
@@ -1135,25 +1135,6 @@ static void clip_routing_util(QCheckBox* checkbox, int /*response_id*/, void* /*
     //redraw
     application.update_message(draw_state->default_message);
     application.refresh_drawing();
-}
-
-static void on_dialog_response(QDialog* dialog, int response_id, void* /* user_data*/) {
-    switch (response_id) {
-        case RESPONSE_ACCEPT:
-            std::cout << "RESPONSE_ACCEPT ";
-            break;
-        case RESPONSE_DELETE_EVENT:
-            std::cout << "RESPONSE_DELETE_EVENT (i.e. ’X’ button) ";
-            break;
-        case RESPONSE_REJECT:
-            std::cout << "RESPONSE_REJECT ";
-            break;
-        default:
-            std::cout << "UNKNOWN ";
-            break;
-    }
-
-    dialog->deleteLater();
 }
 
 // Callback function for Draw Partitions checkbox
