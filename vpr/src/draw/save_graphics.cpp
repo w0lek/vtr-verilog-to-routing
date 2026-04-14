@@ -49,10 +49,10 @@ void save_graphics_dialog_box(QWidget* /*widget*/, ezgl::application* /*app*/) {
     QWidget* main_window;
     QWidget* content_area;
     QWidget* text_entry;
-    QWidget* name_label;
-    QWidget* type_label;
-    QWidget* dialog;
-    QWidget* combo_box;
+    QLabel* name_label;
+    QLabel* type_label;
+    QDialog* dialog;
+    QComboBox* combo_box;
 
     // get a pointer to the main window
     main_window = application.find_widget(application.get_main_window_id().c_str());
@@ -61,25 +61,25 @@ void save_graphics_dialog_box(QWidget* /*widget*/, ezgl::application* /*app*/) {
     dialog->setAttribute(Qt::WA_DeleteOnClose);
 
     // create elements
-    name_label = gtk_label_new("File name:");
+    name_label = new QLabel("File name:");
     text_entry = gtk_entry_new();
-    type_label = gtk_label_new("File format:");
-    combo_box = gtk_combo_box_text_new();
+    type_label = new QLabel("File format:");
+    combo_box = new QComboBox;
 
     // set name for text entry and combo box for later data extraction
     gtk_widget_set_name(text_entry, "file_name_text_entry");
     gtk_widget_set_name(combo_box, "file_name_combo_box");
 
-    gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combo_box), "pdf"); // index 0
-    gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combo_box), "png"); // index 1
-    gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(combo_box), "svg"); // index 2
+    combo_box->addItem("pdf"); // index 0
+    combo_box->addItem("png"); // index 1
+    combo_box->addItem("svg"); // index 2
 
     // set default values
-    gtk_combo_box_set_active((QComboBox*)combo_box, 0);      // default set to pdf which has an index 0
+    combo_box->setCurrentIndex(0);                             // default set to pdf which has an index 0
     gtk_entry_set_text((GtkEntry*)text_entry, "vpr_graphics"); // default text set to vpr_graphics
 
     // attach elements to the content area of the dialog
-    content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+    content_area = gtk_dialog_get_content_area(dialog);
     gtk_container_add(GTK_CONTAINER(content_area), name_label);
     gtk_container_add(GTK_CONTAINER(content_area), text_entry);
     gtk_container_add(GTK_CONTAINER(content_area), type_label);
@@ -93,9 +93,9 @@ void save_graphics_dialog_box(QWidget* /*widget*/, ezgl::application* /*app*/) {
     gtk_container_add(dialog, buttonBox);
     QObject::connect(buttonBox, &QDialogButtonBox::accepted, dialog, [dialog]() {
         save_graphics_from_button(dialog, 0, dialog);
-        Q_DIALOG(dialog)->accept();
+        dialog->accept();
     });
-    QObject::connect(buttonBox, &QDialogButtonBox::rejected, Q_DIALOG(dialog), &QDialog::reject);
+    QObject::connect(buttonBox, &QDialogButtonBox::rejected, dialog, &QDialog::reject);
     return;
 }
 

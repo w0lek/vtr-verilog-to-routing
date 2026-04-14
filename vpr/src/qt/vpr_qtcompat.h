@@ -55,10 +55,6 @@ void gtk_widget_set_margin_bottom(QWidget*, int);
 
 void gtk_window_close(QWidget*);
 int gtk_spin_button_get_value(QSpinBox* spinBox);
-void gtk_combo_box_text_append_text(QComboBox* combo, const QString& item);
-void gtk_combo_box_text_remove(QComboBox* combo, int index);
-QComboBox* gtk_combo_box_text_new();
-QLabel* gtk_label_new(const QString& text);
 void gtk_label_set_markup(QLabel* label, const QString& text);
 void gtk_entry_set_text(QLineEdit* lineEdit, const QString& text);
 QLineEdit* gtk_entry_new();
@@ -73,14 +69,10 @@ void gtk_window_set_title(QWidget* w, const char* title);
 #define GTK_WINDOW_TOPLEVEL 0
 QWidget* gtk_window_new(int);
 
-#define Q_BUTTON(w) qobject_cast<QAbstractButton*>(w)
-#define Q_CHECKBOX(w) qobject_cast<QCheckBox*>(w)
-
 #define GTK_SPIN_BUTTON(w) qobject_cast<QSpinBox*>(w)
 #define GTK_BUTTON(w) qobject_cast<QAbstractButton*>(w)
 #define GTK_TOGGLE_BUTTON(w) qobject_cast<QCheckBox*>(w)
 #define GTK_COMBO_BOX_TEXT(w) qobject_cast<QComboBox*>(reinterpret_cast<QObject*>(w))
-#define GTK_IS_CHECK_BUTTON(w) (qobject_cast<QCheckBox*>(w) != nullptr)
 #define GTK_DIALOG(w) qobject_cast<QDialog*>(w)
 #define GTK_ENTRY(w) qobject_cast<QLineEdit*>(w)
 #define GTK_GRID(w) qobject_cast<QWidget*>(w)

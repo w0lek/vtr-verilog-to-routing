@@ -52,33 +52,33 @@ void draw_debug_window() {
         gtk_widget_set_margin_start(mainGrid, 30);
         gtk_widget_set_margin_end(mainGrid, 20);
 
-        QLabel* placerOpts = gtk_label_new(nullptr);
+        QLabel* placerOpts = new QLabel;
         gtk_label_set_markup(placerOpts, "<b>Placer Options</b>");
         gtk_widget_set_margin_bottom(placerOpts, 10);
-        QLabel* routerOpts = gtk_label_new(nullptr);
+        QLabel* routerOpts = new QLabel;
         gtk_label_set_markup(routerOpts, "<b>Router Options</b>");
         gtk_widget_set_margin_bottom(routerOpts, 10);
         gtk_widget_set_margin_top(routerOpts, 30);
-        QLabel* bplist = gtk_label_new(nullptr);
+        QLabel* bplist = new QLabel;
         gtk_label_set_markup(bplist, "<b>List of Breakpoints</b>");
         gtk_widget_set_margin_bottom(bplist, 10);
         gtk_widget_set_margin_top(bplist, 30);
-        QLabel* movesLabel = gtk_label_new("Number of moves to proceed");
+        QLabel* movesLabel = new QLabel("Number of moves to proceed");
         gtk_widget_set_halign(movesLabel, GTK_ALIGN_END);
         gtk_widget_set_margin_end(movesLabel, 8);
-        QLabel* tempsLabel = gtk_label_new("Temperatures to proceed:");
+        QLabel* tempsLabel = new QLabel("Temperatures to proceed:");
         gtk_widget_set_halign(tempsLabel, GTK_ALIGN_END);
         gtk_widget_set_margin_end(tempsLabel, 8);
-        QLabel* blockLabel = gtk_label_new("Stop at from_block");
+        QLabel* blockLabel = new QLabel("Stop at from_block");
         gtk_widget_set_halign(blockLabel, GTK_ALIGN_END);
         gtk_widget_set_margin_end(blockLabel, 8);
-        QLabel* iterLabel = gtk_label_new("Stop at router iteration");
+        QLabel* iterLabel = new QLabel("Stop at router iteration");
         gtk_widget_set_halign(iterLabel, GTK_ALIGN_END);
         gtk_widget_set_margin_end(iterLabel, 8);
-        QLabel* netLabel = gtk_label_new("Stop at route_net_id");
+        QLabel* netLabel = new QLabel("Stop at route_net_id");
         gtk_widget_set_halign(netLabel, GTK_ALIGN_END);
         gtk_widget_set_margin_end(netLabel, 8);
-        QLabel* star = gtk_label_new("*for handling multiple breakpoints at once using an expression can be more accurate");
+        QLabel* star = new QLabel("*for handling multiple breakpoints at once using an expression can be more accurate");
         gtk_widget_set_margin_top(star, 15);
 
         QWidget* setM = gtk_button_new_with_label("Set");
@@ -179,25 +179,25 @@ void advanced_button_callback() {
         QWidget* set = gtk_button_new_with_label("set");
         QWidget* entry = gtk_entry_new();
         entry->setMinimumWidth(entry->fontMetrics().horizontalAdvance(QString(40, 'x')));
-        QLabel* instructions = gtk_label_new("You can use % == > < <= >= && || operators with temp_count, move_num, and from_block to set your desired breakpoint. To see the full list of variables refer to the variables tab on the left\nex. move_num == 4 || from_block == 83");
+        QLabel* instructions = new QLabel("You can use % == > < <= >= && || operators with temp_count, move_num, and from_block to set your desired breakpoint. To see the full list of variables refer to the variables tab on the left\nex. move_num == 4 || from_block == 83");
         instructions->setAlignment(Qt::AlignCenter);
         instructions->setWordWrap(true);
         instructions->setMaximumWidth(instructions->fontMetrics().horizontalAdvance(QString(40, 'x')));
-        QLabel* expression_here = gtk_label_new("Write expression below:");
+        QLabel* expression_here = new QLabel("Write expression below:");
 
         // GtkExpander equivalent: QGroupBox
         auto* expander = new QGroupBox("Variables");
         QWidget* varGrid = gtk_grid_new();
-        QLabel* pLabel  = gtk_label_new(nullptr);
+        QLabel* pLabel  = new QLabel;
         gtk_label_set_markup(pLabel, "<b>Placer Variables:</b>");
-        QLabel* mLabel  = gtk_label_new("move_num");
-        QLabel* tLabel  = gtk_label_new("temp_count");
-        QLabel* bLabel  = gtk_label_new("from_block");
-        QLabel* iLabel  = gtk_label_new("in_blocks_affected");
-        QLabel* roLabel = gtk_label_new(nullptr);
+        QLabel* mLabel  = new QLabel("move_num");
+        QLabel* tLabel  = new QLabel("temp_count");
+        QLabel* bLabel  = new QLabel("from_block");
+        QLabel* iLabel  = new QLabel("in_blocks_affected");
+        QLabel* roLabel = new QLabel;
         gtk_label_set_markup(roLabel, "<b>Router Variables:</b>");
-        QLabel* rLabel  = gtk_label_new("router_iter");
-        QLabel* nLabel  = gtk_label_new("route_net_id");
+        QLabel* rLabel  = new QLabel("router_iter");
+        QLabel* nLabel  = new QLabel("route_net_id");
         gtk_widget_set_halign(mLabel,  GTK_ALIGN_START);
         gtk_widget_set_halign(tLabel,  GTK_ALIGN_START);
         gtk_widget_set_halign(bLabel,  GTK_ALIGN_START);
@@ -250,7 +250,7 @@ void refresh_bpList() {
 
     t_draw_state* draw_state = get_draw_state_vars();
     for (size_t i = 0; i < draw_debug_glob_vars.bp_labels.size(); i++) {
-        QLabel* label = gtk_label_new(draw_debug_glob_vars.bp_labels[i].c_str());
+        QLabel* label = new QLabel(draw_debug_glob_vars.bp_labels[i].c_str());
         gtk_grid_attach((GtkGrid*)draw_debug_glob_vars.bpGrid, label, 0, i, 1, 1);
         gtk_widget_set_halign(label, GTK_ALIGN_START);
 
@@ -281,7 +281,7 @@ void add_to_bpList(std::string bpDescription) {
     draw_debug_glob_vars.bp_labels.push_back(bpDescription);
     int row = ++draw_debug_glob_vars.bpList_row;
 
-    QLabel* label = gtk_label_new(bpDescription.c_str());
+    QLabel* label = new QLabel(bpDescription.c_str());
     gtk_grid_attach((GtkGrid*)draw_debug_glob_vars.bpGrid, label, 0, row, 1, 1);
     gtk_widget_set_halign(label, GTK_ALIGN_START);
 
@@ -415,7 +415,7 @@ void invalid_breakpoint_entry_window(std::string error) {
 
     QWidget* grid = gtk_grid_new();
 
-    QLabel* label = gtk_label_new(error.c_str());
+    QLabel* label = new QLabel(error.c_str());
     gtk_widget_set_margin_start(label, 30);
     gtk_widget_set_margin_end(label, 30);
     gtk_widget_set_margin_top(label, 30);
@@ -443,14 +443,14 @@ void breakpoint_info_window(std::string bpDescription, BreakpointState draw_brea
 
     QWidget* grid = gtk_grid_new();
 
-    QLabel* label = gtk_label_new(bpDescription.c_str());
+    QLabel* label = new QLabel(bpDescription.c_str());
     gtk_widget_set_margin_start(label, 30);
     gtk_widget_set_margin_end(label, 30);
     gtk_widget_set_margin_top(label, 30);
     gtk_widget_set_margin_bottom(label, 30);
     gtk_grid_attach((GtkGrid*)grid, label, 0, 0, 1, 1);
 
-    QLabel* curr_info = gtk_label_new(nullptr);
+    QLabel* curr_info = new QLabel;
     gtk_label_set_markup(curr_info, "<b>Current Information</b>");
     gtk_widget_set_margin_start(curr_info, 30);
     gtk_widget_set_margin_end(curr_info, 30);
@@ -478,26 +478,26 @@ void breakpoint_info_window(std::string bpDescription, BreakpointState draw_brea
     gtk_widget_set_margin_start(b, 18);
 
     std::string move_num = "move_num: " + std::to_string(draw_breakpoint_state.move_num);
-    QLabel* move_info = gtk_label_new(move_num.c_str());
+    QLabel* move_info = new QLabel(move_num.c_str());
     gtk_widget_set_margin_start(move_info, 5);
     gtk_widget_set_halign(move_info, GTK_ALIGN_START);
     std::string temp_count = "temp_count: " + std::to_string(draw_breakpoint_state.temp_count);
-    QLabel* temp_info = gtk_label_new(temp_count.c_str());
+    QLabel* temp_info = new QLabel(temp_count.c_str());
     gtk_widget_set_margin_start(temp_info, 5);
     gtk_widget_set_halign(temp_info, GTK_ALIGN_START);
     std::string in_blocks_affected = "in_blocks_affected: " + std::to_string(get_bp_state_globals()->get_glob_breakpoint_state()->block_affected);
-    QLabel* ba_info = gtk_label_new(in_blocks_affected.c_str());
+    QLabel* ba_info = new QLabel(in_blocks_affected.c_str());
     gtk_widget_set_halign(ba_info, GTK_ALIGN_START);
     std::string block_id = "from_block: " + std::to_string(draw_breakpoint_state.from_block);
-    QLabel* block_info = gtk_label_new(block_id.c_str());
+    QLabel* block_info = new QLabel(block_id.c_str());
     gtk_widget_set_margin_start(block_info, 5);
     gtk_widget_set_halign(block_info, GTK_ALIGN_START);
     std::string router_iter = "router_iter: " + std::to_string(draw_breakpoint_state.router_iter);
-    QLabel* ri_info = gtk_label_new(router_iter.c_str());
+    QLabel* ri_info = new QLabel(router_iter.c_str());
     gtk_widget_set_margin_start(ri_info, 5);
     gtk_widget_set_halign(ri_info, GTK_ALIGN_START);
     std::string net_id = "route_net_id: " + std::to_string(draw_breakpoint_state.route_net_id);
-    QLabel* net_info = gtk_label_new(net_id.c_str());
+    QLabel* net_info = new QLabel(net_id.c_str());
     gtk_widget_set_margin_start(net_info, 5);
     gtk_widget_set_halign(net_info, GTK_ALIGN_START);
 

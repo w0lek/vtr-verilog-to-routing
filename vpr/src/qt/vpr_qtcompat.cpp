@@ -142,26 +142,6 @@ int gtk_spin_button_get_value(QSpinBox* spinBox)
   return static_cast<int>(spinBox->value());
 }
 
-void gtk_combo_box_text_append_text(QComboBox* combo, const QString& item)
-{
-  combo->addItem(item);
-}
-
-void gtk_combo_box_text_remove(QComboBox* combo, int index)
-{
-  combo->removeItem(index);
-}
-
-QComboBox* gtk_combo_box_text_new()
-{
-  return new QComboBox;
-}
-
-QLabel* gtk_label_new(const QString& text)
-{
-  return new QLabel(text);
-}
-
 void gtk_label_set_markup(QLabel* label, const QString& text)
 {
   label->setTextFormat(Qt::RichText);

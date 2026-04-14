@@ -49,12 +49,12 @@ void draw_manual_moves_window(const std::string& block_id) {
         QWidget* y_position_entry = gtk_entry_new();
         QWidget* layer_position_entry = gtk_entry_new();
         QWidget* subtile_position_entry = gtk_entry_new();
-        QWidget* block_label = gtk_label_new("Block ID/Block Name:");
-        QWidget* to_label = gtk_label_new("To Location:");
-        QWidget* x = gtk_label_new("x:");
-        QWidget* y = gtk_label_new("y:");
-        QWidget* layer = gtk_label_new("layer:");
-        QWidget* subtile = gtk_label_new("Subtile:");
+        QLabel* block_label = new QLabel("Block ID/Block Name:");
+        QLabel* to_label = new QLabel("To Location:");
+        QLabel* x = new QLabel("x:");
+        QLabel* y = new QLabel("y:");
+        QLabel* layer = new QLabel("layer:");
+        QLabel* subtile = new QLabel("Subtile:");
 
         QWidget* calculate_cost_button = gtk_button_new_with_label("Calculate Costs");
 
@@ -226,19 +226,19 @@ void manual_move_cost_summary_dialog() {
     gtk_window_set_transient_for((GtkWindow*)dialog, (GtkWindow*)draw_state->manual_moves_state.manual_move_window);
 
     //Create elements for the dialog and printing costs to the user.
-    QLabel* title_label = gtk_label_new(nullptr);
+    QLabel* title_label = new QLabel;
     gtk_label_set_markup(title_label, "<b>Move Costs and Outcomes</b>");
     std::string delta_cost = "Delta Cost: " + std::to_string(draw_state->manual_moves_state.manual_move_info.delta_cost) + "   ";
-    QWidget* delta_cost_label = gtk_label_new(delta_cost.c_str());
+    QLabel* delta_cost_label = new QLabel(delta_cost.c_str());
     std::string delta_timing = "   Delta Timing: " + std::to_string(draw_state->manual_moves_state.manual_move_info.delta_timing) + "   ";
-    QWidget* delta_timing_label = gtk_label_new(delta_timing.c_str());
+    QLabel* delta_timing_label = new QLabel(delta_timing.c_str());
     std::string delta_bounding_box = "  Delta Bounding Box Cost: " + std::to_string(draw_state->manual_moves_state.manual_move_info.delta_bounding_box) + "   ";
-    QWidget* delta_bounding_box_label = gtk_label_new(delta_bounding_box.c_str());
+    QLabel* delta_bounding_box_label = new QLabel(delta_bounding_box.c_str());
     std::string outcome = e_move_result_to_string(draw_state->manual_moves_state.manual_move_info.placer_move_outcome);
     std::string move_outcome = "  Annealing Decision: " + outcome + "   ";
-    QWidget* move_outcome_label = gtk_label_new(move_outcome.c_str());
-    QWidget* space_label1 = gtk_label_new("    ");
-    QWidget* space_label2 = gtk_label_new("    ");
+    QLabel* move_outcome_label = new QLabel(move_outcome.c_str());
+    QLabel* space_label1 = new QLabel("    ");
+    QLabel* space_label2 = new QLabel("    ");
 
     //Attach elements to the content area of the dialog.
     content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
