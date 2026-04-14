@@ -41,7 +41,6 @@ void widget_set_margin_bottom(QWidget*, int);
 
 void gtk_label_set_markup(QLabel* label, const QString& text);
 const char* gtk_button_get_label(QPushButton* button);
-QPushButton* gtk_button_new_with_label(const char* text);
 
 #define GTK_COMBO_BOX_TEXT(w) qobject_cast<QComboBox*>(reinterpret_cast<QObject*>(w))
 #define GTK_GRID(w) qobject_cast<QWidget*>(w)

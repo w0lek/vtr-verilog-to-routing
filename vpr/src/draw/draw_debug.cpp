@@ -82,24 +82,24 @@ void draw_debug_window() {
         QLabel* star = new QLabel("*for handling multiple breakpoints at once using an expression can be more accurate");
         widget_set_margin_top(star, 15);
 
-        QWidget* setM = gtk_button_new_with_label("Set");
+        QPushButton* setM = new QPushButton("Set");
         gtk_widget_set_halign(setM, GTK_ALIGN_START);
         widget_set_margin_bottom(setM, 10);
         widget_set_margin_start(setM, 10);
-        QWidget* setT = gtk_button_new_with_label("Set");
+        QPushButton* setT = new QPushButton("Set");
         gtk_widget_set_halign(setT, GTK_ALIGN_START);
         widget_set_margin_bottom(setT, 10);
         widget_set_margin_start(setT, 10);
-        QWidget* setB = gtk_button_new_with_label("Set");
+        QPushButton* setB = new QPushButton("Set");
         gtk_widget_set_halign(setB, GTK_ALIGN_START);
         widget_set_margin_start(setB, 10);
-        QWidget* setI = gtk_button_new_with_label("Set");
+        QPushButton* setI = new QPushButton("Set");
         gtk_widget_set_halign(setI, GTK_ALIGN_START);
         widget_set_margin_start(setI, 10);
-        QWidget* setN = gtk_button_new_with_label("Set");
+        QPushButton* setN = new QPushButton("Set");
         gtk_widget_set_halign(setN, GTK_ALIGN_START);
         widget_set_margin_start(setN, 10);
-        QWidget* advanced = gtk_button_new_with_label("Advanced");
+        QPushButton* advanced = new QPushButton("Advanced");
         widget_set_margin_start(advanced, 60);
         widget_set_margin_end(advanced, 10);
         widget_set_margin_top(advanced, 20);
@@ -178,7 +178,7 @@ void advanced_button_callback() {
         gtk_window_set_position(window, GTK_WIN_POS_CENTER);
         window->setWindowTitle("Advanced Debugger Options");
 
-        QWidget* set = gtk_button_new_with_label("set");
+        QPushButton* set = new QPushButton("set");
         QLineEdit* entry = new QLineEdit;
         entry->setMinimumWidth(entry->fontMetrics().horizontalAdvance(QString(40, 'x')));
         QLabel* instructions = new QLabel("You can use % == > < <= >= && || operators with temp_count, move_num, and from_block to set your desired breakpoint. To see the full list of variables refer to the variables tab on the left\nex. move_num == 4 || from_block == 83");
@@ -431,7 +431,7 @@ void invalid_breakpoint_entry_window(std::string error) {
     widget_set_margin_bottom(label, 30);
     gtk_grid_attach((GtkGrid*)grid, label, 0, 0, 1, 1);
 
-    QWidget* button = gtk_button_new_with_label("OK");
+    QPushButton* button = new QPushButton("OK");
     widget_set_margin_bottom(button, 30);
     widget_set_margin_end(button, 30);
     widget_set_margin_start(button, 30);
@@ -529,7 +529,7 @@ void breakpoint_info_window(std::string bpDescription, BreakpointState draw_brea
 
     gtk_grid_attach((GtkGrid*)grid, info_grid, 0, 2, 1, 1);
 
-    QWidget* button = gtk_button_new_with_label("OK");
+    QPushButton* button = new QPushButton("OK");
     widget_set_margin_bottom(button, 30);
     gtk_widget_set_halign(button, GTK_ALIGN_CENTER);
     gtk_grid_attach((GtkGrid*)grid, button, 0, 3, 1, 1);

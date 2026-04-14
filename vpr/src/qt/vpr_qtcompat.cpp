@@ -103,12 +103,6 @@ const char* gtk_button_get_label(QPushButton* button)
   return button->text().toStdString().c_str();
 }
 
-QPushButton* gtk_button_new_with_label(const char* text)
-{
-  QPushButton* button = new QPushButton(text);
-  return button;
-}
-
 QGridLayout* get_grid_layout(QWidget* grid)
 {
   if (!grid) {

@@ -57,7 +57,7 @@ void draw_manual_moves_window(const std::string& block_id) {
         QLabel* layer = new QLabel("layer:");
         QLabel* subtile = new QLabel("Subtile:");
 
-        QWidget* calculate_cost_button = gtk_button_new_with_label("Calculate Costs");
+        QPushButton* calculate_cost_button = new QPushButton("Calculate Costs");
 
         //Add all to grid
         gtk_grid_attach((GtkGrid*)grid, block_label, 0, 0, 1, 1);
