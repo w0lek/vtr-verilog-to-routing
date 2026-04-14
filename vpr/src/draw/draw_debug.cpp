@@ -318,7 +318,7 @@ void checkbox_callback(QCheckBox* checkbox) {
 //deletes breakpoint when indicated by the user using the delete button in the ui
 void delete_bp_callback(QWidget* widget) {
     draw_debug_glob_vars.bpList_row--;
-    std::string name = widget.objectName().toStdString();
+    std::string name = widget->objectName().toStdString();
     name.erase(name.begin());
     int location = stoi(name);
     draw_debug_glob_vars.bp_labels.erase(draw_debug_glob_vars.bp_labels.begin() + location);
