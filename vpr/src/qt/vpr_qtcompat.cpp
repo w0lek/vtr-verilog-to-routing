@@ -92,11 +92,6 @@ void widget_set_margin_bottom(QWidget* w, int m)
   w->setContentsMargins(margins);
 }
 
-const char* gtk_button_get_label(QPushButton* button)
-{
-  return button->text().toStdString().c_str();
-}
-
 QGridLayout* get_grid_layout(QWidget* grid)
 {
   if (!grid) {
