@@ -234,7 +234,10 @@ void manual_move_cost_summary_dialog() {
                                          Q_WIDGET(draw_state->manual_moves_state.manual_move_window),
                                          /*is_modal*/true,
                                          btns, 2);
-    gtk_window_set_transient_for((GtkWindow*)dialog, (GtkWindow*)draw_state->manual_moves_state.manual_move_window);
+
+    dialog->setParent(draw_state->manual_moves_state.manual_move_window);
+    dialog->setWindowFlag(Qt::Dialog);
+    dialog->setWindowModality(Qt::WindowModal);
 
     //Create elements for the dialog and printing costs to the user.
     QLabel* title_label = new QLabel;

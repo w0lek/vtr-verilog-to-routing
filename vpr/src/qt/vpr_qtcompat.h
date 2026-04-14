@@ -68,7 +68,5 @@ QList<QWidget*> gtk_container_get_children(QWidget* container);
 #define GTK_ALIGN_END    2
 #define GTK_ALIGN_CENTER 3
 void gtk_widget_set_halign(QWidget* w, int flag);
-void gtk_window_set_transient_for(QWidget* dialog, QWidget* parent);
-QWidget* gtk_widget_get_parent_window(QWidget* w);
 
 #endif // VPR_QTCOMPAT_H

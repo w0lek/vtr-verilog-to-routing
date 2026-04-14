@@ -220,15 +220,3 @@ void gtk_widget_set_halign(QWidget* w, int flag)
         w->parentWidget()->layout()->setAlignment(w, qtAlign);
     }
 }
-
-void gtk_window_set_transient_for(QWidget* dialog, QWidget* parent)
-{
-  dialog->setParent(parent);
-  dialog->setWindowFlag(Qt::Dialog);
-  dialog->setWindowModality(Qt::WindowModal);
-}
-
-QWidget* gtk_widget_get_parent_window(QWidget* w)
-{
-  return qobject_cast<QWidget*>(w->parent());
-}
