@@ -5,6 +5,13 @@
 
 #include <QCheckBox>
 #include <QBoxLayout>
+#include <QSpinBox>
+#include <QCheckBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QGridLayout>
+#include <QDialog>
+#include <QDialogButtonBox>
 
 void gtk_combo_box_text_append(QComboBox* combo,
                                const char* id,
@@ -16,14 +23,7 @@ void gtk_box_pack_start(QBoxLayout* box,
                         bool fill,
                         int padding);
 
-#include <QRadioButton>
-#include <QSpinBox>
-#include <QCheckBox>
-#include <QLabel>
-#include <QLineEdit>
-#include <QGridLayout>
-#include <QDialog>
-#include <QDialogButtonBox>
+
 
 using GtkGrid = QWidget; //QGridLayout is laying inside the widget
 
