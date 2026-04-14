@@ -223,7 +223,7 @@ bool manual_move_is_selected() {
 
 void manual_move_cost_summary_dialog() {
     t_draw_state* draw_state = get_draw_state_vars();
-    QWidget* dialog;
+    QDialog* dialog;
     QWidget* content_area;
 
     const GtkDialogButton btns[] = {
@@ -252,7 +252,7 @@ void manual_move_cost_summary_dialog() {
     QLabel* space_label2 = new QLabel("    ");
 
     //Attach elements to the content area of the dialog.
-    content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+    content_area = gtk_dialog_get_content_area(dialog);
     gtk_container_add(GTK_CONTAINER(content_area), title_label);
     gtk_container_add(GTK_CONTAINER(content_area), space_label1);
     gtk_container_add(GTK_CONTAINER(content_area), delta_cost_label);
@@ -269,7 +269,7 @@ void manual_move_cost_summary_dialog() {
     msg += " to location (" + std::to_string(draw_state->manual_moves_state.manual_move_info.x_pos) + ", " + std::to_string(draw_state->manual_moves_state.manual_move_info.y_pos) + ")";
 
     //Waiting for the user to respond to return to try_swa function.
-    int result = gtk_dialog_run(GTK_DIALOG(dialog));
+    int result = dialog->exec();
     switch (result) {
         //If the user accepts the manual move
         case GTK_RESPONSE_ACCEPT:

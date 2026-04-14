@@ -182,11 +182,6 @@ QWidget* gtk_grid_new()
   return w;
 }
 
-int gtk_dialog_run(QDialog* dialog)
-{
-  return dialog->exec();
-}
-
 QWidget* gtk_dialog_new_with_buttons(
     const char* title,
     QWidget* parent,
