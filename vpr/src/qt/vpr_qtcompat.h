@@ -47,7 +47,6 @@ QPushButton* gtk_button_new_with_label(const char* text);
 const char* gtk_widget_get_name(QWidget* w);
 void gtk_window_set_title(QWidget* w, const char* title);
 
-#define GTK_SPIN_BUTTON(w) qobject_cast<QSpinBox*>(w)
 #define GTK_COMBO_BOX_TEXT(w) qobject_cast<QComboBox*>(reinterpret_cast<QObject*>(w))
 #define GTK_GRID(w) qobject_cast<QWidget*>(w)
 #define GTK_BOX(l) qobject_cast<QBoxLayout*>(l)

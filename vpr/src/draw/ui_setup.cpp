@@ -126,7 +126,7 @@ void block_button_setup(ezgl::application* app) {
     QObject::connect(blk_internals_button, &QSpinBox::valueChanged, blk_internals_button, [blk_internals_button, app]() {
         toggle_blk_internal_cbk(blk_internals_button, app);
     });
-    blk_internals_button->setSIngleStep(1);
+    blk_internals_button->setSingleStep(1);
     blk_internals_button->setRange(0, draw_state->max_sub_blk_lvl);
 
     //Toggle Block Pin Util
