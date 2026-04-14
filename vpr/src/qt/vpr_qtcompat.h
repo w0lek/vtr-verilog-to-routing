@@ -39,11 +39,9 @@ using GtkBox = QBoxLayout;
 #include <QDialog>
 #include <QDialogButtonBox>
 
-// using GtkToggleButton = QCheckBox;
 using GtkSwitch = QAbstractButton;
 using GtkWindow = QWidget;
 using GtkEntry = QLineEdit;
-// using GtkLabel = QLabel;
 using GtkGrid = QWidget; //QGridLayout is laying inside the widget
 
 void gtk_widget_show_all(QWidget*);

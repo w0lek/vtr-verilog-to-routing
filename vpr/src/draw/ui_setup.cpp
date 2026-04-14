@@ -280,8 +280,8 @@ void view_button_setup(ezgl::application* app) {
         });
 
         // Make all widgets in the boxes appear
-        gtk_widget_show_all(GTK_WIDGET(box));
-        gtk_widget_show_all(GTK_WIDGET(trans_box));
+        gtk_widget_show_all(box_widget);
+        gtk_widget_show_all(trans_box_widget);
     }
 }
 
