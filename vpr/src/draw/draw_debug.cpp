@@ -104,17 +104,17 @@ void draw_debug_window() {
         gtk_widget_set_margin_end(advanced, 10);
         gtk_widget_set_margin_top(advanced, 20);
 
-        QWidget* movesEntry = gtk_entry_new();
+        QLineEdit* movesEntry = new QLineEdit;
         gtk_entry_set_text((GtkEntry*)movesEntry, "ex. 100");
         gtk_widget_set_margin_bottom(movesEntry, 10);
-        QWidget* tempsEntry = gtk_entry_new();
+        QLineEdit* tempsEntry = new QLineEdit;
         gtk_entry_set_text((GtkEntry*)tempsEntry, "ex. 5");
         gtk_widget_set_margin_bottom(tempsEntry, 10);
-        QWidget* blockEntry = gtk_entry_new();
+        QLineEdit* blockEntry = new QLineEdit;
         gtk_entry_set_text((GtkEntry*)blockEntry, "ex. 83");
-        QWidget* iterEntry = gtk_entry_new();
+        QLineEdit* iterEntry = new QLineEdit;
         gtk_entry_set_text((GtkEntry*)iterEntry, "ex. 3");
-        QWidget* netEntry = gtk_entry_new();
+        QLineEdit* netEntry = new QLineEdit;
         gtk_entry_set_text((GtkEntry*)netEntry, "ex. 12");
 
         draw_debug_glob_vars.bpGrid = gtk_grid_new();
@@ -179,7 +179,7 @@ void advanced_button_callback() {
         gtk_window_set_title(window, "Advanced Debugger Options");
 
         QWidget* set = gtk_button_new_with_label("set");
-        QWidget* entry = gtk_entry_new();
+        QLineEdit* entry = new QLineEdit;
         entry->setMinimumWidth(entry->fontMetrics().horizontalAdvance(QString(40, 'x')));
         QLabel* instructions = new QLabel("You can use % == > < <= >= && || operators with temp_count, move_num, and from_block to set your desired breakpoint. To see the full list of variables refer to the variables tab on the left\nex. move_num == 4 || from_block == 83");
         instructions->setAlignment(Qt::AlignCenter);

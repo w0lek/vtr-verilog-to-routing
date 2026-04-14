@@ -39,17 +39,17 @@ void draw_manual_moves_window(const std::string& block_id) {
         gtk_widget_set_name(draw_state->manual_moves_state.manual_move_window, "manual_move_window");
 
         QWidget* grid = gtk_grid_new();
-        QWidget* block_entry = gtk_entry_new();
+        QLineEdit* block_entry = new QLineEdit;
 
         if (draw_state->manual_moves_state.user_highlighted_block) {
             gtk_entry_set_text((GtkEntry*)block_entry, block_id.c_str());
             draw_state->manual_moves_state.user_highlighted_block = false;
         }
 
-        QWidget* x_position_entry = gtk_entry_new();
-        QWidget* y_position_entry = gtk_entry_new();
-        QWidget* layer_position_entry = gtk_entry_new();
-        QWidget* subtile_position_entry = gtk_entry_new();
+        QLineEdit* x_position_entry = new QLineEdit;
+        QLineEdit* y_position_entry = new QLineEdit;
+        QLineEdit* layer_position_entry = new QLineEdit;
+        QLineEdit* subtile_position_entry = new QLineEdit;
         QLabel* block_label = new QLabel("Block ID/Block Name:");
         QLabel* to_label = new QLabel("To Location:");
         QLabel* x = new QLabel("x:");

@@ -12,8 +12,6 @@ void gtk_combo_box_text_append(QComboBox* combo,
                                const char* id,
                                const char* text);
 
-QCheckBox* gtk_check_button_new_with_label(const QString& label);
-
 QString g_strdup(const char* str);
 
 void gtk_box_pack_start(QBoxLayout* box,
@@ -55,7 +53,6 @@ void gtk_window_close(QWidget*);
 int gtk_spin_button_get_value(QSpinBox* spinBox);
 void gtk_label_set_markup(QLabel* label, const QString& text);
 void gtk_entry_set_text(QLineEdit* lineEdit, const QString& text);
-QLineEdit* gtk_entry_new();
 const char* gtk_entry_get_text(QLineEdit* lineEdit);
 void gtk_widget_set_name(QWidget* w, const QString& name);
 void gtk_widget_set_sensitive(QWidget* w, bool flag);

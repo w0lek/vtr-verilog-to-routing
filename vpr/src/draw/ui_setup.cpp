@@ -236,7 +236,7 @@ void view_button_setup(ezgl::application* app) {
             std::string label = "Layer " + std::to_string(i);
             std::string trans_label = "Transparency " + std::to_string(i);
 
-            QWidget* checkbox = gtk_check_button_new_with_label(label.c_str());
+            QCheckBox* checkbox = new QCheckBox(label.c_str());
             // Add margins to checkboxes to match the transparency spin button height
             gtk_widget_set_margin_top(checkbox, 7);
             gtk_widget_set_margin_bottom(checkbox, 7);
@@ -263,7 +263,7 @@ void view_button_setup(ezgl::application* app) {
         std::string label = "Cross Layer Connections";
         std::string trans_label = "CrossLayerConnectionsTransparency";
 
-        QCheckBox* checkbox = gtk_check_button_new_with_label(label.c_str());
+        QCheckBox* checkbox = new QCheckBox(label.c_str());
         gtk_widget_set_margin_top(checkbox, 7);
         gtk_widget_set_margin_bottom(checkbox, 7);
         gtk_box_pack_start(box, checkbox, FALSE, FALSE, 0);

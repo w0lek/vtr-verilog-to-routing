@@ -48,7 +48,7 @@ void save_graphics(std::string extension, std::string file_name) {
 void save_graphics_dialog_box(QWidget* /*widget*/, ezgl::application* /*app*/) {
     QWidget* main_window;
     QWidget* content_area;
-    QWidget* text_entry;
+    QLineEdit* text_entry;
     QLabel* name_label;
     QLabel* type_label;
     QDialog* dialog;
@@ -62,7 +62,7 @@ void save_graphics_dialog_box(QWidget* /*widget*/, ezgl::application* /*app*/) {
 
     // create elements
     name_label = new QLabel("File name:");
-    text_entry = gtk_entry_new();
+    text_entry = new QLineEdit;
     type_label = new QLabel("File format:");
     combo_box = new QComboBox;
 
