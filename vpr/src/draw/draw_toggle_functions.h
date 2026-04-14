@@ -46,19 +46,19 @@ void toggle_draw_nets_cbk(QComboBox* self, ezgl::application* app);
 
 /* Callback function for main.ui created netMaxFanout widget in ui_setup.cpp.
  * Sets draw_state->draw_net_max_fanout to its corresponding value in the UI. */
-void set_net_max_fanout_cbk(GtkSpinButton* self, ezgl::application* app);
+void set_net_max_fanout_cbk(QSpinBox* self, ezgl::application* app);
 
 /* Callback function for main.ui created netAlpha widget in ui_setup.cpp.
  * Sets draw_state->net_alpha (a value from 0 to 1 representing transparency) to
  * its corresponding value in the UI. */
-void set_net_alpha_value_cbk(GtkSpinButton* self, ezgl::application* app);
+void set_net_alpha_value_cbk(QSpinBox* self, ezgl::application* app);
 
 /* Callback function for main.ui created toggle_blk_internal button in ui_setup.cpp.
  * With each consecutive click of the button, a lower level in the
  * pb_graph will be shown for every clb. When the number of clicks on the button exceeds
  * the maximum level of sub-blocks that exists in the pb_graph, internals drawing
  * will be disabled. */
-void toggle_blk_internal_cbk(GtkSpinButton* self, ezgl::application* app);
+void toggle_blk_internal_cbk(QSpinBox* self, ezgl::application* app);
 
 /* Callback function for main.ui created toggle_block_pin_util button in ui_setup.cpp.
  * Draws different types of routing block pin utils based on user input. Changes value of draw_state->show_blk_pin_util. */
@@ -86,7 +86,7 @@ void toggle_routing_congestion_cost(QWidget* /*widget*/, int /*response_id*/, vo
 
 /* Callback function for main.ui created toggle_routing_bounding_box button in ui_setup.cpp.
  * Controls if routing bounding box should be visualized. Changes value of draw_state->show_routing_bb */
-void toggle_routing_bbox_cbk(GtkSpinButton* self, ezgl::application* app);
+void toggle_routing_bbox_cbk(QSpinBox* self, ezgl::application* app);
 
 /* Callback function for main.ui created toggle_routing_util button in ui_setup.cpp.
  * Draws different types of routing utils based on user input: . Changes value of draw_state->show_routing_util. */

@@ -135,10 +135,10 @@ void TaskResolver::process_draw_critical_path_task(ezgl::application* app, const
         server_ctx.draw_crit_path_contour = draw_path_contour;
 
         // get GTK widgets
-        GtkSwitch* crit_path_switch = GTK_SWITCH(app->get_object("ToggleCritPath"));
-        GtkToggleButton* crit_path_flylines_button = GTK_TOGGLE_BUTTON(app->get_object("ToggleCritPathFlylines"));
-        GtkToggleButton* crit_path_routing_button = GTK_TOGGLE_BUTTON(app->get_object("ToggleCritPathRouting"));
-        GtkToggleButton* crit_path_delays_button = GTK_TOGGLE_BUTTON(app->get_object("ToggleCritPathDelays"));
+        GtkSwitch* crit_path_switch = GTK_SWITCH(app->find_widget("ToggleCritPath"));
+        GtkToggleButton* crit_path_flylines_button = GTK_TOGGLE_BUTTON(app->find_widget("ToggleCritPathFlylines"));
+        GtkToggleButton* crit_path_routing_button = GTK_TOGGLE_BUTTON(app->find_widget("ToggleCritPathRouting"));
+        GtkToggleButton* crit_path_delays_button = GTK_TOGGLE_BUTTON(app->find_widget("ToggleCritPathDelays"));
 
         if (crit_path_switch && crit_path_flylines_button && crit_path_routing_button && crit_path_delays_button) {
             bool draw_flylines = (high_light_mode.find("flylines") != std::string::npos);

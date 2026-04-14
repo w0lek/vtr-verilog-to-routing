@@ -40,7 +40,6 @@ using GtkBox = QBoxLayout;
 #include <QDialogButtonBox>
 
 using GtkToggleButton = QCheckBox;
-using GtkSpinButton = QSpinBox;
 using GtkSwitch = QAbstractButton;
 using GtkWindow = QWidget;
 using GtkEntry = QLineEdit;

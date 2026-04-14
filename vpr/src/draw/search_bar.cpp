@@ -52,7 +52,7 @@ void search_and_highlight(QWidget* /*widget*/, ezgl::application* app) {
     const AtomContext& atom_ctx = g_vpr_ctx.atom();
 
     // get ID from search bar
-    GtkEntry* text_entry = (GtkEntry*)app->get_object("TextInput");
+    QLineEdit* text_entry = app->find_line_edit("TextInput");
     const char* text = gtk_entry_get_text(text_entry);
     std::string user_input = text;
     std::stringstream ss(user_input);
@@ -381,7 +381,7 @@ void highlight_nets(ClusterNetId net_id) {
 }
 
 void warning_dialog_box(const char* message) {
-    QWidget* main_window = application.get_widget(application.get_main_window_id().c_str());
+    QWidget* main_window = application.find_widget(application.get_main_window_id().c_str());
     QMessageBox* box = new QMessageBox(QMessageBox::Warning,
                                        "Error",
                                        message,
@@ -406,7 +406,7 @@ void search_type_changed(QComboBox* self, ezgl::application* app) {
     const QString searchType = self->currentText();
     if (searchType.isEmpty()) return;
 
-    QLineEdit* searchBar = qobject_cast<QLineEdit*>(app->get_object("TextInput"));
+    QLineEdit* searchBar = app->find_line_edit("TextInput");
     if (!searchBar) return;
 
     if (searchType == "Block Name") {
@@ -462,7 +462,7 @@ void search_type_changed(QComboBox* self, ezgl::application* app) {
  * @param app ezgl app
  */
 void enable_autocomplete(ezgl::application* app) {
-    QLineEdit* searchBar = qobject_cast<QLineEdit*>(app->get_object("TextInput"));
+    QLineEdit* searchBar = app->find_line_edit("TextInput");
     if (!searchBar) return;
 
     const std::string searchType = get_search_type(app);
@@ -491,8 +491,8 @@ void enable_autocomplete(ezgl::application* app) {
 
 //Returns current search type. Returns empty string if fails
 std::string get_search_type(ezgl::application* app) {
-    QObject* combo_box = (QObject*)app->get_object("SearchType");
-    char* type = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(combo_box));
+    QComboBox* combo_box = app->find_combo_box("SearchType");
+    char* type = gtk_combo_box_text_get_active_text(combo_box);
     //Checking that a type is selected
     if (!type || (type && type[0] == '\0')) {
         warning_dialog_box("Please select a search type");

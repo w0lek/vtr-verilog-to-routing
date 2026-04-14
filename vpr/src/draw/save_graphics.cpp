@@ -46,7 +46,7 @@ void save_graphics(std::string extension, std::string file_name) {
 }
 
 void save_graphics_dialog_box(QWidget* /*widget*/, ezgl::application* /*app*/) {
-    QObject* main_window;
+    QWidget* main_window;
     QWidget* content_area;
     QWidget* text_entry;
     QWidget* name_label;
@@ -55,8 +55,8 @@ void save_graphics_dialog_box(QWidget* /*widget*/, ezgl::application* /*app*/) {
     QWidget* combo_box;
 
     // get a pointer to the main window
-    main_window = application.get_object(application.get_main_window_id().c_str());
-    dialog = new QDialog(Q_WIDGET(main_window));
+    main_window = application.find_widget(application.get_main_window_id().c_str());
+    dialog = new QDialog(main_window);
     dialog->setWindowTitle("Save Graphics Contents");
     dialog->setAttribute(Qt::WA_DeleteOnClose);
 

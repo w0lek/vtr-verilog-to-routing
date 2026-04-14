@@ -653,7 +653,7 @@ bool draw_if_net_highlighted(ParentNetId inet) {
 void act_on_key_press(ezgl::application* app, QKeyEvent* /*event*/, const char* key_name)
 {
     std::string key(key_name);
-    QLineEdit* searchBar = qobject_cast<QLineEdit*>(app->get_object("TextInput"));
+    QLineEdit* searchBar = app->find_line_edit("TextInput");
     if (!searchBar) {
         return;
     }
@@ -1053,49 +1053,49 @@ ClusterBlockId get_cluster_block_id_from_xy_loc(double x, double y) {
 
 static void setup_default_ezgl_callbacks(ezgl::application* app) {
     // Connect press_proceed function to the Proceed button
-    QAbstractButton* proceed_button = app->get_abstract_button("ProceedButton");
+    QAbstractButton* proceed_button = app->find_button("ProceedButton");
     QObject::connect(proceed_button, &QAbstractButton::clicked, [app](){
         press_proceed(/*unused*/nullptr, app);
     });
 
     // Connect press_zoom_fit function to the Zoom-fit button
-    QAbstractButton* zoom_fit_button = app->get_abstract_button("ZoomFitButton");
+    QAbstractButton* zoom_fit_button = app->find_button("ZoomFitButton");
     QObject::connect(zoom_fit_button, &QAbstractButton::clicked, [app](){
         press_zoom_fit(/*unused*/nullptr, app);
     });
 
     // Connect Pause button
-    QAbstractButton* pause_button = app->get_abstract_button("PauseButton");
+    QAbstractButton* pause_button = app->find_button("PauseButton");
     QObject::connect(pause_button, &QAbstractButton::clicked, [app](){
         set_force_pause(/*unused*/nullptr, /*unused*/-1, app);
     });
 
     // Connect Block Outline checkbox
-    QAbstractButton* block_outline = app->get_abstract_button("blockOutline");
+    QAbstractButton* block_outline = app->find_button("blockOutline");
     QObject::connect(block_outline, &QAbstractButton::toggled, [app](){
         set_block_outline(/*unused*/nullptr, /*unused*/-1, app);
     });
 
     // Connect Block Text checkbox
-    QAbstractButton* block_text = app->get_abstract_button("blockText");
+    QAbstractButton* block_text = app->find_button("blockText");
     QObject::connect(block_text, &QAbstractButton::toggled, [app](){
         set_block_text(/*unused*/nullptr, /*unused*/-1, app);
     });
 
     // Connect Clip Routing Util checkbox
-    QAbstractButton* clip_routing = app->get_abstract_button("clipRoutingUtil");
+    QAbstractButton* clip_routing = app->find_button("clipRoutingUtil");
     QObject::connect(clip_routing, &QAbstractButton::toggled, [app](){
         clip_routing_util(/*unused*/nullptr, /*unused*/-1, app);
     });
 
     // Connect Debug Button
-    QAbstractButton* debugger = app->get_abstract_button("debugButton");
+    QAbstractButton* debugger = app->find_button("debugButton");
     QObject::connect(debugger, &QAbstractButton::clicked, [app](){
         draw_debug_window();
     });
 
     // Connect Draw Partitions Checkbox
-    QAbstractButton* draw_partitions = app->get_abstract_button("drawPartitions");
+    QAbstractButton* draw_partitions = app->find_button("drawPartitions");
     QObject::connect(draw_partitions, &QAbstractButton::toggled, [app](){
         set_draw_partitions(/*unused*/nullptr, /*unused*/-1, app);
     });
@@ -1169,7 +1169,7 @@ static void set_draw_partitions(QWidget* widget, int /*response_id*/, void* /*da
     t_draw_state* draw_state = get_draw_state_vars();
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget))) {
-        QWidget* window = application.get_widget(application.get_main_window_id().c_str());
+        QWidget* window = application.find_widget(application.get_main_window_id().c_str());
 
         QDialog* dialog = new QDialog(window);
         dialog->setWindowTitle("Floorplanning Legend");

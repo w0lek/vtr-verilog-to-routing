@@ -36,14 +36,14 @@ void toggle_show_nets_cbk(GtkSwitch*, bool state, ezgl::application* app) {
 
     draw_state->show_nets = state;
 
-    gtk_widget_set_sensitive(GTK_WIDGET(app->get_object("ToggleNetType")), state);
-    gtk_widget_set_sensitive(GTK_WIDGET(app->get_object("ToggleInterClusterNets")), state);
+    gtk_widget_set_sensitive(app->find_widget("ToggleNetType"), state);
+    gtk_widget_set_sensitive(app->find_widget("ToggleInterClusterNets"), state);
     if (draw_state->is_flat || draw_state->draw_nets != DRAW_ROUTED_NETS) {
-        gtk_widget_set_sensitive(GTK_WIDGET(app->get_object("ToggleIntraClusterNets")), state);
+        gtk_widget_set_sensitive(app->find_widget("ToggleIntraClusterNets"), state);
     }
-    gtk_widget_set_sensitive(GTK_WIDGET(app->get_object("FanInFanOut")), state);
-    gtk_widget_set_sensitive(GTK_WIDGET(app->get_object("NetAlpha")), state);
-    gtk_widget_set_sensitive(GTK_WIDGET(app->get_object("NetMaxFanout")), state);
+    gtk_widget_set_sensitive(app->find_widget("FanInFanOut"), state);
+    gtk_widget_set_sensitive(app->find_widget("NetAlpha"), state);
+    gtk_widget_set_sensitive(app->find_widget("NetMaxFanout"), state);
 
     app->refresh_drawing();
 }
@@ -51,7 +51,7 @@ void toggle_show_nets_cbk(GtkSwitch*, bool state, ezgl::application* app) {
 void toggle_draw_nets_cbk(QComboBox* self, ezgl::application* app) {
     enum e_draw_nets new_state;
     t_draw_state* draw_state = get_draw_state_vars();
-    char* setting = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(self));
+    char* setting = gtk_combo_box_text_get_active_text(self);
 
     // assign corresponding enum value to draw_state->show_nets
     if (strcmp(setting, "Routing") == 0) {
@@ -59,15 +59,15 @@ void toggle_draw_nets_cbk(QComboBox* self, ezgl::application* app) {
 
         // Make sure that intra-cluster routed nets is never enabled when flat routing is off
         if (!draw_state->is_flat) {
-            gtk_widget_set_sensitive(GTK_WIDGET(app->get_object("ToggleIntraClusterNets")), false);
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(app->get_object("ToggleIntraClusterNets")), false);
+            gtk_widget_set_sensitive(app->find_widget("ToggleIntraClusterNets"), false);
+            gtk_toggle_button_set_active(app->find_check_box("ToggleIntraClusterNets"), false);
             draw_state->draw_intra_cluster_nets = false;
         }
 
     } else { // Flylines - direct connections between sources and sinks
         new_state = DRAW_FLYLINES;
 
-        gtk_widget_set_sensitive(GTK_WIDGET(app->get_object("ToggleIntraClusterNets")), true);
+        gtk_widget_set_sensitive(app->find_widget("ToggleIntraClusterNets"), true);
     }
 
     draw_state->draw_nets = new_state;
@@ -92,17 +92,17 @@ void toggle_rr_cbk(GtkSwitch*, bool state, ezgl::application* app) {
     draw_state->show_rr = state;
 
     // Enable/disable the rr drawing sub-options based on the switch state
-    gtk_widget_set_sensitive(GTK_WIDGET(app->get_object("ToggleRRChannels")), state);
-    gtk_widget_set_sensitive(GTK_WIDGET(app->get_object("ToggleInterClusterPinNodes")), state);
-    gtk_widget_set_sensitive(GTK_WIDGET(app->get_object("ToggleRRSBox")), state);
-    gtk_widget_set_sensitive(GTK_WIDGET(app->get_object("ToggleRRCBox")), state);
+    gtk_widget_set_sensitive(app->find_widget("ToggleRRChannels"), state);
+    gtk_widget_set_sensitive(app->find_widget("ToggleInterClusterPinNodes"), state);
+    gtk_widget_set_sensitive(app->find_widget("ToggleRRSBox"), state);
+    gtk_widget_set_sensitive(app->find_widget("ToggleRRCBox"), state);
 
     //currently intra-cluster nodes and edges are only supported if flat routing is enabled
     if (draw_state->is_flat) {
-        gtk_widget_set_sensitive(GTK_WIDGET(app->get_object("ToggleRRIntraClusterNodes")), state);
-        gtk_widget_set_sensitive(GTK_WIDGET(app->get_object("ToggleRRIntraClusterEdges")), state);
+        gtk_widget_set_sensitive(app->find_widget("ToggleRRIntraClusterNodes"), state);
+        gtk_widget_set_sensitive(app->find_widget("ToggleRRIntraClusterEdges"), state);
     }
-    gtk_widget_set_sensitive(GTK_WIDGET(app->get_object("ToggleHighlightRR")), state);
+    gtk_widget_set_sensitive(app->find_widget("ToggleHighlightRR"), state);
 
     app->refresh_drawing();
 }
@@ -179,7 +179,7 @@ void toggle_cong_cost_cbk(QComboBox* self, ezgl::application* app) {
  * @param self 
  * @param app 
  */
-void toggle_routing_bbox_cbk(GtkSpinButton* self, ezgl::application* app) {
+void toggle_routing_bbox_cbk(QSpinBox* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
     const RoutingContext& route_ctx = g_vpr_ctx.routing();
     // get the pointer to the toggle_routing_bounding_box button
@@ -247,7 +247,7 @@ void toggle_router_util_cbk(QComboBox* self, ezgl::application* app) {
  * @param self ptr to self
  * @param app ezgl::app
  */
-void toggle_blk_internal_cbk(GtkSpinButton* self, ezgl::application* app) {
+void toggle_blk_internal_cbk(QSpinBox* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
     int new_value = gtk_spin_button_get_value_as_int(self);
     if (new_value < 0)
@@ -309,11 +309,11 @@ void toggle_crit_path_cbk(GtkSwitch*, bool state, ezgl::application* app) {
 
     draw_state->show_crit_path = state;
 
-    gtk_widget_set_sensitive(GTK_WIDGET(app->get_object("ToggleCritPathFlylines")), state);
-    gtk_widget_set_sensitive(GTK_WIDGET(app->get_object("ToggleCritPathDelays")), state);
+    gtk_widget_set_sensitive(app->find_widget("ToggleCritPathFlylines"), state);
+    gtk_widget_set_sensitive(app->find_widget("ToggleCritPathDelays"), state);
 
     if (draw_state->setup_timing_info && draw_state->pic_on_screen == e_pic_type::ROUTING) {
-        gtk_widget_set_sensitive(GTK_WIDGET(app->get_object("ToggleCritPathRouting")), state);
+        gtk_widget_set_sensitive(app->find_widget("ToggleCritPathRouting"), state);
     }
 
     app->refresh_drawing();
@@ -385,10 +385,10 @@ void toggle_noc_cbk(QComboBox* self, ezgl::application* app) {
  * @brief CBK for Net Max Fanout spin button. Sets max fanout when val. changes
  * updates draw_state->draw_net_max_fanout
  * 
- * @param self self ptr to GtkSpinButton
+ * @param self self ptr to QSpinBox
  * @param app ezgl::app
  */
-void set_net_max_fanout_cbk(GtkSpinButton* self, ezgl::application* app) {
+void set_net_max_fanout_cbk(QSpinBox* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
     draw_state->draw_net_max_fanout = gtk_spin_button_get_value_as_int(self);
     app->refresh_drawing();
@@ -401,7 +401,7 @@ void set_net_max_fanout_cbk(GtkSpinButton* self, ezgl::application* app) {
  * @param self 
  * @param app 
  */
-void set_net_alpha_value_cbk(GtkSpinButton* self, ezgl::application* app) {
+void set_net_alpha_value_cbk(QSpinBox* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
     draw_state->net_alpha = 255 - gtk_spin_button_get_value_as_int(self);
     app->refresh_drawing();
