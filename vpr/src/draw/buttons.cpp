@@ -23,14 +23,14 @@ int box_left_start_col = 0;
 int button_row = 2; // 2 is the row num of the window button in main.ui, add buttons starting from this row
 
 [[deprecated("todo: move to ezgl")]]
-void delete_button(const char* button_name) {
+void delete_button(const std::string& button_name) {
     QWidget* main_window_grid = application.find_widget("InnerGrid");
     QList<QWidget*> list_of_widgets = gtk_container_get_children(main_window_grid);
     QWidget* target_button = nullptr;
 
     // loop through the list to find the button
     for (QWidget* widget : list_of_widgets) {
-        if (strcmp(gtk_widget_get_name(widget), button_name) == 0) {
+        if (widget->objectName().toStdString() == button_name) {
             // found text entry
             target_button = widget;
             break;
@@ -42,13 +42,13 @@ void delete_button(const char* button_name) {
 }
 
 [[deprecated("todo: move to ezgl")]]
-QWidget* find_button(const char* button_name) {
+QWidget* find_button(const std::string& button_name) {
     QWidget* main_window_grid = application.find_widget("InnerGrid");
     QList<QWidget*> list_of_widgets = gtk_container_get_children(main_window_grid);
 
     // loop through the list to find the button
     for (QWidget* widget : list_of_widgets) {
-        if (strcmp(gtk_widget_get_name(widget), button_name) == 0) {
+        if (widget->objectName().toStdString() == button_name) {
             return widget;
         }
     }
