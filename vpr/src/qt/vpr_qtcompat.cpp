@@ -111,11 +111,6 @@ void gtk_label_set_markup(QLabel* label, const QString& text)
   label->setText(text);
 }
 
-void gtk_widget_set_sensitive(QWidget* w, bool flag)
-{
-  w->setEnabled(flag);
-}
-
 const char* gtk_button_get_label(QPushButton* button)
 {
   return button->text().toStdString().c_str();

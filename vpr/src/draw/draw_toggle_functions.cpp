@@ -30,14 +30,14 @@ void toggle_show_nets_cbk(GtkSwitch*, bool state, ezgl::application* app) {
 
     draw_state->show_nets = state;
 
-    gtk_widget_set_sensitive(app->find_widget("ToggleNetType"), state);
-    gtk_widget_set_sensitive(app->find_widget("ToggleInterClusterNets"), state);
+    app->find_widget("ToggleNetType")->setEnabled(state);
+    app->find_widget("ToggleInterClusterNets")->setEnabled(state);
     if (draw_state->is_flat || draw_state->draw_nets != DRAW_ROUTED_NETS) {
-        gtk_widget_set_sensitive(app->find_widget("ToggleIntraClusterNets"), state);
+        app->find_widget("ToggleIntraClusterNets")->setEnabled(state);
     }
-    gtk_widget_set_sensitive(app->find_widget("FanInFanOut"), state);
-    gtk_widget_set_sensitive(app->find_widget("NetAlpha"), state);
-    gtk_widget_set_sensitive(app->find_widget("NetMaxFanout"), state);
+    app->find_widget("FanInFanOut")->setEnabled(state);
+    app->find_widget("NetAlpha")->setEnabled(state);
+    app->find_widget("NetMaxFanout")->setEnabled(state);
 
     app->refresh_drawing();
 }
@@ -53,7 +53,7 @@ void toggle_draw_nets_cbk(QComboBox* self, ezgl::application* app) {
 
         // Make sure that intra-cluster routed nets is never enabled when flat routing is off
         if (!draw_state->is_flat) {
-            gtk_widget_set_sensitive(app->find_widget("ToggleIntraClusterNets"), false);
+            app->find_widget("ToggleIntraClusterNets")->setEnabled(false);
             QCheckBox* checkbox = app->find_check_box("ToggleIntraClusterNets");
             if (checkbox) {
                 checkbox->setChecked(false);
@@ -64,7 +64,7 @@ void toggle_draw_nets_cbk(QComboBox* self, ezgl::application* app) {
     } else { // Flylines - direct connections between sources and sinks
         new_state = DRAW_FLYLINES;
 
-        gtk_widget_set_sensitive(app->find_widget("ToggleIntraClusterNets"), true);
+        app->find_widget("ToggleIntraClusterNets")->setEnabled(true);
     }
 
     draw_state->draw_nets = new_state;
@@ -86,17 +86,17 @@ void toggle_rr_cbk(GtkSwitch*, bool state, ezgl::application* app) {
     draw_state->show_rr = state;
 
     // Enable/disable the rr drawing sub-options based on the switch state
-    gtk_widget_set_sensitive(app->find_widget("ToggleRRChannels"), state);
-    gtk_widget_set_sensitive(app->find_widget("ToggleInterClusterPinNodes"), state);
-    gtk_widget_set_sensitive(app->find_widget("ToggleRRSBox"), state);
-    gtk_widget_set_sensitive(app->find_widget("ToggleRRCBox"), state);
+    app->find_widget("ToggleRRChannels")->setEnabled(state);
+    app->find_widget("ToggleInterClusterPinNodes")->setEnabled(state);
+    app->find_widget("ToggleRRSBox")->setEnabled(state);
+    app->find_widget("ToggleRRCBox")->setEnabled(state);
 
     //currently intra-cluster nodes and edges are only supported if flat routing is enabled
     if (draw_state->is_flat) {
-        gtk_widget_set_sensitive(app->find_widget("ToggleRRIntraClusterNodes"), state);
-        gtk_widget_set_sensitive(app->find_widget("ToggleRRIntraClusterEdges"), state);
+        app->find_widget("ToggleRRIntraClusterNodes")->setEnabled(state);
+        app->find_widget("ToggleRRIntraClusterEdges")->setEnabled(state);
     }
-    gtk_widget_set_sensitive(app->find_widget("ToggleHighlightRR"), state);
+    app->find_widget("ToggleHighlightRR")->setEnabled(state);
 
     app->refresh_drawing();
 }
@@ -298,11 +298,11 @@ void toggle_crit_path_cbk(GtkSwitch*, bool state, ezgl::application* app) {
 
     draw_state->show_crit_path = state;
 
-    gtk_widget_set_sensitive(app->find_widget("ToggleCritPathFlylines"), state);
-    gtk_widget_set_sensitive(app->find_widget("ToggleCritPathDelays"), state);
+    app->find_widget("ToggleCritPathFlylines")->setEnabled(state);
+    app->find_widget("ToggleCritPathDelays")->setEnabled(state);
 
     if (draw_state->setup_timing_info && draw_state->pic_on_screen == e_pic_type::ROUTING) {
-        gtk_widget_set_sensitive(app->find_widget("ToggleCritPathRouting"), state);
+        app->find_widget("ToggleCritPathRouting")->setEnabled(state);
     }
 
     app->refresh_drawing();

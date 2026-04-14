@@ -323,7 +323,7 @@ void hide_crit_path_routing(ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
     bool state = draw_state->setup_timing_info && draw_state->pic_on_screen == e_pic_type::ROUTING && draw_state->show_crit_path;
 
-    gtk_widget_set_sensitive(app->find_widget("ToggleCritPathRouting"), state);
+    app->find_widget("ToggleCritPathRouting")->setEnabled(state);
 }
 
 void hide_draw_routing(ezgl::application* app) {

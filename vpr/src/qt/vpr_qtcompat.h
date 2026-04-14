@@ -48,7 +48,6 @@ void widget_set_margin_bottom(QWidget*, int);
 
 int gtk_spin_button_get_value(QSpinBox* spinBox);
 void gtk_label_set_markup(QLabel* label, const QString& text);
-void gtk_widget_set_sensitive(QWidget* w, bool flag);
 const char* gtk_button_get_label(QPushButton* button);
 QPushButton* gtk_button_new_with_label(const char* text);
 const char* gtk_widget_get_name(QWidget* w);
