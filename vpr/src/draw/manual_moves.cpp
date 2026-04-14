@@ -92,7 +92,7 @@ void draw_manual_moves_window(const std::string& block_id) {
                          []() { close_manual_moves_window(); });
 
         gtk_container_add(GTK_CONTAINER(draw_state->manual_moves_state.manual_move_window), grid);
-        gtk_widget_show_all(draw_state->manual_moves_state.manual_move_window);
+        draw_state->manual_moves_state.manual_move_window->show();
     }
 }
 
@@ -252,7 +252,7 @@ void manual_move_cost_summary_dialog() {
     gtk_container_add(GTK_CONTAINER(content_area), space_label2);
 
     //Show the dialog with all the labels.
-    gtk_widget_show_all(dialog);
+    dialog->show();
 
     //Update message if user accepts the move.
     std::string msg = "Manual move accepted. Block #" + std::to_string(draw_state->manual_moves_state.manual_move_info.blockID);

@@ -61,14 +61,6 @@ void gtk_switch_set_active(QAbstractButton* button, bool flag)
   button->setChecked(flag);
 }
 
-void gtk_widget_show_all(QWidget* w)
-{
-    w->show();
-    for (auto child : w->findChildren<QWidget*>()) {
-      child->show();
-    }
-}
-
 bool gtk_toggle_button_get_active(QCheckBox* button)
 {
   if (!button) {

@@ -44,7 +44,6 @@ using GtkWindow = QWidget;
 using GtkEntry = QLineEdit;
 using GtkGrid = QWidget; //QGridLayout is laying inside the widget
 
-void gtk_widget_show_all(QWidget*);
 bool gtk_toggle_button_get_active(QCheckBox*);
 void gtk_toggle_button_set_active(QCheckBox*, bool flag);
 

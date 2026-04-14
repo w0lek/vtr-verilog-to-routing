@@ -86,7 +86,7 @@ void save_graphics_dialog_box(QWidget* /*widget*/, ezgl::application* /*app*/) {
     gtk_container_add(GTK_CONTAINER(content_area), combo_box);
 
     // show the label & child widget of the dialog
-    gtk_widget_show_all(dialog);
+    dialog->show();
 
     auto* buttonBox = new QDialogButtonBox(
         QDialogButtonBox::Save | QDialogButtonBox::Cancel, dialog);

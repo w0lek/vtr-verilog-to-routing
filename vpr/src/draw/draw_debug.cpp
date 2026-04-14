@@ -164,7 +164,7 @@ void draw_debug_window() {
                          []() { close_debug_window(); });
 
         gtk_container_add(GTK_CONTAINER(window), mainGrid);
-        gtk_widget_show_all(window);
+        window->show();
     }
 }
 
@@ -241,7 +241,7 @@ void advanced_button_callback() {
                          []() { close_advanced_window(); });
 
         gtk_container_add(GTK_CONTAINER(window), advancedGrid);
-        gtk_widget_show_all(window);
+        window->show();
     }
 }
 
@@ -274,7 +274,7 @@ void refresh_bpList() {
         gtk_grid_attach((GtkGrid*)draw_debug_glob_vars.bpGrid, deleteButton, 2, i, 1, 1);
         gtk_widget_set_margin_start(deleteButton, 10);
 
-        gtk_widget_show_all(draw_debug_glob_vars.bpGrid);
+        draw_debug_glob_vars.bpGrid->show();
     }
 }
 
@@ -304,7 +304,7 @@ void add_to_bpList(std::string bpDescription) {
     gtk_grid_attach((GtkGrid*)draw_debug_glob_vars.bpGrid, deleteButton, 2, row, 1, 1);
     gtk_widget_set_margin_start(deleteButton, 10);
 
-    gtk_widget_show_all(draw_debug_glob_vars.bpGrid);
+    draw_debug_glob_vars.bpGrid->show();
 }
 
 //enables and disables a breakpoint when the checkbox is activated
@@ -434,7 +434,7 @@ void invalid_breakpoint_entry_window(std::string error) {
                      [window]() { ok_close_window(nullptr, window); });
 
     gtk_container_add(GTK_CONTAINER(window), grid);
-    gtk_widget_show_all(window);
+    window->show();
 }
 
 //window that pops up when a breakpoint is reached
@@ -531,7 +531,7 @@ void breakpoint_info_window(std::string bpDescription, BreakpointState draw_brea
                      [window]() { ok_close_window(nullptr, window); });
 
     gtk_container_add(GTK_CONTAINER(window), grid);
-    gtk_widget_show_all(window);
+    window->show();
 }
 
 //closes the "invalid entry" window
