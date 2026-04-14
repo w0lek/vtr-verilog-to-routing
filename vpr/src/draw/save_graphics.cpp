@@ -67,8 +67,8 @@ void save_graphics_dialog_box(QWidget* /*widget*/, ezgl::application* /*app*/) {
     combo_box = new QComboBox;
 
     // set name for text entry and combo box for later data extraction
-    gtk_widget_set_name(text_entry, "file_name_text_entry");
-    gtk_widget_set_name(combo_box, "file_name_combo_box");
+    text_entry->setObjectName("file_name_text_entry");
+    combo_box->setObjectName("file_name_combo_box");
 
     combo_box->addItem("pdf"); // index 0
     combo_box->addItem("png"); // index 1

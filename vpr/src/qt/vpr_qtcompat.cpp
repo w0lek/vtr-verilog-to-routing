@@ -111,11 +111,6 @@ void gtk_label_set_markup(QLabel* label, const QString& text)
   label->setText(text);
 }
 
-void gtk_widget_set_name(QWidget* w, const QString& name)
-{
-  w->setObjectName(name);
-}
-
 void gtk_widget_set_sensitive(QWidget* w, bool flag)
 {
   w->setEnabled(flag);

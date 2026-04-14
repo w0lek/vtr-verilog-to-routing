@@ -258,7 +258,7 @@ void refresh_bpList() {
 
         auto* checkbox = new QCheckBox();
         std::string c = "c" + std::to_string(i);
-        gtk_widget_set_name(checkbox, c.c_str());
+        checkbox->setObjectName(c.c_str());
         if (draw_state->list_of_breakpoints[i].active)
             checkbox->setChecked(true);
         QObject::connect(checkbox, &QCheckBox::toggled,
@@ -268,7 +268,7 @@ void refresh_bpList() {
 
         auto* deleteButton = new QPushButton(QIcon("src/draw/trash.png"), "");
         std::string d = "d" + std::to_string(i);
-        gtk_widget_set_name(deleteButton, d.c_str());
+        deleteButton->setObjectName(d.c_str());
         QObject::connect(deleteButton, &QPushButton::clicked,
                          [deleteButton]() { delete_bp_callback(deleteButton); });
         gtk_grid_attach((GtkGrid*)draw_debug_glob_vars.bpGrid, deleteButton, 2, i, 1, 1);
@@ -289,7 +289,7 @@ void add_to_bpList(std::string bpDescription) {
 
     auto* checkbox = new QCheckBox();
     std::string c = "c" + std::to_string(row);
-    gtk_widget_set_name(checkbox, c.c_str());
+    checkbox->setObjectName(c.c_str());
     checkbox->setChecked(true);
     QObject::connect(checkbox, &QCheckBox::toggled,
                      [checkbox]() { checkbox_callback(checkbox); });
@@ -298,7 +298,7 @@ void add_to_bpList(std::string bpDescription) {
 
     auto* deleteButton = new QPushButton(QIcon("src/draw/trash.png"), "");
     std::string d = "d" + std::to_string(row);
-    gtk_widget_set_name(deleteButton, d.c_str());
+    deleteButton->setObjectName(d.c_str());
     QObject::connect(deleteButton, &QPushButton::clicked,
                      [deleteButton]() { delete_bp_callback(deleteButton); });
     gtk_grid_attach((GtkGrid*)draw_debug_glob_vars.bpGrid, deleteButton, 2, row, 1, 1);
