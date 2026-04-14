@@ -146,9 +146,9 @@ void TaskResolver::process_draw_critical_path_task(ezgl::application* app, const
             bool draw_delays = (high_light_mode.find("delays") != std::string::npos);
 
             gtk_switch_set_active(crit_path_switch, TRUE);
-            gtk_toggle_button_set_active(crit_path_flylines_button, draw_flylines);
-            gtk_toggle_button_set_active(crit_path_routing_button, draw_routing);
-            gtk_toggle_button_set_active(crit_path_delays_button, draw_delays);
+            crit_path_flylines_button->setChecked(draw_flylines);
+            crit_path_routing_button->setChecked(draw_routing);
+            crit_path_delays_button->setChecked(draw_delays);
             task->set_success();
         } else {
             std::string msg{"Cannot find critical path widgets. Was the UI layout changed?"};

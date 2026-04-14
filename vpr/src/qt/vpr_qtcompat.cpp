@@ -56,14 +56,6 @@ void gtk_switch_set_active(QAbstractButton* button, bool flag)
   button->setChecked(flag);
 }
 
-void gtk_toggle_button_set_active(QCheckBox* button, bool flag)
-{
-  if (!button) {
-    return;
-  }
-  button->setChecked(flag);
-}
-
 void widget_set_margin_start(QWidget* w, int m)
 {
   if (!w) {

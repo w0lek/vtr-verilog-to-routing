@@ -54,7 +54,10 @@ void toggle_draw_nets_cbk(QComboBox* self, ezgl::application* app) {
         // Make sure that intra-cluster routed nets is never enabled when flat routing is off
         if (!draw_state->is_flat) {
             gtk_widget_set_sensitive(app->find_widget("ToggleIntraClusterNets"), false);
-            gtk_toggle_button_set_active(app->find_check_box("ToggleIntraClusterNets"), false);
+            QCheckBox* checkbox = app->find_check_box("ToggleIntraClusterNets");
+            if (checkbox) {
+                checkbox->setChecked(false);
+            }
             draw_state->draw_intra_cluster_nets = false;
         }
 

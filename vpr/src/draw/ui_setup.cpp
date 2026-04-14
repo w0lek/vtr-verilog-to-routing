@@ -249,9 +249,9 @@ void view_button_setup(ezgl::application* app) {
 
             if (i == 0) {
                 // Set the initial state of the first checkbox to checked to represent the default view.
-                gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(checkbox), TRUE);
+                checkbox->setChecked(true);
             }
-            QObject::connect(GTK_BUTTON(checkbox), &QAbstractButton::toggled, GTK_BUTTON(checkbox), [checkbox]() {
+            QObject::connect(checkbox, &QAbstractButton::toggled, checkbox, [checkbox]() {
                 select_layer_cbk(checkbox, /*response_id=*/0, /*data=*/nullptr);
             });
             QObject::connect(GTK_SPIN_BUTTON(spin_button), &QSpinBox::valueChanged, GTK_SPIN_BUTTON(spin_button), [spin_button]() {
