@@ -48,14 +48,6 @@ void gtk_box_pack_start(QBoxLayout* box,
   }
 }
 
-void gtk_switch_set_active(QAbstractButton* button, bool flag)
-{
-  if (!button) {
-    return;
-  }
-  button->setChecked(flag);
-}
-
 void widget_set_margin_start(QWidget* w, int m)
 {
   if (!w) {

@@ -20,8 +20,6 @@ void gtk_box_pack_start(QBoxLayout* box,
                         bool fill,
                         int padding);
 
-void gtk_switch_set_active(QAbstractButton* button, bool flag);
-
 using GtkBox = QBoxLayout;
 
 #define Q_ABSTRACT_BUTTON(w) qobject_cast<QAbstractButton*>(w);

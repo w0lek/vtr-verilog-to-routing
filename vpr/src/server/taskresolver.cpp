@@ -145,7 +145,7 @@ void TaskResolver::process_draw_critical_path_task(ezgl::application* app, const
             bool draw_routing = (high_light_mode.find("routing") != std::string::npos);
             bool draw_delays = (high_light_mode.find("delays") != std::string::npos);
 
-            gtk_switch_set_active(crit_path_switch, TRUE);
+            crit_path_switch->setChecked(true);
             crit_path_flylines_button->setChecked(draw_flylines);
             crit_path_routing_button->setChecked(draw_routing);
             crit_path_delays_button->setChecked(draw_delays);
