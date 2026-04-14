@@ -145,7 +145,7 @@ QWidget* gtk_grid_new()
 QDialog* gtk_dialog_new_with_buttons(
     const char* title,
     QWidget* parent,
-    int flags,
+    bool is_modal,
     const GtkDialogButton* buttons,
     int button_count
 )
@@ -153,7 +153,7 @@ QDialog* gtk_dialog_new_with_buttons(
     QDialog* dialog = new QDialog(parent);
     dialog->setWindowTitle(title);
 
-    if (flags & GTK_DIALOG_MODAL) {
+    if (is_modal) {
       dialog->setModal(true);
     }
 

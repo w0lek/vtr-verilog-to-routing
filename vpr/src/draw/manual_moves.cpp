@@ -227,12 +227,12 @@ void manual_move_cost_summary_dialog() {
     QWidget* content_area;
 
     const GtkDialogButton btns[] = {
-        {"Accept", GTK_RESPONSE_ACCEPT},
-        {"Reject", GTK_RESPONSE_REJECT}
+        {"Accept", QDialog::Accepted},
+        {"Reject", QDialog::Rejected}
     };
     dialog = gtk_dialog_new_with_buttons("Move Costs",
                                          Q_WIDGET(draw_state->manual_moves_state.manual_move_window),
-                                         GTK_DIALOG_MODAL,
+                                         /*is_modal*/true,
                                          btns, 2);
     gtk_window_set_transient_for((GtkWindow*)dialog, (GtkWindow*)draw_state->manual_moves_state.manual_move_window);
 
@@ -273,12 +273,12 @@ void manual_move_cost_summary_dialog() {
     int result = dialog->exec();
     switch (result) {
         //If the user accepts the manual move
-        case GTK_RESPONSE_ACCEPT:
+        case QDialog::Accepted:
             draw_state->manual_moves_state.manual_move_info.user_move_outcome = e_move_result::ACCEPTED;
             application.update_message(msg);
             break;
         //If the user rejects the manual move
-        case GTK_RESPONSE_REJECT:
+        case QDialog::Rejected:
             draw_state->manual_moves_state.manual_move_info.user_move_outcome = e_move_result::REJECTED;
             application.update_message("Manual move was rejected");
             break;

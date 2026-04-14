@@ -45,9 +45,6 @@ void gtk_grid_attach(QWidget* widget, QWidget* child, int col, int row, int w, i
 void gtk_container_add(QWidget* container, QWidget* w);
 QWidget* gtk_grid_new();
 
-#define GTK_DIALOG_MODAL 0x1
-#define GTK_RESPONSE_ACCEPT QDialog::Accepted
-#define GTK_RESPONSE_REJECT QDialog::Rejected
 struct GtkDialogButton {
     const char* text;
     int response;
@@ -55,7 +52,7 @@ struct GtkDialogButton {
 QDialog* gtk_dialog_new_with_buttons(
     const char* title,
     QWidget* parent,
-    int flags,
+    bool is_modal,
     const GtkDialogButton* buttons,
     int button_count
 );
