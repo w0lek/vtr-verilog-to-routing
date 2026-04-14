@@ -51,7 +51,6 @@ const char* gtk_widget_get_name(QWidget* w);
 void gtk_window_set_title(QWidget* w, const char* title);
 
 #define GTK_SPIN_BUTTON(w) qobject_cast<QSpinBox*>(w)
-#define GTK_BUTTON(w) qobject_cast<QAbstractButton*>(w)
 #define GTK_TOGGLE_BUTTON(w) qobject_cast<QCheckBox*>(w)
 #define GTK_COMBO_BOX_TEXT(w) qobject_cast<QComboBox*>(reinterpret_cast<QObject*>(w))
 #define GTK_DIALOG(w) qobject_cast<QDialog*>(w)

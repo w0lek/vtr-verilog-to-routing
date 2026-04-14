@@ -34,28 +34,28 @@ static void setup_checkbox_button(std::string button_id, ezgl::application* app,
     QCheckBox* checkbox_button = app->find_check_box(button_id.c_str());
     draw_state->checkbox_data.emplace_back(app, toggle_state);
     t_checkbox_data* data = &draw_state->checkbox_data.back();
-    QObject::connect(checkbox_button, &QAbstractButton::toggled, checkbox_button, [checkbox_button, data]() {
+    QObject::connect(checkbox_button, &QCheckBox::toggled, checkbox_button, [checkbox_button, data]() {
         toggle_checkbox_cbk(checkbox_button, data);
     });
 }
 
 void basic_button_setup(ezgl::application* app) {
     //button to enter window_mode, created in main.ui
-    QAbstractButton* window = app->find_button("Window");
-    QObject::connect(window, &QAbstractButton::clicked, window, [app]() {
+    QPushButton* window = app->find_push_button("Window");
+    QObject::connect(window, &QPushButton::clicked, window, [app]() {
         toggle_window_mode(/*widget=*/nullptr, app);
     });
 
     //button to search, created in main.ui
-    QAbstractButton* search = app->find_button("Search");
+    QPushButton* search = app->find_push_button("Search");
     gtk_button_set_label(search, "Search");
-    QObject::connect(search, &QAbstractButton::clicked, search, [app]() {
+    QObject::connect(search, &QPushButton::clicked, search, [app]() {
         search_and_highlight(/*widget=*/nullptr, app);
     });
 
     //button for save graphics, created in main.ui
-    QAbstractButton* save = app->find_button("SaveGraphics");
-    QObject::connect(save, &QAbstractButton::clicked, save, []() {
+    QPushButton* save = app->find_push_button("SaveGraphics");
+    QObject::connect(save, &QPushButton::clicked, save, []() {
         save_graphics_dialog_box(/*widget=*/nullptr, /*app=*/nullptr);
     });
 

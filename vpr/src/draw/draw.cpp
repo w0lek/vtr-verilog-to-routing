@@ -1053,20 +1053,20 @@ ClusterBlockId get_cluster_block_id_from_xy_loc(double x, double y) {
 
 static void setup_default_ezgl_callbacks(ezgl::application* app) {
     // Connect press_proceed function to the Proceed button
-    QAbstractButton* proceed_button = app->find_button("ProceedButton");
-    QObject::connect(proceed_button, &QAbstractButton::clicked, [app](){
+    QPushButton* proceed_button = app->find_push_button("ProceedButton");
+    QObject::connect(proceed_button, &QPushButton::clicked, [app](){
         press_proceed(/*unused*/nullptr, app);
     });
 
     // Connect press_zoom_fit function to the Zoom-fit button
-    QAbstractButton* zoom_fit_button = app->find_button("ZoomFitButton");
-    QObject::connect(zoom_fit_button, &QAbstractButton::clicked, [app](){
+    QPushButton* zoom_fit_button = app->find_push_button("ZoomFitButton");
+    QObject::connect(zoom_fit_button, &QPushButton::clicked, [app](){
         press_zoom_fit(/*unused*/nullptr, app);
     });
 
     // Connect Pause button
-    QAbstractButton* pause_button = app->find_button("PauseButton");
-    QObject::connect(pause_button, &QAbstractButton::clicked, [app](){
+    QPushButton* pause_button = app->find_push_button("PauseButton");
+    QObject::connect(pause_button, &QPushButton::clicked, [app](){
         set_force_pause(/*unused*/nullptr, /*unused*/-1, app);
     });
 
@@ -1089,8 +1089,8 @@ static void setup_default_ezgl_callbacks(ezgl::application* app) {
     });
 
     // Connect Debug Button
-    QAbstractButton* debugger = app->find_button("debugButton");
-    QObject::connect(debugger, &QAbstractButton::clicked, [app](){
+    QPushButton* debugger = app->find_push_button("debugButton");
+    QObject::connect(debugger, &QPushButton::clicked, [app](){
         draw_debug_window();
     });
 
