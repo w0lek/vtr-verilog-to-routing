@@ -276,7 +276,7 @@ void manual_move_cost_summary_dialog() {
     }
 
     //Destroys the move outcome dialog.
-    gtk_widget_destroy(dialog);
+    dialog->deleteLater();
 }
 
 void manual_move_highlight_new_block_location() {

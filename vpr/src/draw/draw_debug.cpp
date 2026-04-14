@@ -246,7 +246,7 @@ void advanced_button_callback() {
 //refreshes breakpoint list for when a breakpoint is deleted
 void refresh_bpList() {
     for (auto* child : gtk_container_get_children(draw_debug_glob_vars.bpGrid))
-        gtk_widget_destroy(child);
+        child->deleteLater();
 
     t_draw_state* draw_state = get_draw_state_vars();
     for (size_t i = 0; i < draw_debug_glob_vars.bp_labels.size(); i++) {

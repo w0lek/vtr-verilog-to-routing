@@ -1161,7 +1161,7 @@ static void on_dialog_response(QDialog* dialog, int response_id, void* /* user_d
             break;
     }
 
-    gtk_widget_destroy(dialog);
+    dialog->deleteLater();
 }
 
 // Callback function for Draw Partitions checkbox
