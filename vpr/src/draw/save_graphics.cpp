@@ -80,10 +80,10 @@ void save_graphics_dialog_box(QWidget* /*widget*/, ezgl::application* /*app*/) {
 
     // attach elements to the content area of the dialog
     content_area = gtk_dialog_get_content_area(dialog);
-    gtk_container_add(GTK_CONTAINER(content_area), name_label);
-    gtk_container_add(GTK_CONTAINER(content_area), text_entry);
-    gtk_container_add(GTK_CONTAINER(content_area), type_label);
-    gtk_container_add(GTK_CONTAINER(content_area), combo_box);
+    gtk_container_add(content_area, name_label);
+    gtk_container_add(content_area, text_entry);
+    gtk_container_add(content_area, type_label);
+    gtk_container_add(content_area, combo_box);
 
     // show the label & child widget of the dialog
     dialog->show();

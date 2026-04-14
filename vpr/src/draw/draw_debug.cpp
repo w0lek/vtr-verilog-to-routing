@@ -163,7 +163,7 @@ void draw_debug_window() {
         QObject::connect(window, &QObject::destroyed,
                          []() { close_debug_window(); });
 
-        gtk_container_add(GTK_CONTAINER(window), mainGrid);
+        gtk_container_add(window, mainGrid);
         window->show();
     }
 }
@@ -240,7 +240,7 @@ void advanced_button_callback() {
         QObject::connect(window, &QObject::destroyed,
                          []() { close_advanced_window(); });
 
-        gtk_container_add(GTK_CONTAINER(window), advancedGrid);
+        gtk_container_add(window, advancedGrid);
         window->show();
     }
 }
@@ -439,7 +439,7 @@ void invalid_breakpoint_entry_window(std::string error) {
     QObject::connect(Q_BUTTON(button), &QAbstractButton::clicked,
                      [window]() { ok_close_window(nullptr, window); });
 
-    gtk_container_add(GTK_CONTAINER(window), grid);
+    gtk_container_add(window, grid);
     window->show();
 }
 
@@ -536,7 +536,7 @@ void breakpoint_info_window(std::string bpDescription, BreakpointState draw_brea
     QObject::connect(Q_BUTTON(button), &QAbstractButton::clicked,
                      [window]() { ok_close_window(nullptr, window); });
 
-    gtk_container_add(GTK_CONTAINER(window), grid);
+    gtk_container_add(window, grid);
     window->show();
 }
 

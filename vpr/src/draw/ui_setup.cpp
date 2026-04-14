@@ -197,7 +197,7 @@ void routing_button_setup(ezgl::application* app) {
     QObject::connect(toggle_routing_bbox, &QSpinBox::valueChanged, toggle_routing_bbox, [toggle_routing_bbox, app]() {
         toggle_routing_bbox_cbk(toggle_routing_bbox, app);
     });
-    toggle_routing_bbox->setSinglStep(1);
+    toggle_routing_bbox->setSingleStep(1);
     toggle_routing_bbox->setRange(-1, route_ctx.route_bb.size() - 1);
     toggle_routing_bbox->setValue(-1);
 
