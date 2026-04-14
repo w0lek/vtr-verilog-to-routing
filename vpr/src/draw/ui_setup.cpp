@@ -76,8 +76,8 @@ void basic_button_setup(ezgl::application* app) {
 void net_button_setup(ezgl::application* app) {
 
     t_draw_state* draw_state = get_draw_state_vars();
-    QAbstractButton* toggle_nets_switch = app->find_button("ToggleNets");
-    QObject::connect(toggle_nets_switch, &QAbstractButton::toggled, toggle_nets_switch, [toggle_nets_switch, app](bool checked) {
+    SwitchButton* toggle_nets_switch = app->find_switch_button("ToggleNets");
+    QObject::connect(toggle_nets_switch, &SwitchButton::toggled, toggle_nets_switch, [toggle_nets_switch, app](bool checked) {
         toggle_show_nets_cbk(toggle_nets_switch, checked, app);
     });
 
@@ -165,8 +165,8 @@ void routing_button_setup(ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
 
     //Toggle RR
-    QAbstractButton* toggle_nets_switch = app->find_button("ToggleRR");
-    QObject::connect(toggle_nets_switch, &QAbstractButton::toggled, toggle_nets_switch, [toggle_nets_switch, app](bool checked) {
+    SwitchButton* toggle_nets_switch = app->find_switch_button("ToggleRR");
+    QObject::connect(toggle_nets_switch, &SwitchButton::toggled, toggle_nets_switch, [toggle_nets_switch, app](bool checked) {
         toggle_rr_cbk(toggle_nets_switch, checked, app);
     });
 
@@ -303,8 +303,8 @@ void crit_path_button_setup(ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
 
     // Toggle Critical Path
-    QAbstractButton* toggle_nets_switch = app->find_button("ToggleCritPath");
-    QObject::connect(toggle_nets_switch, &QAbstractButton::toggled, toggle_nets_switch, [toggle_nets_switch, app](bool checked) {
+    SwitchButton* toggle_nets_switch = app->find_switch_button("ToggleCritPath");
+    QObject::connect(toggle_nets_switch, &SwitchButton::toggled, toggle_nets_switch, [toggle_nets_switch, app](bool checked) {
         toggle_crit_path_cbk(toggle_nets_switch, checked, app);
     });
 

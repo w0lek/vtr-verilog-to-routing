@@ -134,8 +134,8 @@ void TaskResolver::process_draw_critical_path_task(ezgl::application* app, const
         server_ctx.crit_path_element_indexes = std::move(path_elements);
         server_ctx.draw_crit_path_contour = draw_path_contour;
 
-        // get GTK widgets
-        GtkSwitch* crit_path_switch = GTK_SWITCH(app->find_widget("ToggleCritPath"));
+        // get widgets
+        SwitchButton* crit_path_switch = app->find_switch_button("ToggleCritPath");
         QCheckBox* crit_path_flylines_button = app->find_check_box("ToggleCritPathFlylines");
         QCheckBox* crit_path_routing_button = app->find_check_box("ToggleCritPathRouting");
         QCheckBox* crit_path_delays_button = app->find_check_box("ToggleCritPathDelays");

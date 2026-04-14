@@ -33,7 +33,7 @@ void toggle_checkbox_cbk(QCheckBox* self, t_checkbox_data* data);
  * Toggles whether or not nets are visualized.
  * @param app ezgl::application
  */
-void toggle_show_nets_cbk(GtkSwitch*, bool state, ezgl::application* app);
+void toggle_show_nets_cbk(SwitchButton*, bool state, ezgl::application* app);
 
 /**
  * @brief Callback function for toggle_net_type button in main.ui.
@@ -70,7 +70,7 @@ void placement_macros_cbk(QComboBox* self, ezgl::application* app);
 
 /* Callback function for main.ui created toggle_rr button in ui_setup.cpp. Draws different groups of RRs depending on
  * user input. Changes value of draw_state->draw_rr_toggle. */
-void toggle_rr_cbk(GtkSwitch*, bool state, ezgl::application* app);
+void toggle_rr_cbk(SwitchButton*, bool state, ezgl::application* app);
 
 /* Callback function for main.ui created toggle_congestion button in ui_setup.cpp. Controls if congestion should be visualized.
  * Changes value of draw_state->show_congestion. */
@@ -96,7 +96,7 @@ void toggle_router_util_cbk(QComboBox* self, ezgl::application* app);
  * @brief Master switch callback function for showing critical paths. 
  * Changes value of draw_state->show_crit_path. 
  */
-void toggle_crit_path_cbk(GtkSwitch*, bool state, ezgl::application* app);
+void toggle_crit_path_cbk(SwitchButton*, bool state, ezgl::application* app);
 
 /* Callback function for main.ui created toggle_router_expansion_costs in ui_setup.cpp.
  * Draws different router expansion costs based on user input. Changes value of draw_state->show_router_expansion_cost. */

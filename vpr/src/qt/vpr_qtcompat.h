@@ -24,8 +24,6 @@ void gtk_switch_set_active(QAbstractButton* button, bool flag);
 
 using GtkBox = QBoxLayout;
 
-#define GTK_SWITCH(w) qobject_cast<QAbstractButton*>(w)
-
 #define Q_ABSTRACT_BUTTON(w) qobject_cast<QAbstractButton*>(w);
 
 #include <QRadioButton>
@@ -37,7 +35,6 @@ using GtkBox = QBoxLayout;
 #include <QDialog>
 #include <QDialogButtonBox>
 
-using GtkSwitch = QAbstractButton;
 using GtkWindow = QWidget;
 using GtkGrid = QWidget; //QGridLayout is laying inside the widget
 
