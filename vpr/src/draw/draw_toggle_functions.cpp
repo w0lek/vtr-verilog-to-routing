@@ -51,10 +51,10 @@ void toggle_show_nets_cbk(GtkSwitch*, bool state, ezgl::application* app) {
 void toggle_draw_nets_cbk(QComboBox* self, ezgl::application* app) {
     enum e_draw_nets new_state;
     t_draw_state* draw_state = get_draw_state_vars();
-    char* setting = gtk_combo_box_text_get_active_text(self);
+    QString setting = self->currentText();
 
     // assign corresponding enum value to draw_state->show_nets
-    if (strcmp(setting, "Routing") == 0) {
+    if (setting == "Routing") {
         new_state = DRAW_ROUTED_NETS;
 
         // Make sure that intra-cluster routed nets is never enabled when flat routing is off
@@ -71,9 +71,6 @@ void toggle_draw_nets_cbk(QComboBox* self, ezgl::application* app) {
     }
 
     draw_state->draw_nets = new_state;
-
-    //free dynamically allocated pointers
-    g_free(setting);
 
     //redraw
     app->refresh_drawing();
@@ -117,10 +114,10 @@ void toggle_rr_cbk(GtkSwitch*, bool state, ezgl::application* app) {
 void toggle_cong_cbk(QComboBox* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
     enum e_draw_congestion new_state;
-    char* combo_box_content = gtk_combo_box_text_get_active_text(self);
-    if (strcmp(combo_box_content, "None") == 0)
+    QString combo_box_content = self->currentText();
+    if (combo_box_content == "None")
         new_state = DRAW_NO_CONGEST;
-    else if (strcmp(combo_box_content, "Congested") == 0)
+    else if (combo_box_content == "Congested")
         new_state = DRAW_CONGESTED;
     else
         // congested with nets
@@ -130,7 +127,6 @@ void toggle_cong_cbk(QComboBox* self, ezgl::application* app) {
     if (draw_state->show_congestion == DRAW_NO_CONGEST) {
         app->update_message(draw_state->default_message);
     }
-    g_free(combo_box_content);
     app->refresh_drawing();
 }
 
@@ -146,26 +142,25 @@ void toggle_cong_cost_cbk(QComboBox* self, ezgl::application* app) {
      * which is written in button.cpp                                         */
     t_draw_state* draw_state = get_draw_state_vars();
     enum e_draw_routing_costs new_state;
-    char* combo_box_content = gtk_combo_box_text_get_active_text(self);
-    if (strcmp(combo_box_content, "None") == 0)
+    QString combo_box_content = self->currentText();
+    if (combo_box_content == "None")
         new_state = DRAW_NO_ROUTING_COSTS;
-    else if (strcmp(combo_box_content, "Total Routing Costs") == 0)
+    else if (combo_box_content == "Total Routing Costs")
         new_state = DRAW_TOTAL_ROUTING_COSTS;
-    else if (strcmp(combo_box_content, "Log Total Routing Costs") == 0)
+    else if (combo_box_content == "Log Total Routing Costs")
         new_state = DRAW_LOG_TOTAL_ROUTING_COSTS;
-    else if (strcmp(combo_box_content, "Acc Routing Costs") == 0)
+    else if (combo_box_content == "Acc Routing Costs")
         new_state = DRAW_ACC_ROUTING_COSTS;
-    else if (strcmp(combo_box_content, "Log Acc Routing Costs") == 0)
+    else if (combo_box_content == "Log Acc Routing Costs")
         new_state = DRAW_LOG_ACC_ROUTING_COSTS;
-    else if (strcmp(combo_box_content, "Pres Routing Costs") == 0)
+    else if (combo_box_content == "Pres Routing Costs")
         new_state = DRAW_PRES_ROUTING_COSTS;
-    else if (strcmp(combo_box_content, "Log Pres Routing Costs") == 0)
+    else if (combo_box_content == "Log Pres Routing Costs")
         new_state = DRAW_LOG_PRES_ROUTING_COSTS;
     else
         new_state = DRAW_BASE_ROUTING_COSTS;
 
     draw_state->show_routing_costs = new_state;
-    g_free(combo_box_content);
     if (draw_state->show_routing_costs == DRAW_NO_ROUTING_COSTS) {
         app->update_message(draw_state->default_message);
     }
@@ -219,19 +214,18 @@ void toggle_router_util_cbk(QComboBox* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
     enum e_draw_routing_util new_state;
 
-    char* combo_box_content = gtk_combo_box_text_get_active_text(self);
-    if (strcmp(combo_box_content, "None") == 0)
+    QString combo_box_content = self->currentText();
+    if (combo_box_content == "None")
         new_state = DRAW_NO_ROUTING_UTIL;
-    else if (strcmp(combo_box_content, "Routing Util") == 0)
+    else if (combo_box_content == "Routing Util")
         new_state = DRAW_ROUTING_UTIL;
-    else if (strcmp(combo_box_content, "Routing Util with Value") == 0)
+    else if (combo_box_content == "Routing Util with Value")
         new_state = DRAW_ROUTING_UTIL_WITH_VALUE;
-    else if (strcmp(combo_box_content, "Routing Util with Formula") == 0)
+    else if (combo_box_content == "Routing Util with Formula")
         new_state = DRAW_ROUTING_UTIL_WITH_FORMULA;
     else
         new_state = DRAW_ROUTING_UTIL_OVER_BLOCKS;
 
-    g_free(combo_box_content);
     draw_state->show_routing_util = new_state;
 
     if (draw_state->show_routing_util == DRAW_NO_ROUTING_UTIL) {
@@ -268,19 +262,18 @@ void toggle_blk_internal_cbk(QSpinBox* self, ezgl::application* app) {
  */
 void toggle_blk_pin_util_cbk(QComboBox* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
-    char* combo_box_content = gtk_combo_box_text_get_active_text(self);
-    if (strcmp(combo_box_content, "None") == 0) {
+    QString combo_box_content = self->currentText();
+    if (combo_box_content == "None") {
         draw_state->show_blk_pin_util = DRAW_NO_BLOCK_PIN_UTIL;
         draw_reset_blk_colors();
         app->update_message(draw_state->default_message);
-    } else if (strcmp(combo_box_content, "All") == 0)
+    } else if (combo_box_content == "All")
         draw_state->show_blk_pin_util = DRAW_BLOCK_PIN_UTIL_TOTAL;
-    else if (strcmp(combo_box_content, "Inputs") == 0)
+    else if (combo_box_content == "Inputs")
         draw_state->show_blk_pin_util = DRAW_BLOCK_PIN_UTIL_INPUTS;
     else
         draw_state->show_blk_pin_util = DRAW_BLOCK_PIN_UTIL_OUTPUTS;
 
-    g_free(combo_box_content);
     app->refresh_drawing();
 }
 
@@ -293,13 +286,12 @@ void toggle_blk_pin_util_cbk(QComboBox* self, ezgl::application* app) {
  */
 void placement_macros_cbk(QComboBox* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
-    char* combo_box_content = gtk_combo_box_text_get_active_text(self);
-    if (strcmp(combo_box_content, "None") == 0)
+    QString combo_box_content = self->currentText();
+    if (combo_box_content == "None")
         draw_state->show_placement_macros = DRAW_NO_PLACEMENT_MACROS;
     else
         draw_state->show_placement_macros = DRAW_PLACEMENT_MACROS;
 
-    g_free(combo_box_content);
     app->refresh_drawing();
 }
 
@@ -329,26 +321,25 @@ void toggle_crit_path_cbk(GtkSwitch*, bool state, ezgl::application* app) {
 void toggle_expansion_cost_cbk(QComboBox* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
     e_draw_router_expansion_cost new_state;
-    char* combo_box_content = gtk_combo_box_text_get_active_text(self);
-    if (strcmp(combo_box_content, "None") == 0) {
+    QString combo_box_content = self->currentText();
+    if (combo_box_content == "None") {
         new_state = DRAW_NO_ROUTER_EXPANSION_COST;
-    } else if (strcmp(combo_box_content, "Total") == 0) {
+    } else if (combo_box_content == "Total") {
         new_state = DRAW_ROUTER_EXPANSION_COST_TOTAL;
-    } else if (strcmp(combo_box_content, "Known") == 0) {
+    } else if (combo_box_content == "Known") {
         new_state = DRAW_ROUTER_EXPANSION_COST_KNOWN;
-    } else if (strcmp(combo_box_content, "Expected") == 0) {
+    } else if (combo_box_content == "Expected") {
         new_state = DRAW_ROUTER_EXPANSION_COST_EXPECTED;
-    } else if (strcmp(combo_box_content, "Total (with edges)") == 0) {
+    } else if (combo_box_content == "Total (with edges)") {
         new_state = DRAW_ROUTER_EXPANSION_COST_TOTAL_WITH_EDGES;
-    } else if (strcmp(combo_box_content, "Known (with edges)") == 0) {
+    } else if (combo_box_content == "Known (with edges)") {
         new_state = DRAW_ROUTER_EXPANSION_COST_KNOWN_WITH_EDGES;
-    } else if (strcmp(combo_box_content, "Expected (with edges)") == 0) {
+    } else if (combo_box_content == "Expected (with edges)") {
         new_state = DRAW_ROUTER_EXPANSION_COST_EXPECTED_WITH_EDGES;
     } else {
         VPR_THROW(VPR_ERROR_DRAW, "Unrecognized draw RR cost option");
     }
 
-    g_free(combo_box_content);
     draw_state->show_router_expansion_cost = new_state;
 
     if (draw_state->show_router_expansion_cost
@@ -369,15 +360,14 @@ void toggle_expansion_cost_cbk(QComboBox* self, ezgl::application* app) {
 void toggle_noc_cbk(QComboBox* self, ezgl::application* app) {
     t_draw_state* draw_state = get_draw_state_vars();
 
-    char* combo_box_content = gtk_combo_box_text_get_active_text(self);
-    if (strcmp(combo_box_content, "None") == 0) {
+    QString combo_box_content = self->currentText();
+    if (combo_box_content == "None") {
         draw_state->draw_noc = DRAW_NO_NOC;
-    } else if (strcmp(combo_box_content, "NoC Links") == 0)
+    } else if (combo_box_content == "NoC Links")
         draw_state->draw_noc = DRAW_NOC_LINKS;
     else
         draw_state->draw_noc = DRAW_NOC_LINK_USAGE;
 
-    g_free(combo_box_content);
     app->refresh_drawing();
 }
 
