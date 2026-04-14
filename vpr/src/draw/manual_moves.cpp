@@ -238,7 +238,8 @@ void manual_move_cost_summary_dialog() {
 
     //Create elements for the dialog and printing costs to the user.
     QLabel* title_label = new QLabel;
-    gtk_label_set_markup(title_label, "<b>Move Costs and Outcomes</b>");
+    title_label->setTextFormat(Qt::RichText);
+    title_label->setText("<b>Move Costs and Outcomes</b>");
     std::string delta_cost = "Delta Cost: " + std::to_string(draw_state->manual_moves_state.manual_move_info.delta_cost) + "   ";
     QLabel* delta_cost_label = new QLabel(delta_cost.c_str());
     std::string delta_timing = "   Delta Timing: " + std::to_string(draw_state->manual_moves_state.manual_move_info.delta_timing) + "   ";

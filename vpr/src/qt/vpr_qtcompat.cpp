@@ -92,12 +92,6 @@ void widget_set_margin_bottom(QWidget* w, int m)
   w->setContentsMargins(margins);
 }
 
-void gtk_label_set_markup(QLabel* label, const QString& text)
-{
-  label->setTextFormat(Qt::RichText);
-  label->setText(text);
-}
-
 const char* gtk_button_get_label(QPushButton* button)
 {
   return button->text().toStdString().c_str();

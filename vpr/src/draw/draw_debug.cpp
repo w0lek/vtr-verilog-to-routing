@@ -54,14 +54,17 @@ void draw_debug_window() {
         widget_set_margin_end(mainGrid, 20);
 
         QLabel* placerOpts = new QLabel;
-        gtk_label_set_markup(placerOpts, "<b>Placer Options</b>");
+        placerOpts->setTextFormat(Qt::RichText);
+        placerOpts->setText("<b>Placer Options</b>");
         widget_set_margin_bottom(placerOpts, 10);
         QLabel* routerOpts = new QLabel;
-        gtk_label_set_markup(routerOpts, "<b>Router Options</b>");
+        routerOpts->setTextFormat(Qt::RichText);
+        routerOpts->setText("<b>Router Options</b>");
         widget_set_margin_bottom(routerOpts, 10);
         widget_set_margin_top(routerOpts, 30);
         QLabel* bplist = new QLabel;
-        gtk_label_set_markup(bplist, "<b>List of Breakpoints</b>");
+        bplist->setTextFormat(Qt::RichText);
+        bplist->setText("<b>List of Breakpoints</b>");
         widget_set_margin_bottom(bplist, 10);
         widget_set_margin_top(bplist, 30);
         QLabel* movesLabel = new QLabel("Number of moves to proceed");
@@ -191,13 +194,15 @@ void advanced_button_callback() {
         auto* expander = new QGroupBox("Variables");
         QWidget* varGrid = gtk_grid_new();
         QLabel* pLabel  = new QLabel;
-        gtk_label_set_markup(pLabel, "<b>Placer Variables:</b>");
+        pLabel->setTextFormat(Qt::RichText);
+        pLabel->setText("<b>Placer Variables:</b>");
         QLabel* mLabel  = new QLabel("move_num");
         QLabel* tLabel  = new QLabel("temp_count");
         QLabel* bLabel  = new QLabel("from_block");
         QLabel* iLabel  = new QLabel("in_blocks_affected");
         QLabel* roLabel = new QLabel;
-        gtk_label_set_markup(roLabel, "<b>Router Variables:</b>");
+        roLabel->setTextFormat(Qt::RichText);
+        roLabel->setText("<b>Router Variables:</b>");
         QLabel* rLabel  = new QLabel("router_iter");
         QLabel* nLabel  = new QLabel("route_net_id");
         gtk_widget_set_halign(mLabel,  GTK_ALIGN_START);
@@ -461,7 +466,8 @@ void breakpoint_info_window(std::string bpDescription, BreakpointState draw_brea
     gtk_grid_attach((GtkGrid*)grid, label, 0, 0, 1, 1);
 
     QLabel* curr_info = new QLabel;
-    gtk_label_set_markup(curr_info, "<b>Current Information</b>");
+    curr_info->setTextFormat(Qt::RichText);
+    curr_info->setText("<b>Current Information</b>");
     widget_set_margin_start(curr_info, 30);
     widget_set_margin_end(curr_info, 30);
     widget_set_margin_bottom(curr_info, 15);
