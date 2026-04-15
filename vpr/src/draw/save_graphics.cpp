@@ -46,25 +46,18 @@ void save_graphics(std::string extension, std::string file_name) {
 }
 
 void save_graphics_dialog_box(QWidget* /*widget*/, ezgl::application* /*app*/) {
-    QWidget* main_window;
-    QWidget* content_area;
-    QLineEdit* text_entry;
-    QLabel* name_label;
-    QLabel* type_label;
-    QDialog* dialog;
-    QComboBox* combo_box;
-
-    // get a pointer to the main window
-    main_window = application.find_widget(application.get_main_window_id().c_str());
-    dialog = new QDialog(main_window);
+    QWidget* main_window = application.find_widget(application.get_main_window_id().c_str());
+    QDialog* dialog = new QDialog(main_window);
     dialog->setWindowTitle("Save Graphics Contents");
     dialog->setAttribute(Qt::WA_DeleteOnClose);
 
+    auto* layout = new QVBoxLayout(dialog);
+
     // create elements
-    name_label = new QLabel("File name:");
-    text_entry = new QLineEdit;
-    type_label = new QLabel("File format:");
-    combo_box = new QComboBox;
+    auto* name_label = new QLabel("File name:");
+    auto* text_entry = new QLineEdit;
+    auto* type_label = new QLabel("File format:");
+    auto* combo_box = new QComboBox;
 
     // set name for text entry and combo box for later data extraction
     text_entry->setObjectName("file_name_text_entry");
@@ -75,28 +68,24 @@ void save_graphics_dialog_box(QWidget* /*widget*/, ezgl::application* /*app*/) {
     combo_box->addItem("svg"); // index 2
 
     // set default values
-    combo_box->setCurrentIndex(0);        // default set to pdf which has an index 0
-    text_entry->setText("vpr_graphics");  // default text set to vpr_graphics
+    combo_box->setCurrentIndex(0);
+    text_entry->setText("vpr_graphics");
 
-    // attach elements to the content area of the dialog
-    content_area = ezgl::dialog_get_content_area(dialog);
-    content_area->layout()->addWidget(name_label);
-    content_area->layout()->addWidget(text_entry);
-    content_area->layout()->addWidget(type_label);
-    content_area->layout()->addWidget(combo_box);
-
-    // show the label & child widget of the dialog
-    dialog->show();
+    layout->addWidget(name_label);
+    layout->addWidget(text_entry);
+    layout->addWidget(type_label);
+    layout->addWidget(combo_box);
 
     auto* buttonBox = new QDialogButtonBox(
         QDialogButtonBox::Save | QDialogButtonBox::Cancel, dialog);
-    dialog->layout()->addWidget(buttonBox);
+    layout->addWidget(buttonBox);
     QObject::connect(buttonBox, &QDialogButtonBox::accepted, dialog, [dialog]() {
         save_graphics_from_button(dialog, 0, dialog);
         dialog->accept();
     });
     QObject::connect(buttonBox, &QDialogButtonBox::rejected, dialog, &QDialog::reject);
-    return;
+
+    dialog->show();
 }
 
 #endif /* NO_GRAPHICS */

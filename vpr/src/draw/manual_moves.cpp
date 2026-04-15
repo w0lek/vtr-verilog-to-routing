@@ -223,21 +223,13 @@ bool manual_move_is_selected() {
 
 void manual_move_cost_summary_dialog() {
     t_draw_state* draw_state = get_draw_state_vars();
-    QDialog* dialog;
-    QWidget* content_area;
 
-    const GtkDialogButton btns[] = {
-        {"Accept", QDialog::Accepted},
-        {"Reject", QDialog::Rejected}
-    };
-    dialog = gtk_dialog_new_with_buttons("Move Costs",
-                                         Q_WIDGET(draw_state->manual_moves_state.manual_move_window),
-                                         /*is_modal*/true,
-                                         btns, 2);
-
-    dialog->setParent(draw_state->manual_moves_state.manual_move_window);
+    QDialog* dialog = new QDialog(draw_state->manual_moves_state.manual_move_window);
+    dialog->setWindowTitle("Move Costs");
     dialog->setWindowFlag(Qt::Dialog);
     dialog->setWindowModality(Qt::WindowModal);
+
+    auto* layout = new QVBoxLayout(dialog);
 
     //Create elements for the dialog and printing costs to the user.
     QLabel* title_label = new QLabel;
@@ -255,15 +247,20 @@ void manual_move_cost_summary_dialog() {
     QLabel* space_label1 = new QLabel("    ");
     QLabel* space_label2 = new QLabel("    ");
 
-    //Attach elements to the content area of the dialog.
-    content_area = ezgl::dialog_get_content_area(dialog);
-    content_area->layout()->addWidget(title_label);
-    content_area->layout()->addWidget(space_label1);
-    content_area->layout()->addWidget(delta_cost_label);
-    content_area->layout()->addWidget(delta_timing_label);
-    content_area->layout()->addWidget(delta_bounding_box_label);
-    content_area->layout()->addWidget(move_outcome_label);
-    content_area->layout()->addWidget(space_label2);
+    layout->addWidget(title_label);
+    layout->addWidget(space_label1);
+    layout->addWidget(delta_cost_label);
+    layout->addWidget(delta_timing_label);
+    layout->addWidget(delta_bounding_box_label);
+    layout->addWidget(move_outcome_label);
+    layout->addWidget(space_label2);
+
+    auto* buttonBox = new QDialogButtonBox(dialog);
+    buttonBox->addButton("Accept", QDialogButtonBox::AcceptRole);
+    buttonBox->addButton("Reject", QDialogButtonBox::RejectRole);
+    QObject::connect(buttonBox, &QDialogButtonBox::accepted, dialog, &QDialog::accept);
+    QObject::connect(buttonBox, &QDialogButtonBox::rejected, dialog, &QDialog::reject);
+    layout->addWidget(buttonBox);
 
     //Show the dialog with all the labels.
     dialog->show();

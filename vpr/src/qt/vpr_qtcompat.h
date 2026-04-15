@@ -12,19 +12,6 @@
 #include <QGridLayout>
 #include <QDialog>
 #include <QDialogButtonBox>
-
-// dialog
-struct GtkDialogButton {
-    const char* text;
-    int response;
-};
-QDialog* gtk_dialog_new_with_buttons(
-    const char* title,
-    QWidget* parent,
-    bool is_modal,
-    const GtkDialogButton* buttons,
-    int button_count
-);
-// dialog
+#include <QVBoxLayout>
 
 #endif // VPR_QTCOMPAT_H
