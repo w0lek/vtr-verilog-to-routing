@@ -13,14 +13,6 @@
 #include <QDialog>
 #include <QDialogButtonBox>
 
-void gtk_box_pack_start(QBoxLayout* box,
-                        QWidget* widget,
-                        bool expand,
-                        bool fill,
-                        int padding);
-
-
-
 // dialog
 struct GtkDialogButton {
     const char* text;

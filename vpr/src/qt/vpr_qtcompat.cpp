@@ -1,29 +1,5 @@
 #include <vpr_qtcompat.h>
 
-void gtk_box_pack_start(QBoxLayout* box,
-                        QWidget* widget,
-                        bool expand,
-                        bool fill,
-                        int padding)
-{
-  if (!box || !widget) {
-    return;
-  }
-
-  int stretch = expand ? 1 : 0;
-
-  Qt::Alignment align = Qt::Alignment();
-  if (!fill) {
-    align = Qt::AlignLeft;
-  }
-
-  box->addWidget(widget, stretch, align);
-
-  if (padding > 0) {
-    box->setSpacing(padding);
-  }
-}
-
 QDialog* gtk_dialog_new_with_buttons(
     const char* title,
     QWidget* parent,

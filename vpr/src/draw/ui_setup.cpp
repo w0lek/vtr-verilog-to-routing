@@ -240,13 +240,13 @@ void view_button_setup(ezgl::application* app) {
             ezgl::widget_set_margin_top(checkbox, 7);
             ezgl::widget_set_margin_bottom(checkbox, 7);
 
-            gtk_box_pack_start(box, checkbox, FALSE, FALSE, 0);
+            ezgl::box_pack_start(box, checkbox, false, false, 0);
 
             QSpinBox* spin_button = new QSpinBox;
             spin_button->setRange(0, 255);
             spin_button->setSingleStep(1);
             spin_button->setObjectName(QString::fromStdString(trans_label));
-            gtk_box_pack_start(trans_box, spin_button, FALSE, FALSE, 0);
+            ezgl::box_pack_start(trans_box, spin_button, false, false, 0);
 
             if (i == 0) {
                 // Set the initial state of the first checkbox to checked to represent the default view.
@@ -267,13 +267,13 @@ void view_button_setup(ezgl::application* app) {
         QCheckBox* checkbox = new QCheckBox(label.c_str());
         ezgl::widget_set_margin_top(checkbox, 7);
         ezgl::widget_set_margin_bottom(checkbox, 7);
-        gtk_box_pack_start(box, checkbox, FALSE, FALSE, 0);
+        ezgl::box_pack_start(box, checkbox, false, false, 0);
 
         QSpinBox* spin_button = new QSpinBox;
         spin_button->setRange(0, 255);
         spin_button->setSingleStep(1);
         spin_button->setObjectName(QString::fromStdString(trans_label));
-        gtk_box_pack_start(trans_box, spin_button, FALSE, FALSE, 0);
+        ezgl::box_pack_start(trans_box, spin_button, false, false, 0);
 
         QObject::connect(checkbox, &QAbstractButton::toggled, checkbox, [checkbox]() {
             cross_layer_checkbox_cbk(checkbox, /*response_id=*/0, /*data=*/nullptr);
