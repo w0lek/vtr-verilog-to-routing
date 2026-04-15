@@ -91,7 +91,7 @@ void draw_manual_moves_window(const std::string& block_id) {
         QObject::connect(draw_state->manual_moves_state.manual_move_window, &QObject::destroyed,
                          []() { close_manual_moves_window(); });
 
-        gtk_container_add(draw_state->manual_moves_state.manual_move_window, grid);
+        draw_state->manual_moves_state.manual_move_window->layout()->addWidget(grid);
         draw_state->manual_moves_state.manual_move_window->show();
     }
 }
@@ -257,13 +257,13 @@ void manual_move_cost_summary_dialog() {
 
     //Attach elements to the content area of the dialog.
     content_area = gtk_dialog_get_content_area(dialog);
-    gtk_container_add(content_area, title_label);
-    gtk_container_add(content_area, space_label1);
-    gtk_container_add(content_area, delta_cost_label);
-    gtk_container_add(content_area, delta_timing_label);
-    gtk_container_add(content_area, delta_bounding_box_label);
-    gtk_container_add(content_area, move_outcome_label);
-    gtk_container_add(content_area, space_label2);
+    content_area->layout()->addWidget(title_label);
+    content_area->layout()->addWidget(space_label1);
+    content_area->layout()->addWidget(delta_cost_label);
+    content_area->layout()->addWidget(delta_timing_label);
+    content_area->layout()->addWidget(delta_bounding_box_label);
+    content_area->layout()->addWidget(move_outcome_label);
+    content_area->layout()->addWidget(space_label2);
 
     //Show the dialog with all the labels.
     dialog->show();

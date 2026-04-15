@@ -166,7 +166,7 @@ void draw_debug_window() {
         QObject::connect(window, &QObject::destroyed,
                          []() { close_debug_window(); });
 
-        gtk_container_add(window, mainGrid);
+        window->layout()->addWidget(mainGrid);
         window->show();
     }
 }
@@ -219,7 +219,7 @@ void advanced_button_callback() {
         gtk_grid_attach((GtkGrid*)varGrid, roLabel, 0, 5, 1, 1);
         gtk_grid_attach((GtkGrid*)varGrid, rLabel,  0, 6, 1, 1);
         gtk_grid_attach((GtkGrid*)varGrid, nLabel,  0, 7, 1, 1);
-        gtk_container_add(expander, varGrid);
+        expander->layout()->addWidget(varGrid);
         ezgl::widget_set_halign(expander, Qt::AlignLeft);
 
         ezgl::widget_set_margin_start(instructions, 30);
@@ -245,7 +245,7 @@ void advanced_button_callback() {
         QObject::connect(window, &QObject::destroyed,
                          []() { close_advanced_window(); });
 
-        gtk_container_add(window, advancedGrid);
+        window->layout()->addWidget(advancedGrid);
         window->show();
     }
 }
@@ -444,7 +444,7 @@ void invalid_breakpoint_entry_window(std::string error) {
     QObject::connect(Q_BUTTON(button), &QAbstractButton::clicked,
                      [window]() { ok_close_window(nullptr, window); });
 
-    gtk_container_add(window, grid);
+    window->layout()->addWidget(grid);
     window->show();
 }
 
@@ -542,7 +542,7 @@ void breakpoint_info_window(std::string bpDescription, BreakpointState draw_brea
     QObject::connect(Q_BUTTON(button), &QAbstractButton::clicked,
                      [window]() { ok_close_window(nullptr, window); });
 
-    gtk_container_add(window, grid);
+    window->layout()->addWidget(grid);
     window->show();
 }
 

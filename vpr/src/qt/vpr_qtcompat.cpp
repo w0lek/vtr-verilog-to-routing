@@ -24,32 +24,28 @@ void gtk_box_pack_start(QBoxLayout* box,
   }
 }
 
-QGridLayout* get_grid_layout(QWidget* grid)
+QGridLayout* get_grid_layout(QWidget* grid_container)
 {
-  if (!grid) {
+  if (!grid_container) {
     return nullptr;
   }
 
-  QGridLayout* gridLayout = qobject_cast<QGridLayout*>(grid->layout());
-  if (!gridLayout) {
-    return nullptr;
-  }
-  return gridLayout;
+  return qobject_cast<QGridLayout*>(grid_container->layout());
 }
 
 QWidget* gtk_grid_get_child_at(QWidget* widget, int col, int row)
 {
-  QGridLayout* grid = get_grid_layout(widget);
-  if (!grid) {
+  QGridLayout* grid_layout = get_grid_layout(widget);
+  if (!grid_layout) {
     return nullptr;
   }
 
-  for (int i = 0; i < grid->count(); ++i) {
+  for (int i = 0; i < grid_layout->count(); ++i) {
     int r, c, rs, cs;
-    grid->getItemPosition(i, &r, &c, &rs, &cs);
+    grid_layout->getItemPosition(i, &r, &c, &rs, &cs);
 
     if (r == row && c == col) {
-      if (auto item = grid->itemAt(i)) {
+      if (auto item = grid_layout->itemAt(i)) {
           return item->widget();
       }
     }
@@ -59,20 +55,11 @@ QWidget* gtk_grid_get_child_at(QWidget* widget, int col, int row)
 
 void gtk_grid_attach(QWidget* widget, QWidget* child, int col, int row, int w, int h)
 {
-  QGridLayout* grid = get_grid_layout(widget);
-  if (!grid) {
+  QGridLayout* grid_layout = get_grid_layout(widget);
+  if (!grid_layout) {
     return;
   }
-  grid->addWidget(child, row, col, h, w);
-}
-
-void gtk_container_add(QWidget* container, QWidget* w)
-{
-  if (!container->layout()) {
-    container->setLayout(new QVBoxLayout(container));
-  }
-
-  container->layout()->addWidget(w);
+  grid_layout->addWidget(child, row, col, h, w);
 }
 
 QDialog* gtk_dialog_new_with_buttons(

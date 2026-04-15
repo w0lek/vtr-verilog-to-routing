@@ -80,17 +80,17 @@ void save_graphics_dialog_box(QWidget* /*widget*/, ezgl::application* /*app*/) {
 
     // attach elements to the content area of the dialog
     content_area = gtk_dialog_get_content_area(dialog);
-    gtk_container_add(content_area, name_label);
-    gtk_container_add(content_area, text_entry);
-    gtk_container_add(content_area, type_label);
-    gtk_container_add(content_area, combo_box);
+    content_area->layout()->addWidget(name_label);
+    content_area->layout()->addWidget(text_entry);
+    content_area->layout()->addWidget(type_label);
+    content_area->layout()->addWidget(combo_box);
 
     // show the label & child widget of the dialog
     dialog->show();
 
     auto* buttonBox = new QDialogButtonBox(
         QDialogButtonBox::Save | QDialogButtonBox::Cancel, dialog);
-    gtk_container_add(dialog, buttonBox);
+    dialog->layout()->addWidget(buttonBox);
     QObject::connect(buttonBox, &QDialogButtonBox::accepted, dialog, [dialog]() {
         save_graphics_from_button(dialog, 0, dialog);
         dialog->accept();

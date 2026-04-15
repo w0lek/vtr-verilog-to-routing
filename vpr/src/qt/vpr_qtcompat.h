@@ -30,7 +30,6 @@ using GtkGrid = QWidget; //QGridLayout is laying inside the widget
 QGridLayout* get_grid_layout(QWidget* grid);
 QWidget* gtk_grid_get_child_at(QWidget* widget, int col, int row);
 void gtk_grid_attach(QWidget* widget, QWidget* child, int col, int row, int w, int h);
-void gtk_container_add(QWidget* container, QWidget* w);
 
 // dialog
 struct GtkDialogButton {
