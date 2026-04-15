@@ -139,11 +139,3 @@ QWidget* gtk_dialog_get_content_area(QWidget* dialog)
   return dialog;
 }
 
-void gtk_widget_set_halign(QWidget* w, Qt::AlignmentFlag flag)
-{
-    if (auto* label = qobject_cast<QLabel*>(w)) {
-        label->setAlignment((label->alignment() & ~Qt::AlignHorizontal_Mask) | flag);
-    } else if (w->parentWidget() && w->parentWidget()->layout()) {
-        w->parentWidget()->layout()->setAlignment(w, flag);
-    }
-}

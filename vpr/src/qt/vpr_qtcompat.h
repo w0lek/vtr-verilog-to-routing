@@ -52,6 +52,4 @@ QDialog* gtk_dialog_new_with_buttons(
 QWidget* gtk_dialog_get_content_area(QWidget* dialog);
 // dialog
 
-void gtk_widget_set_halign(QWidget* w, Qt::AlignmentFlag flag);
-
 #endif // VPR_QTCOMPAT_H
