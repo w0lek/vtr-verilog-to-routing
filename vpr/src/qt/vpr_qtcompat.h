@@ -13,10 +13,6 @@
 #include <QDialog>
 #include <QDialogButtonBox>
 
-void gtk_combo_box_text_append(QComboBox* combo,
-                               const char* id,
-                               const char* text);
-
 void gtk_box_pack_start(QBoxLayout* box,
                         QWidget* widget,
                         bool expand,

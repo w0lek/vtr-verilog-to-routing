@@ -342,7 +342,7 @@ void hide_draw_routing(ezgl::application* app) {
         }
     } else {
         if (route_item_index == -1) {
-            gtk_combo_box_text_append(toggle_nets, "2", "Routing");
+            toggle_nets->addItem("Routing", "2");
         }
     }
 }
