@@ -79,7 +79,7 @@ void save_graphics_dialog_box(QWidget* /*widget*/, ezgl::application* /*app*/) {
     text_entry->setText("vpr_graphics");  // default text set to vpr_graphics
 
     // attach elements to the content area of the dialog
-    content_area = gtk_dialog_get_content_area(dialog);
+    content_area = ezgl::dialog_get_content_area(dialog);
     content_area->layout()->addWidget(name_label);
     content_area->layout()->addWidget(text_entry);
     content_area->layout()->addWidget(type_label);

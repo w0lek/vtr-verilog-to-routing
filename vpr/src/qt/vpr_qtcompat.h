@@ -25,7 +25,6 @@ QDialog* gtk_dialog_new_with_buttons(
     const GtkDialogButton* buttons,
     int button_count
 );
-QWidget* gtk_dialog_get_content_area(QWidget* dialog);
 // dialog
 
 #endif // VPR_QTCOMPAT_H

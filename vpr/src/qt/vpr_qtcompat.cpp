@@ -34,16 +34,4 @@ QDialog* gtk_dialog_new_with_buttons(
     return dialog;
 }
 
-QWidget* gtk_dialog_get_content_area(QWidget* dialog)
-{
-  if (!dialog) return nullptr;
-
-  if (!dialog->layout()) {
-    auto* layout = new QVBoxLayout(dialog);
-    layout->setContentsMargins(0,0,0,0);
-    layout->setSpacing(0);
-  }
-
-  return dialog;
-}
 

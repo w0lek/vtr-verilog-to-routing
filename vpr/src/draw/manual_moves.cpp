@@ -256,7 +256,7 @@ void manual_move_cost_summary_dialog() {
     QLabel* space_label2 = new QLabel("    ");
 
     //Attach elements to the content area of the dialog.
-    content_area = gtk_dialog_get_content_area(dialog);
+    content_area = ezgl::dialog_get_content_area(dialog);
     content_area->layout()->addWidget(title_label);
     content_area->layout()->addWidget(space_label1);
     content_area->layout()->addWidget(delta_cost_label);
