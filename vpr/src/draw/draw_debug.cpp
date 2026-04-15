@@ -129,27 +129,27 @@ void draw_debug_window() {
         scrollArea->setWidget(draw_debug_glob_vars.bpGrid);
         scrollArea->setMinimumHeight(100);
 
-        gtk_grid_attach((GtkGrid*)mainGrid, placerOpts,  0, 0, 3, 1);
-        gtk_grid_attach((GtkGrid*)mainGrid, movesLabel,  0, 1, 1, 1);
-        gtk_grid_attach((GtkGrid*)mainGrid, movesEntry,  1, 1, 1, 1);
-        gtk_grid_attach((GtkGrid*)mainGrid, setM,        2, 1, 1, 1);
-        gtk_grid_attach((GtkGrid*)mainGrid, tempsLabel,  0, 2, 1, 1);
-        gtk_grid_attach((GtkGrid*)mainGrid, tempsEntry,  1, 2, 1, 1);
-        gtk_grid_attach((GtkGrid*)mainGrid, setT,        2, 2, 1, 1);
-        gtk_grid_attach((GtkGrid*)mainGrid, blockLabel,  0, 3, 1, 1);
-        gtk_grid_attach((GtkGrid*)mainGrid, blockEntry,  1, 3, 1, 1);
-        gtk_grid_attach((GtkGrid*)mainGrid, setB,        2, 3, 1, 1);
-        gtk_grid_attach((GtkGrid*)mainGrid, routerOpts,  0, 4, 3, 1);
-        gtk_grid_attach((GtkGrid*)mainGrid, iterLabel,   0, 5, 1, 1);
-        gtk_grid_attach((GtkGrid*)mainGrid, iterEntry,   1, 5, 1, 1);
-        gtk_grid_attach((GtkGrid*)mainGrid, setI,        2, 5, 1, 1);
-        gtk_grid_attach((GtkGrid*)mainGrid, netLabel,    0, 6, 1, 1);
-        gtk_grid_attach((GtkGrid*)mainGrid, netEntry,    1, 6, 1, 1);
-        gtk_grid_attach((GtkGrid*)mainGrid, setN,        2, 6, 1, 1);
-        gtk_grid_attach((GtkGrid*)mainGrid, bplist,      0, 7, 3, 1);
-        gtk_grid_attach((GtkGrid*)mainGrid, scrollArea,  0, 8, 3, 1);
-        gtk_grid_attach((GtkGrid*)mainGrid, advanced,    2, 9, 1, 1);
-        gtk_grid_attach((GtkGrid*)mainGrid, star,        0, 10, 3, 1);
+        ezgl::grid_attach(mainGrid, placerOpts,  0, 0, 3, 1);
+        ezgl::grid_attach(mainGrid, movesLabel,  0, 1, 1, 1);
+        ezgl::grid_attach(mainGrid, movesEntry,  1, 1, 1, 1);
+        ezgl::grid_attach(mainGrid, setM,        2, 1, 1, 1);
+        ezgl::grid_attach(mainGrid, tempsLabel,  0, 2, 1, 1);
+        ezgl::grid_attach(mainGrid, tempsEntry,  1, 2, 1, 1);
+        ezgl::grid_attach(mainGrid, setT,        2, 2, 1, 1);
+        ezgl::grid_attach(mainGrid, blockLabel,  0, 3, 1, 1);
+        ezgl::grid_attach(mainGrid, blockEntry,  1, 3, 1, 1);
+        ezgl::grid_attach(mainGrid, setB,        2, 3, 1, 1);
+        ezgl::grid_attach(mainGrid, routerOpts,  0, 4, 3, 1);
+        ezgl::grid_attach(mainGrid, iterLabel,   0, 5, 1, 1);
+        ezgl::grid_attach(mainGrid, iterEntry,   1, 5, 1, 1);
+        ezgl::grid_attach(mainGrid, setI,        2, 5, 1, 1);
+        ezgl::grid_attach(mainGrid, netLabel,    0, 6, 1, 1);
+        ezgl::grid_attach(mainGrid, netEntry,    1, 6, 1, 1);
+        ezgl::grid_attach(mainGrid, setN,        2, 6, 1, 1);
+        ezgl::grid_attach(mainGrid, bplist,      0, 7, 3, 1);
+        ezgl::grid_attach(mainGrid, scrollArea,  0, 8, 3, 1);
+        ezgl::grid_attach(mainGrid, advanced,    2, 9, 1, 1);
+        ezgl::grid_attach(mainGrid, star,        0, 10, 3, 1);
 
         QObject::connect(Q_BUTTON(setM), &QAbstractButton::clicked,
                          [mainGrid]() { set_moves_button_callback(nullptr, mainGrid); });
@@ -211,14 +211,14 @@ void advanced_button_callback() {
         ezgl::widget_set_halign(iLabel,  Qt::AlignLeft);
         ezgl::widget_set_halign(rLabel,  Qt::AlignLeft);
         ezgl::widget_set_halign(nLabel,  Qt::AlignLeft);
-        gtk_grid_attach((GtkGrid*)varGrid, pLabel,  0, 0, 1, 1);
-        gtk_grid_attach((GtkGrid*)varGrid, mLabel,  0, 1, 1, 1);
-        gtk_grid_attach((GtkGrid*)varGrid, tLabel,  0, 2, 1, 1);
-        gtk_grid_attach((GtkGrid*)varGrid, bLabel,  0, 3, 1, 1);
-        gtk_grid_attach((GtkGrid*)varGrid, iLabel,  0, 4, 1, 1);
-        gtk_grid_attach((GtkGrid*)varGrid, roLabel, 0, 5, 1, 1);
-        gtk_grid_attach((GtkGrid*)varGrid, rLabel,  0, 6, 1, 1);
-        gtk_grid_attach((GtkGrid*)varGrid, nLabel,  0, 7, 1, 1);
+        ezgl::grid_attach(varGrid, pLabel,  0, 0, 1, 1);
+        ezgl::grid_attach(varGrid, mLabel,  0, 1, 1, 1);
+        ezgl::grid_attach(varGrid, tLabel,  0, 2, 1, 1);
+        ezgl::grid_attach(varGrid, bLabel,  0, 3, 1, 1);
+        ezgl::grid_attach(varGrid, iLabel,  0, 4, 1, 1);
+        ezgl::grid_attach(varGrid, roLabel, 0, 5, 1, 1);
+        ezgl::grid_attach(varGrid, rLabel,  0, 6, 1, 1);
+        ezgl::grid_attach(varGrid, nLabel,  0, 7, 1, 1);
         expander->layout()->addWidget(varGrid);
         ezgl::widget_set_halign(expander, Qt::AlignLeft);
 
@@ -234,11 +234,11 @@ void advanced_button_callback() {
         ezgl::widget_set_margin_top(expander, 20);
 
         QWidget* advancedGrid = ezgl::grid_new();
-        gtk_grid_attach((GtkGrid*)advancedGrid, instructions,    1, 0, 2, 1);
-        gtk_grid_attach((GtkGrid*)advancedGrid, expression_here, 1, 1, 1, 1);
-        gtk_grid_attach((GtkGrid*)advancedGrid, entry,           1, 2, 1, 1);
-        gtk_grid_attach((GtkGrid*)advancedGrid, set,             2, 2, 1, 1);
-        gtk_grid_attach((GtkGrid*)advancedGrid, expander,        0, 0, 1, 1);
+        ezgl::grid_attach(advancedGrid, instructions,    1, 0, 2, 1);
+        ezgl::grid_attach(advancedGrid, expression_here, 1, 1, 1, 1);
+        ezgl::grid_attach(advancedGrid, entry,           1, 2, 1, 1);
+        ezgl::grid_attach(advancedGrid, set,             2, 2, 1, 1);
+        ezgl::grid_attach(advancedGrid, expander,        0, 0, 1, 1);
 
         QObject::connect(Q_BUTTON(set), &QAbstractButton::clicked,
                          [advancedGrid]() { set_expression_button_callback(nullptr, advancedGrid); });
@@ -258,7 +258,7 @@ void refresh_bpList() {
     t_draw_state* draw_state = get_draw_state_vars();
     for (size_t i = 0; i < draw_debug_glob_vars.bp_labels.size(); i++) {
         QLabel* label = new QLabel(draw_debug_glob_vars.bp_labels[i].c_str());
-        gtk_grid_attach((GtkGrid*)draw_debug_glob_vars.bpGrid, label, 0, i, 1, 1);
+        ezgl::grid_attach(draw_debug_glob_vars.bpGrid, label, 0, i, 1, 1);
         ezgl::widget_set_halign(label, Qt::AlignLeft);
 
         auto* checkbox = new QCheckBox();
@@ -268,7 +268,7 @@ void refresh_bpList() {
             checkbox->setChecked(true);
         QObject::connect(checkbox, &QCheckBox::toggled,
                          [checkbox]() { checkbox_callback(checkbox); });
-        gtk_grid_attach((GtkGrid*)draw_debug_glob_vars.bpGrid, checkbox, 1, i, 1, 1);
+        ezgl::grid_attach(draw_debug_glob_vars.bpGrid, checkbox, 1, i, 1, 1);
         ezgl::widget_set_margin_start(checkbox, 290 - draw_debug_glob_vars.bp_labels[i].size());
 
         auto* deleteButton = new QPushButton(QIcon("src/draw/trash.png"), "");
@@ -276,7 +276,7 @@ void refresh_bpList() {
         deleteButton->setObjectName(d.c_str());
         QObject::connect(deleteButton, &QPushButton::clicked,
                          [deleteButton]() { delete_bp_callback(deleteButton); });
-        gtk_grid_attach((GtkGrid*)draw_debug_glob_vars.bpGrid, deleteButton, 2, i, 1, 1);
+        ezgl::grid_attach(draw_debug_glob_vars.bpGrid, deleteButton, 2, i, 1, 1);
         ezgl::widget_set_margin_start(deleteButton, 10);
 
         draw_debug_glob_vars.bpGrid->show();
@@ -289,7 +289,7 @@ void add_to_bpList(std::string bpDescription) {
     int row = ++draw_debug_glob_vars.bpList_row;
 
     QLabel* label = new QLabel(bpDescription.c_str());
-    gtk_grid_attach((GtkGrid*)draw_debug_glob_vars.bpGrid, label, 0, row, 1, 1);
+    ezgl::grid_attach(draw_debug_glob_vars.bpGrid, label, 0, row, 1, 1);
     ezgl::widget_set_halign(label, Qt::AlignLeft);
 
     auto* checkbox = new QCheckBox();
@@ -298,7 +298,7 @@ void add_to_bpList(std::string bpDescription) {
     checkbox->setChecked(true);
     QObject::connect(checkbox, &QCheckBox::toggled,
                      [checkbox]() { checkbox_callback(checkbox); });
-    gtk_grid_attach((GtkGrid*)draw_debug_glob_vars.bpGrid, checkbox, 1, row, 1, 1);
+    ezgl::grid_attach(draw_debug_glob_vars.bpGrid, checkbox, 1, row, 1, 1);
     ezgl::widget_set_margin_start(checkbox, 290 - bpDescription.size());
 
     auto* deleteButton = new QPushButton(QIcon("src/draw/trash.png"), "");
@@ -306,7 +306,7 @@ void add_to_bpList(std::string bpDescription) {
     deleteButton->setObjectName(d.c_str());
     QObject::connect(deleteButton, &QPushButton::clicked,
                      [deleteButton]() { delete_bp_callback(deleteButton); });
-    gtk_grid_attach((GtkGrid*)draw_debug_glob_vars.bpGrid, deleteButton, 2, row, 1, 1);
+    ezgl::grid_attach(draw_debug_glob_vars.bpGrid, deleteButton, 2, row, 1, 1);
     ezgl::widget_set_margin_start(deleteButton, 10);
 
     draw_debug_glob_vars.bpGrid->show();
@@ -334,7 +334,7 @@ void delete_bp_callback(QWidget* widget) {
 //sets a new move type breakpoint
 void set_moves_button_callback(QWidget* /*widget*/, QWidget* grid) {
     t_draw_state* draw_state = get_draw_state_vars();
-    QWidget* entry_widget = gtk_grid_get_child_at(GTK_GRID(grid), 1, 1);
+    QWidget* entry_widget = ezgl::grid_get_child_at(grid, 1, 1);
     QLineEdit* entry = Q_LINEEDIT(entry_widget);
 
     //check for input validity
@@ -350,7 +350,7 @@ void set_moves_button_callback(QWidget* /*widget*/, QWidget* grid) {
 //sets a new temperature type breakpoint
 void set_temp_button_callback(QWidget* /*widget*/, QWidget* grid) {
     t_draw_state* draw_state = get_draw_state_vars();
-    QWidget* entry_widget = gtk_grid_get_child_at((GtkGrid*)grid, 1, 2);
+    QWidget* entry_widget = ezgl::grid_get_child_at(grid, 1, 2);
     QLineEdit* entry = Q_LINEEDIT(entry_widget);
 
     //input validity
@@ -366,7 +366,7 @@ void set_temp_button_callback(QWidget* /*widget*/, QWidget* grid) {
 //sets a new block type breakpoint
 void set_block_button_callback(QWidget* /*widget*/, QWidget* grid) {
     t_draw_state* draw_state = get_draw_state_vars();
-    QWidget* entry_widget = gtk_grid_get_child_at((GtkGrid*)grid, 1, 3);
+    QWidget* entry_widget = ezgl::grid_get_child_at(grid, 1, 3);
     QLineEdit* entry = Q_LINEEDIT(entry_widget);
 
     std::string s(entry->text().toStdString());
@@ -378,7 +378,7 @@ void set_block_button_callback(QWidget* /*widget*/, QWidget* grid) {
 //sets a new router_iter type breakpoint
 void set_router_iter_button_callback(QWidget* /*widget*/, QWidget* grid) {
     t_draw_state* draw_state = get_draw_state_vars();
-    QWidget* entry_widget = gtk_grid_get_child_at(GTK_GRID(grid), 1, 5);
+    QWidget* entry_widget = ezgl::grid_get_child_at(grid, 1, 5);
     QLineEdit* entry = Q_LINEEDIT(entry_widget);
 
     //check for input validity
@@ -394,7 +394,7 @@ void set_router_iter_button_callback(QWidget* /*widget*/, QWidget* grid) {
 //sets a new net_id type breakpoint
 void set_net_id_button_callback(QWidget* /*widget*/, QWidget* grid) {
     t_draw_state* draw_state = get_draw_state_vars();
-    QWidget* entry_widget = gtk_grid_get_child_at((GtkGrid*)grid, 1, 6);
+    QWidget* entry_widget = ezgl::grid_get_child_at(grid, 1, 6);
     QLineEdit* entry = Q_LINEEDIT(entry_widget);
 
     draw_state->list_of_breakpoints.push_back(Breakpoint(BT_ROUTE_NET_ID, entry->text().toInt()));
@@ -406,7 +406,7 @@ void set_net_id_button_callback(QWidget* /*widget*/, QWidget* grid) {
 //sets a new expression type breakpoint
 void set_expression_button_callback(QWidget* /*widget*/, QWidget* grid) {
     t_draw_state* draw_state = get_draw_state_vars();
-    QWidget* entry_widget = gtk_grid_get_child_at((GtkGrid*)grid, 1, 2);
+    QWidget* entry_widget = ezgl::grid_get_child_at(grid, 1, 2);
     QLineEdit* entry = Q_LINEEDIT(entry_widget);
 
     //check input validity
@@ -434,13 +434,13 @@ void invalid_breakpoint_entry_window(std::string error) {
     ezgl::widget_set_margin_end(label, 30);
     ezgl::widget_set_margin_top(label, 30);
     ezgl::widget_set_margin_bottom(label, 30);
-    gtk_grid_attach((GtkGrid*)grid, label, 0, 0, 1, 1);
+    ezgl::grid_attach(grid, label, 0, 0, 1, 1);
 
     QPushButton* button = new QPushButton("OK");
     ezgl::widget_set_margin_bottom(button, 30);
     ezgl::widget_set_margin_end(button, 30);
     ezgl::widget_set_margin_start(button, 30);
-    gtk_grid_attach((GtkGrid*)grid, button, 0, 1, 1, 1);
+    ezgl::grid_attach(grid, button, 0, 1, 1, 1);
     QObject::connect(Q_BUTTON(button), &QAbstractButton::clicked,
                      [window]() { ok_close_window(nullptr, window); });
 
@@ -463,7 +463,7 @@ void breakpoint_info_window(std::string bpDescription, BreakpointState draw_brea
     ezgl::widget_set_margin_end(label, 30);
     ezgl::widget_set_margin_top(label, 30);
     ezgl::widget_set_margin_bottom(label, 30);
-    gtk_grid_attach((GtkGrid*)grid, label, 0, 0, 1, 1);
+    ezgl::grid_attach(grid, label, 0, 0, 1, 1);
 
     QLabel* curr_info = new QLabel;
     curr_info->setTextFormat(Qt::RichText);
@@ -471,7 +471,7 @@ void breakpoint_info_window(std::string bpDescription, BreakpointState draw_brea
     ezgl::widget_set_margin_start(curr_info, 30);
     ezgl::widget_set_margin_end(curr_info, 30);
     ezgl::widget_set_margin_bottom(curr_info, 15);
-    gtk_grid_attach((GtkGrid*)grid, curr_info, 0, 1, 1, 1);
+    ezgl::grid_attach(grid, curr_info, 0, 1, 1, 1);
 
     QWidget* info_grid = ezgl::grid_new();
     ezgl::widget_set_margin_start(info_grid, 30);
@@ -518,27 +518,27 @@ void breakpoint_info_window(std::string bpDescription, BreakpointState draw_brea
     ezgl::widget_set_halign(net_info, Qt::AlignLeft);
 
     if (in_placer) {
-        gtk_grid_attach((GtkGrid*)info_grid, m,          0, 0, 1, 1);
-        gtk_grid_attach((GtkGrid*)info_grid, t,          0, 1, 1, 1);
-        gtk_grid_attach((GtkGrid*)info_grid, i,          2, 0, 1, 1);
-        gtk_grid_attach((GtkGrid*)info_grid, b,          2, 1, 1, 1);
-        gtk_grid_attach((GtkGrid*)info_grid, move_info,  1, 0, 1, 1);
-        gtk_grid_attach((GtkGrid*)info_grid, temp_info,  1, 1, 1, 1);
-        gtk_grid_attach((GtkGrid*)info_grid, ba_info,    3, 0, 1, 1);
-        gtk_grid_attach((GtkGrid*)info_grid, block_info, 3, 1, 1, 1);
+        ezgl::grid_attach(info_grid, m,          0, 0, 1, 1);
+        ezgl::grid_attach(info_grid, t,          0, 1, 1, 1);
+        ezgl::grid_attach(info_grid, i,          2, 0, 1, 1);
+        ezgl::grid_attach(info_grid, b,          2, 1, 1, 1);
+        ezgl::grid_attach(info_grid, move_info,  1, 0, 1, 1);
+        ezgl::grid_attach(info_grid, temp_info,  1, 1, 1, 1);
+        ezgl::grid_attach(info_grid, ba_info,    3, 0, 1, 1);
+        ezgl::grid_attach(info_grid, block_info, 3, 1, 1, 1);
     } else {
-        gtk_grid_attach((GtkGrid*)info_grid, n,       2, 2, 1, 1);
-        gtk_grid_attach((GtkGrid*)info_grid, r,       0, 2, 1, 1);
-        gtk_grid_attach((GtkGrid*)info_grid, ri_info, 1, 2, 1, 1);
-        gtk_grid_attach((GtkGrid*)info_grid, net_info,3, 2, 1, 1);
+        ezgl::grid_attach(info_grid, n,       2, 2, 1, 1);
+        ezgl::grid_attach(info_grid, r,       0, 2, 1, 1);
+        ezgl::grid_attach(info_grid, ri_info, 1, 2, 1, 1);
+        ezgl::grid_attach(info_grid, net_info,3, 2, 1, 1);
     }
 
-    gtk_grid_attach((GtkGrid*)grid, info_grid, 0, 2, 1, 1);
+    ezgl::grid_attach(grid, info_grid, 0, 2, 1, 1);
 
     QPushButton* button = new QPushButton("OK");
     ezgl::widget_set_margin_bottom(button, 30);
     ezgl::widget_set_halign(button, Qt::AlignHCenter);
-    gtk_grid_attach((GtkGrid*)grid, button, 0, 3, 1, 1);
+    ezgl::grid_attach(grid, button, 0, 3, 1, 1);
     QObject::connect(Q_BUTTON(button), &QAbstractButton::clicked,
                      [window]() { ok_close_window(nullptr, window); });
 

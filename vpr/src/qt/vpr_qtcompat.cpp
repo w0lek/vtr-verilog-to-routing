@@ -24,44 +24,6 @@ void gtk_box_pack_start(QBoxLayout* box,
   }
 }
 
-QGridLayout* get_grid_layout(QWidget* grid_container)
-{
-  if (!grid_container) {
-    return nullptr;
-  }
-
-  return qobject_cast<QGridLayout*>(grid_container->layout());
-}
-
-QWidget* gtk_grid_get_child_at(QWidget* widget, int col, int row)
-{
-  QGridLayout* grid_layout = get_grid_layout(widget);
-  if (!grid_layout) {
-    return nullptr;
-  }
-
-  for (int i = 0; i < grid_layout->count(); ++i) {
-    int r, c, rs, cs;
-    grid_layout->getItemPosition(i, &r, &c, &rs, &cs);
-
-    if (r == row && c == col) {
-      if (auto item = grid_layout->itemAt(i)) {
-          return item->widget();
-      }
-    }
-  }
-  return nullptr;
-}
-
-void gtk_grid_attach(QWidget* widget, QWidget* child, int col, int row, int w, int h)
-{
-  QGridLayout* grid_layout = get_grid_layout(widget);
-  if (!grid_layout) {
-    return;
-  }
-  grid_layout->addWidget(child, row, col, h, w);
-}
-
 QDialog* gtk_dialog_new_with_buttons(
     const char* title,
     QWidget* parent,

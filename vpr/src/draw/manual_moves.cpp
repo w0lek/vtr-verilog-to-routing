@@ -60,18 +60,18 @@ void draw_manual_moves_window(const std::string& block_id) {
         QPushButton* calculate_cost_button = new QPushButton("Calculate Costs");
 
         //Add all to grid
-        gtk_grid_attach((GtkGrid*)grid, block_label, 0, 0, 1, 1);
-        gtk_grid_attach((GtkGrid*)grid, block_entry, 0, 1, 1, 1);
-        gtk_grid_attach((GtkGrid*)grid, to_label, 2, 0, 1, 1);
-        gtk_grid_attach((GtkGrid*)grid, x, 1, 1, 1, 1);
-        gtk_grid_attach((GtkGrid*)grid, x_position_entry, 2, 1, 1, 1);
-        gtk_grid_attach((GtkGrid*)grid, y, 1, 2, 1, 1);
-        gtk_grid_attach((GtkGrid*)grid, y_position_entry, 2, 2, 1, 1);
-        gtk_grid_attach((GtkGrid*)grid, layer, 1, 3, 1, 1);
-        gtk_grid_attach((GtkGrid*)grid, layer_position_entry, 2, 3, 1, 1);
-        gtk_grid_attach((GtkGrid*)grid, subtile, 1, 4, 1, 1);
-        gtk_grid_attach((GtkGrid*)grid, subtile_position_entry, 2, 4, 1, 1);
-        gtk_grid_attach((GtkGrid*)grid, calculate_cost_button, 0, 5, 3, 1); //spans three columns
+        ezgl::grid_attach(grid, block_label, 0, 0, 1, 1);
+        ezgl::grid_attach(grid, block_entry, 0, 1, 1, 1);
+        ezgl::grid_attach(grid, to_label, 2, 0, 1, 1);
+        ezgl::grid_attach(grid, x, 1, 1, 1, 1);
+        ezgl::grid_attach(grid, x_position_entry, 2, 1, 1, 1);
+        ezgl::grid_attach(grid, y, 1, 2, 1, 1);
+        ezgl::grid_attach(grid, y_position_entry, 2, 2, 1, 1);
+        ezgl::grid_attach(grid, layer, 1, 3, 1, 1);
+        ezgl::grid_attach(grid, layer_position_entry, 2, 3, 1, 1);
+        ezgl::grid_attach(grid, subtile, 1, 4, 1, 1);
+        ezgl::grid_attach(grid, subtile_position_entry, 2, 4, 1, 1);
+        ezgl::grid_attach(grid, calculate_cost_button, 0, 5, 3, 1); //spans three columns
 
         //Set margins
         ezgl::widget_set_margin_bottom(grid, 20);
@@ -106,7 +106,7 @@ void calculate_cost_callback(QWidget* /*widget*/, QWidget* grid) {
     const ClusteringContext& cluster_ctx = g_vpr_ctx.clustering();
 
     //Getting entry values
-    QWidget* block_entry_widget = gtk_grid_get_child_at((GtkGrid*)grid, 0, 1);
+    QWidget* block_entry_widget = ezgl::grid_get_child_at(grid, 0, 1);
     QLineEdit* block_entry = Q_LINEEDIT(block_entry_widget);
     std::string block_id_string = block_entry->text().toStdString();
 
@@ -116,10 +116,10 @@ void calculate_cost_callback(QWidget* /*widget*/, QWidget* grid) {
         block_id = size_t(cluster_ctx.clb_nlist.find_block(block_id_string));
     }
 
-    QWidget* x_position_entry_widget = gtk_grid_get_child_at((GtkGrid*)grid, 2, 1);
-    QWidget* y_position_entry_widget = gtk_grid_get_child_at((GtkGrid*)grid, 2, 2);
-    QWidget* layer_position_entry_widget = gtk_grid_get_child_at((GtkGrid*)grid, 2, 3);
-    QWidget* subtile_position_entry_widget = gtk_grid_get_child_at((GtkGrid*)grid, 2, 4);
+    QWidget* x_position_entry_widget = ezgl::grid_get_child_at(grid, 2, 1);
+    QWidget* y_position_entry_widget = ezgl::grid_get_child_at(grid, 2, 2);
+    QWidget* layer_position_entry_widget = ezgl::grid_get_child_at(grid, 2, 3);
+    QWidget* subtile_position_entry_widget = ezgl::grid_get_child_at(grid, 2, 4);
 
     QLineEdit* x_position_entry = Q_LINEEDIT(x_position_entry_widget);
     QLineEdit* y_position_entry = Q_LINEEDIT(y_position_entry_widget);
