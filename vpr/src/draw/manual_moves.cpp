@@ -23,7 +23,13 @@
 #include "buttons.h"
 #include "physical_types_util.h"
 
-#include "vpr_qtcompat.h"
+#include <QDialog>
+#include <QVBoxLayout>
+#include <QDialogButtonBox>
+#include <QLabel>
+#include <QPushButton>
+#include <QCheckBox>
+#include <QLineEdit>
 
 void draw_manual_moves_window(const std::string& block_id) {
     t_draw_state* draw_state = get_draw_state_vars();

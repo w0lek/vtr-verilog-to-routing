@@ -3,7 +3,7 @@
 
 #ifndef NO_GRAPHICS
 
-#include "vpr_qtcompat.h"
+#include <QWidget>
 
 #include "ezgl/graphics.hpp"
 

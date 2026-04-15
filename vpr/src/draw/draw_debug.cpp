@@ -5,6 +5,9 @@
 #include "vtr_expr_eval.h"
 
 #include <QGroupBox>
+#include <QLineEdit>
+#include <QLabel>
+#include <QLayout>
 #include <QScrollArea>
 
 //keeps track of open windows to avoid reopenning windows that are already open

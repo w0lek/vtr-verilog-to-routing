@@ -21,7 +21,12 @@
 
 #include "ezgl/application.hpp"
 
-#include "vpr_qtcompat.h"
+#include <QCheckBox>
+#include <QComboBox>
+#include <QSpinBox>
+#include <QPushButton>
+#include <QLineEdit>
+#include <QBoxLayout>
 #include <QStringList>
 #include <QCompleter>
 

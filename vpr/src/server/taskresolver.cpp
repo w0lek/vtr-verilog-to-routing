@@ -6,9 +6,9 @@
 #include "globals.h"
 #include "pathhelper.h"
 #include "telegramoptions.h"
-#include "vpr_qtcompat.h"
-
 #include <ezgl/application.hpp>
+
+#include <QCheckBox>
 
 namespace server {
 

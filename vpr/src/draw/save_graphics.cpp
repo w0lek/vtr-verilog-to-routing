@@ -6,6 +6,11 @@
 #include "save_graphics.h"
 #include "search_bar.h"
 
+#include <QLineEdit>
+#include <QLabel>
+#include <QVBoxLayout>
+#include <QDialogButtonBox>
+
 extern ezgl::rectangle initial_world;
 
 void save_graphics_from_button(QWidget* /*widget*/, [[maybe_unused]] int response_id, void* data) {

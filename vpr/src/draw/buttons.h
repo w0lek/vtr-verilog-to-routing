@@ -2,7 +2,7 @@
 
 #ifndef NO_GRAPHICS
 
-#include "vpr_qtcompat.h"
+#include <QWidget>
 
 [[deprecated("todo: move to ezgl")]]
 void delete_button(const std::string& button_name);

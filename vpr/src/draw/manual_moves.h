@@ -19,7 +19,7 @@
 #include <cstring>
 #include <cmath>
 
-#include "vpr_qtcompat.h"
+#include <QWidget>
 
 /**
  * @brief ManualMovesInfo struct

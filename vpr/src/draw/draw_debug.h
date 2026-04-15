@@ -12,7 +12,8 @@
 #include <cmath>
 #include <cstdio>
 #include <cstring>
-#include "vpr_qtcompat.h"
+#include <QWidget>
+#include <QCheckBox>
 #include <string>
 #include "breakpoint_state_globals.h"
 

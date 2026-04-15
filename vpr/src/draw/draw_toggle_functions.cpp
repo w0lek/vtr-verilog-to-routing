@@ -1,7 +1,9 @@
 
 #ifndef NO_GRAPHICS
 
-#include "vpr_qtcompat.h"
+#include <QCheckBox>
+#include <QComboBox>
+#include <QSpinBox>
 
 #include <cstring>
 

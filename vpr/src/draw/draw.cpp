@@ -59,7 +59,9 @@
 
 #include "ui_setup.h"
 
-#include "vpr_qtcompat.h"
+#include <QCheckBox>
+#include <QDialog>
+#include <QPushButton>
 #include <QLineEdit>
 #include <QTreeWidget>
 #include <QVBoxLayout>

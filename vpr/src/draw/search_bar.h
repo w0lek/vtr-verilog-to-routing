@@ -16,7 +16,8 @@
 
 #include "ezgl/application.hpp"
 #include <QCompleter>
-#include "vpr_qtcompat.h"
+#include <QWidget>
+#include <QComboBox>
 
 void search_and_highlight(QWidget* /*widget*/, ezgl::application* app);
 bool highlight_rr_nodes(RRNodeId hit_node);

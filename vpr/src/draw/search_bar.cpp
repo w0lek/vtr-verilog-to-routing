@@ -35,7 +35,8 @@
 #include "physical_types.h"
 #include "place_macro.h"
 
-#include "vpr_qtcompat.h"
+#include <QLineEdit>
+#include <QComboBox>
 #include <QMessageBox>
 
 //To process key presses we need the X11 keysym definitions,

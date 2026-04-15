@@ -9,7 +9,7 @@
 
 #include "ezgl/application.hpp"
 
-#include "vpr_qtcompat.h"
+#include <QWidget>
 
 void save_graphics(std::string extension, std::string file_name);
 void save_graphics_dialog_box(QWidget* /*widget*/, ezgl::application* /*app*/);

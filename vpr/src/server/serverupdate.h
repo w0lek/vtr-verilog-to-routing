@@ -2,7 +2,6 @@
 
 #ifndef NO_SERVER
 
-#include "vpr_qtcompat.h"
 namespace server {
 
 /**
