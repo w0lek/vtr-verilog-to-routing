@@ -38,7 +38,7 @@ void draw_manual_moves_window(const std::string& block_id) {
         draw_state->manual_moves_state.manual_move_window->setWindowTitle("Manual Moves Generator");
         draw_state->manual_moves_state.manual_move_window->setObjectName("manual_move_window");
 
-        QWidget* grid = gtk_grid_new();
+        QWidget* grid = ezgl::grid_new();
         QLineEdit* block_entry = new QLineEdit;
 
         if (draw_state->manual_moves_state.user_highlighted_block) {

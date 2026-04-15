@@ -75,13 +75,6 @@ void gtk_container_add(QWidget* container, QWidget* w)
   container->layout()->addWidget(w);
 }
 
-QWidget* gtk_grid_new()
-{
-  QWidget* w = new QWidget;
-  w->setLayout(new QGridLayout);
-  return w;
-}
-
 QDialog* gtk_dialog_new_with_buttons(
     const char* title,
     QWidget* parent,

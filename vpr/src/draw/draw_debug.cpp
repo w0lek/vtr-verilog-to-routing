@@ -47,7 +47,7 @@ void draw_debug_window() {
         window->setWindowTitle("Debugger");
         ezgl::center_window(window);
 
-        QWidget* mainGrid = gtk_grid_new();
+        QWidget* mainGrid = ezgl::grid_new();
         ezgl::widget_set_margin_top(mainGrid, 30);
         ezgl::widget_set_margin_bottom(mainGrid, 30);
         ezgl::widget_set_margin_start(mainGrid, 30);
@@ -120,7 +120,7 @@ void draw_debug_window() {
         QLineEdit* netEntry = new QLineEdit;
         netEntry->setText("ex. 12");
 
-        draw_debug_glob_vars.bpGrid = gtk_grid_new();
+        draw_debug_glob_vars.bpGrid = ezgl::grid_new();
         ezgl::widget_set_margin_bottom(draw_debug_glob_vars.bpGrid, 20);
         refresh_bpList();
 
@@ -192,7 +192,7 @@ void advanced_button_callback() {
 
         // GtkExpander equivalent: QGroupBox
         auto* expander = new QGroupBox("Variables");
-        QWidget* varGrid = gtk_grid_new();
+        QWidget* varGrid = ezgl::grid_new();
         QLabel* pLabel  = new QLabel;
         pLabel->setTextFormat(Qt::RichText);
         pLabel->setText("<b>Placer Variables:</b>");
@@ -233,7 +233,7 @@ void advanced_button_callback() {
         ezgl::widget_set_margin_start(expander, 10);
         ezgl::widget_set_margin_top(expander, 20);
 
-        QWidget* advancedGrid = gtk_grid_new();
+        QWidget* advancedGrid = ezgl::grid_new();
         gtk_grid_attach((GtkGrid*)advancedGrid, instructions,    1, 0, 2, 1);
         gtk_grid_attach((GtkGrid*)advancedGrid, expression_here, 1, 1, 1, 1);
         gtk_grid_attach((GtkGrid*)advancedGrid, entry,           1, 2, 1, 1);
@@ -427,7 +427,7 @@ void invalid_breakpoint_entry_window(std::string error) {
     window->setWindowTitle("ERROR");
     window->setWindowModality(Qt::ApplicationModal);
 
-    QWidget* grid = gtk_grid_new();
+    QWidget* grid = ezgl::grid_new();
 
     QLabel* label = new QLabel(error.c_str());
     ezgl::widget_set_margin_start(label, 30);
@@ -456,7 +456,7 @@ void breakpoint_info_window(std::string bpDescription, BreakpointState draw_brea
     ezgl::center_window(window);
     window->setWindowTitle("Breakpoint");
 
-    QWidget* grid = gtk_grid_new();
+    QWidget* grid = ezgl::grid_new();
 
     QLabel* label = new QLabel(bpDescription.c_str());
     ezgl::widget_set_margin_start(label, 30);
@@ -473,7 +473,7 @@ void breakpoint_info_window(std::string bpDescription, BreakpointState draw_brea
     ezgl::widget_set_margin_bottom(curr_info, 15);
     gtk_grid_attach((GtkGrid*)grid, curr_info, 0, 1, 1, 1);
 
-    QWidget* info_grid = gtk_grid_new();
+    QWidget* info_grid = ezgl::grid_new();
     ezgl::widget_set_margin_start(info_grid, 30);
     ezgl::widget_set_margin_end(info_grid, 30);
     ezgl::widget_set_margin_bottom(info_grid, 20);
