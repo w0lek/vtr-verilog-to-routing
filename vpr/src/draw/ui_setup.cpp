@@ -335,7 +335,7 @@ void hide_draw_routing(ezgl::application* app) {
     QComboBox* toggle_nets = app->find_combo_box("ToggleNetType");
 
     // Enable the option to draw routing only during the routing stage
-    int route_item_index = get_item_index_by_text(toggle_nets, "Routing");
+    int route_item_index = toggle_nets->findText("Routing");
     if (draw_state->pic_on_screen == e_pic_type::PLACEMENT) {
         if (route_item_index != -1) {
             toggle_nets->removeItem(route_item_index);
