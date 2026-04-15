@@ -18,7 +18,6 @@
 #include "save_graphics.h"
 #include "search_bar.h"
 #include "ui_setup.h"
-#include "gtkcomboboxhelper.h"
 
 #include "ezgl/application.hpp"
 
