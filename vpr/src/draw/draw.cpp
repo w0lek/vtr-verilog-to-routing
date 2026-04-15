@@ -65,6 +65,7 @@
 #include <QLineEdit>
 #include <QTreeWidget>
 #include <QVBoxLayout>
+#include <QMouseEvent>
 #include <QDialogButtonBox>
 
 //To process key presses we need the X11 keysym definitions,
