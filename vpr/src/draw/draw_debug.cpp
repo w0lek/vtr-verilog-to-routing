@@ -45,74 +45,74 @@ void draw_debug_window() {
         QWidget* window = new QWidget;
         window->setAttribute(Qt::WA_DeleteOnClose);
         window->setWindowTitle("Debugger");
-        center_window(window);
+        ezgl::center_window(window);
 
         QWidget* mainGrid = gtk_grid_new();
-        widget_set_margin_top(mainGrid, 30);
-        widget_set_margin_bottom(mainGrid, 30);
-        widget_set_margin_start(mainGrid, 30);
-        widget_set_margin_end(mainGrid, 20);
+        ezgl::widget_set_margin_top(mainGrid, 30);
+        ezgl::widget_set_margin_bottom(mainGrid, 30);
+        ezgl::widget_set_margin_start(mainGrid, 30);
+        ezgl::widget_set_margin_end(mainGrid, 20);
 
         QLabel* placerOpts = new QLabel;
         placerOpts->setTextFormat(Qt::RichText);
         placerOpts->setText("<b>Placer Options</b>");
-        widget_set_margin_bottom(placerOpts, 10);
+        ezgl::widget_set_margin_bottom(placerOpts, 10);
         QLabel* routerOpts = new QLabel;
         routerOpts->setTextFormat(Qt::RichText);
         routerOpts->setText("<b>Router Options</b>");
-        widget_set_margin_bottom(routerOpts, 10);
-        widget_set_margin_top(routerOpts, 30);
+        ezgl::widget_set_margin_bottom(routerOpts, 10);
+        ezgl::widget_set_margin_top(routerOpts, 30);
         QLabel* bplist = new QLabel;
         bplist->setTextFormat(Qt::RichText);
         bplist->setText("<b>List of Breakpoints</b>");
-        widget_set_margin_bottom(bplist, 10);
-        widget_set_margin_top(bplist, 30);
+        ezgl::widget_set_margin_bottom(bplist, 10);
+        ezgl::widget_set_margin_top(bplist, 30);
         QLabel* movesLabel = new QLabel("Number of moves to proceed");
         gtk_widget_set_halign(movesLabel, GTK_ALIGN_END);
-        widget_set_margin_end(movesLabel, 8);
+        ezgl::widget_set_margin_end(movesLabel, 8);
         QLabel* tempsLabel = new QLabel("Temperatures to proceed:");
         gtk_widget_set_halign(tempsLabel, GTK_ALIGN_END);
-        widget_set_margin_end(tempsLabel, 8);
+        ezgl::widget_set_margin_end(tempsLabel, 8);
         QLabel* blockLabel = new QLabel("Stop at from_block");
         gtk_widget_set_halign(blockLabel, GTK_ALIGN_END);
-        widget_set_margin_end(blockLabel, 8);
+        ezgl::widget_set_margin_end(blockLabel, 8);
         QLabel* iterLabel = new QLabel("Stop at router iteration");
         gtk_widget_set_halign(iterLabel, GTK_ALIGN_END);
-        widget_set_margin_end(iterLabel, 8);
+        ezgl::widget_set_margin_end(iterLabel, 8);
         QLabel* netLabel = new QLabel("Stop at route_net_id");
         gtk_widget_set_halign(netLabel, GTK_ALIGN_END);
-        widget_set_margin_end(netLabel, 8);
+        ezgl::widget_set_margin_end(netLabel, 8);
         QLabel* star = new QLabel("*for handling multiple breakpoints at once using an expression can be more accurate");
-        widget_set_margin_top(star, 15);
+        ezgl::widget_set_margin_top(star, 15);
 
         QPushButton* setM = new QPushButton("Set");
         gtk_widget_set_halign(setM, GTK_ALIGN_START);
-        widget_set_margin_bottom(setM, 10);
-        widget_set_margin_start(setM, 10);
+        ezgl::widget_set_margin_bottom(setM, 10);
+        ezgl::widget_set_margin_start(setM, 10);
         QPushButton* setT = new QPushButton("Set");
         gtk_widget_set_halign(setT, GTK_ALIGN_START);
-        widget_set_margin_bottom(setT, 10);
-        widget_set_margin_start(setT, 10);
+        ezgl::widget_set_margin_bottom(setT, 10);
+        ezgl::widget_set_margin_start(setT, 10);
         QPushButton* setB = new QPushButton("Set");
         gtk_widget_set_halign(setB, GTK_ALIGN_START);
-        widget_set_margin_start(setB, 10);
+        ezgl::widget_set_margin_start(setB, 10);
         QPushButton* setI = new QPushButton("Set");
         gtk_widget_set_halign(setI, GTK_ALIGN_START);
-        widget_set_margin_start(setI, 10);
+        ezgl::widget_set_margin_start(setI, 10);
         QPushButton* setN = new QPushButton("Set");
         gtk_widget_set_halign(setN, GTK_ALIGN_START);
-        widget_set_margin_start(setN, 10);
+        ezgl::widget_set_margin_start(setN, 10);
         QPushButton* advanced = new QPushButton("Advanced");
-        widget_set_margin_start(advanced, 60);
-        widget_set_margin_end(advanced, 10);
-        widget_set_margin_top(advanced, 20);
+        ezgl::widget_set_margin_start(advanced, 60);
+        ezgl::widget_set_margin_end(advanced, 10);
+        ezgl::widget_set_margin_top(advanced, 20);
 
         QLineEdit* movesEntry = new QLineEdit;
         movesEntry->setText("ex. 100");
-        widget_set_margin_bottom(movesEntry, 10);
+        ezgl::widget_set_margin_bottom(movesEntry, 10);
         QLineEdit* tempsEntry = new QLineEdit;
         tempsEntry->setText("ex. 5");
-        widget_set_margin_bottom(tempsEntry, 10);
+        ezgl::widget_set_margin_bottom(tempsEntry, 10);
         QLineEdit* blockEntry = new QLineEdit;
         blockEntry->setText("ex. 83");
         QLineEdit* iterEntry = new QLineEdit;
@@ -121,7 +121,7 @@ void draw_debug_window() {
         netEntry->setText("ex. 12");
 
         draw_debug_glob_vars.bpGrid = gtk_grid_new();
-        widget_set_margin_bottom(draw_debug_glob_vars.bpGrid, 20);
+        ezgl::widget_set_margin_bottom(draw_debug_glob_vars.bpGrid, 20);
         refresh_bpList();
 
         auto* scrollArea = new QScrollArea();
@@ -178,7 +178,7 @@ void advanced_button_callback() {
 
         QWidget* window = new QWidget;
         window->setAttribute(Qt::WA_DeleteOnClose);
-        center_window(window);
+        ezgl::center_window(window);
         window->setWindowTitle("Advanced Debugger Options");
 
         QPushButton* set = new QPushButton("set");
@@ -222,16 +222,16 @@ void advanced_button_callback() {
         gtk_container_add(expander, varGrid);
         gtk_widget_set_halign(expander, GTK_ALIGN_START);
 
-        widget_set_margin_start(instructions, 30);
-        widget_set_margin_end(instructions, 30);
-        widget_set_margin_top(instructions, 30);
-        widget_set_margin_bottom(instructions, 30);
-        widget_set_margin_bottom(expression_here, 5);
-        widget_set_margin_start(entry, 30);
-        widget_set_margin_end(set, 30);
-        widget_set_margin_start(set, 40);
-        widget_set_margin_start(expander, 10);
-        widget_set_margin_top(expander, 20);
+        ezgl::widget_set_margin_start(instructions, 30);
+        ezgl::widget_set_margin_end(instructions, 30);
+        ezgl::widget_set_margin_top(instructions, 30);
+        ezgl::widget_set_margin_bottom(instructions, 30);
+        ezgl::widget_set_margin_bottom(expression_here, 5);
+        ezgl::widget_set_margin_start(entry, 30);
+        ezgl::widget_set_margin_end(set, 30);
+        ezgl::widget_set_margin_start(set, 40);
+        ezgl::widget_set_margin_start(expander, 10);
+        ezgl::widget_set_margin_top(expander, 20);
 
         QWidget* advancedGrid = gtk_grid_new();
         gtk_grid_attach((GtkGrid*)advancedGrid, instructions,    1, 0, 2, 1);
@@ -252,7 +252,7 @@ void advanced_button_callback() {
 
 //refreshes breakpoint list for when a breakpoint is deleted
 void refresh_bpList() {
-    for (auto* child : gtk_container_get_children(draw_debug_glob_vars.bpGrid))
+    for (auto* child : ezgl::widget_get_direct_children(draw_debug_glob_vars.bpGrid))
         child->deleteLater();
 
     t_draw_state* draw_state = get_draw_state_vars();
@@ -269,7 +269,7 @@ void refresh_bpList() {
         QObject::connect(checkbox, &QCheckBox::toggled,
                          [checkbox]() { checkbox_callback(checkbox); });
         gtk_grid_attach((GtkGrid*)draw_debug_glob_vars.bpGrid, checkbox, 1, i, 1, 1);
-        widget_set_margin_start(checkbox, 290 - draw_debug_glob_vars.bp_labels[i].size());
+        ezgl::widget_set_margin_start(checkbox, 290 - draw_debug_glob_vars.bp_labels[i].size());
 
         auto* deleteButton = new QPushButton(QIcon("src/draw/trash.png"), "");
         std::string d = "d" + std::to_string(i);
@@ -277,7 +277,7 @@ void refresh_bpList() {
         QObject::connect(deleteButton, &QPushButton::clicked,
                          [deleteButton]() { delete_bp_callback(deleteButton); });
         gtk_grid_attach((GtkGrid*)draw_debug_glob_vars.bpGrid, deleteButton, 2, i, 1, 1);
-        widget_set_margin_start(deleteButton, 10);
+        ezgl::widget_set_margin_start(deleteButton, 10);
 
         draw_debug_glob_vars.bpGrid->show();
     }
@@ -299,7 +299,7 @@ void add_to_bpList(std::string bpDescription) {
     QObject::connect(checkbox, &QCheckBox::toggled,
                      [checkbox]() { checkbox_callback(checkbox); });
     gtk_grid_attach((GtkGrid*)draw_debug_glob_vars.bpGrid, checkbox, 1, row, 1, 1);
-    widget_set_margin_start(checkbox, 290 - bpDescription.size());
+    ezgl::widget_set_margin_start(checkbox, 290 - bpDescription.size());
 
     auto* deleteButton = new QPushButton(QIcon("src/draw/trash.png"), "");
     std::string d = "d" + std::to_string(row);
@@ -307,7 +307,7 @@ void add_to_bpList(std::string bpDescription) {
     QObject::connect(deleteButton, &QPushButton::clicked,
                      [deleteButton]() { delete_bp_callback(deleteButton); });
     gtk_grid_attach((GtkGrid*)draw_debug_glob_vars.bpGrid, deleteButton, 2, row, 1, 1);
-    widget_set_margin_start(deleteButton, 10);
+    ezgl::widget_set_margin_start(deleteButton, 10);
 
     draw_debug_glob_vars.bpGrid->show();
 }
@@ -423,23 +423,23 @@ void set_expression_button_callback(QWidget* /*widget*/, QWidget* grid) {
 void invalid_breakpoint_entry_window(std::string error) {
     QWidget* window = new QWidget;
     window->setAttribute(Qt::WA_DeleteOnClose);
-    center_window(window);
+    ezgl::center_window(window);
     window->setWindowTitle("ERROR");
     window->setWindowModality(Qt::ApplicationModal);
 
     QWidget* grid = gtk_grid_new();
 
     QLabel* label = new QLabel(error.c_str());
-    widget_set_margin_start(label, 30);
-    widget_set_margin_end(label, 30);
-    widget_set_margin_top(label, 30);
-    widget_set_margin_bottom(label, 30);
+    ezgl::widget_set_margin_start(label, 30);
+    ezgl::widget_set_margin_end(label, 30);
+    ezgl::widget_set_margin_top(label, 30);
+    ezgl::widget_set_margin_bottom(label, 30);
     gtk_grid_attach((GtkGrid*)grid, label, 0, 0, 1, 1);
 
     QPushButton* button = new QPushButton("OK");
-    widget_set_margin_bottom(button, 30);
-    widget_set_margin_end(button, 30);
-    widget_set_margin_start(button, 30);
+    ezgl::widget_set_margin_bottom(button, 30);
+    ezgl::widget_set_margin_end(button, 30);
+    ezgl::widget_set_margin_start(button, 30);
     gtk_grid_attach((GtkGrid*)grid, button, 0, 1, 1, 1);
     QObject::connect(Q_BUTTON(button), &QAbstractButton::clicked,
                      [window]() { ok_close_window(nullptr, window); });
@@ -453,30 +453,30 @@ void invalid_breakpoint_entry_window(std::string error) {
 void breakpoint_info_window(std::string bpDescription, BreakpointState draw_breakpoint_state, bool in_placer) {
     QWidget* window = new QWidget;
     window->setAttribute(Qt::WA_DeleteOnClose);
-    center_window(window);
+    ezgl::center_window(window);
     window->setWindowTitle("Breakpoint");
 
     QWidget* grid = gtk_grid_new();
 
     QLabel* label = new QLabel(bpDescription.c_str());
-    widget_set_margin_start(label, 30);
-    widget_set_margin_end(label, 30);
-    widget_set_margin_top(label, 30);
-    widget_set_margin_bottom(label, 30);
+    ezgl::widget_set_margin_start(label, 30);
+    ezgl::widget_set_margin_end(label, 30);
+    ezgl::widget_set_margin_top(label, 30);
+    ezgl::widget_set_margin_bottom(label, 30);
     gtk_grid_attach((GtkGrid*)grid, label, 0, 0, 1, 1);
 
     QLabel* curr_info = new QLabel;
     curr_info->setTextFormat(Qt::RichText);
     curr_info->setText("<b>Current Information</b>");
-    widget_set_margin_start(curr_info, 30);
-    widget_set_margin_end(curr_info, 30);
-    widget_set_margin_bottom(curr_info, 15);
+    ezgl::widget_set_margin_start(curr_info, 30);
+    ezgl::widget_set_margin_end(curr_info, 30);
+    ezgl::widget_set_margin_bottom(curr_info, 15);
     gtk_grid_attach((GtkGrid*)grid, curr_info, 0, 1, 1, 1);
 
     QWidget* info_grid = gtk_grid_new();
-    widget_set_margin_start(info_grid, 30);
-    widget_set_margin_end(info_grid, 30);
-    widget_set_margin_bottom(info_grid, 20);
+    ezgl::widget_set_margin_start(info_grid, 30);
+    ezgl::widget_set_margin_end(info_grid, 30);
+    ezgl::widget_set_margin_bottom(info_grid, 20);
 
     auto make_image = [](const char* path) -> QWidget* {
         auto* lbl = new QLabel();
@@ -487,34 +487,34 @@ void breakpoint_info_window(std::string bpDescription, BreakpointState draw_brea
     QWidget* t = make_image("src/draw/t.png");
     QWidget* r = make_image("src/draw/r.png");
     QWidget* n = make_image("src/draw/n.png");
-    widget_set_margin_start(n, 18);
+    ezgl::widget_set_margin_start(n, 18);
     QWidget* i = make_image("src/draw/i.png");
-    widget_set_margin_start(i, 16);
+    ezgl::widget_set_margin_start(i, 16);
     QWidget* b = make_image("src/draw/b.png");
-    widget_set_margin_start(b, 18);
+    ezgl::widget_set_margin_start(b, 18);
 
     std::string move_num = "move_num: " + std::to_string(draw_breakpoint_state.move_num);
     QLabel* move_info = new QLabel(move_num.c_str());
-    widget_set_margin_start(move_info, 5);
+    ezgl::widget_set_margin_start(move_info, 5);
     gtk_widget_set_halign(move_info, GTK_ALIGN_START);
     std::string temp_count = "temp_count: " + std::to_string(draw_breakpoint_state.temp_count);
     QLabel* temp_info = new QLabel(temp_count.c_str());
-    widget_set_margin_start(temp_info, 5);
+    ezgl::widget_set_margin_start(temp_info, 5);
     gtk_widget_set_halign(temp_info, GTK_ALIGN_START);
     std::string in_blocks_affected = "in_blocks_affected: " + std::to_string(get_bp_state_globals()->get_glob_breakpoint_state()->block_affected);
     QLabel* ba_info = new QLabel(in_blocks_affected.c_str());
     gtk_widget_set_halign(ba_info, GTK_ALIGN_START);
     std::string block_id = "from_block: " + std::to_string(draw_breakpoint_state.from_block);
     QLabel* block_info = new QLabel(block_id.c_str());
-    widget_set_margin_start(block_info, 5);
+    ezgl::widget_set_margin_start(block_info, 5);
     gtk_widget_set_halign(block_info, GTK_ALIGN_START);
     std::string router_iter = "router_iter: " + std::to_string(draw_breakpoint_state.router_iter);
     QLabel* ri_info = new QLabel(router_iter.c_str());
-    widget_set_margin_start(ri_info, 5);
+    ezgl::widget_set_margin_start(ri_info, 5);
     gtk_widget_set_halign(ri_info, GTK_ALIGN_START);
     std::string net_id = "route_net_id: " + std::to_string(draw_breakpoint_state.route_net_id);
     QLabel* net_info = new QLabel(net_id.c_str());
-    widget_set_margin_start(net_info, 5);
+    ezgl::widget_set_margin_start(net_info, 5);
     gtk_widget_set_halign(net_info, GTK_ALIGN_START);
 
     if (in_placer) {
@@ -536,7 +536,7 @@ void breakpoint_info_window(std::string bpDescription, BreakpointState draw_brea
     gtk_grid_attach((GtkGrid*)grid, info_grid, 0, 2, 1, 1);
 
     QPushButton* button = new QPushButton("OK");
-    widget_set_margin_bottom(button, 30);
+    ezgl::widget_set_margin_bottom(button, 30);
     gtk_widget_set_halign(button, GTK_ALIGN_CENTER);
     gtk_grid_attach((GtkGrid*)grid, button, 0, 3, 1, 1);
     QObject::connect(Q_BUTTON(button), &QAbstractButton::clicked,

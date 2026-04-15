@@ -34,7 +34,7 @@ void draw_manual_moves_window(const std::string& block_id) {
         //Window settings-
         draw_state->manual_moves_state.manual_move_window = new QWidget;
         draw_state->manual_moves_state.manual_move_window->setAttribute(Qt::WA_DeleteOnClose);
-        center_window(draw_state->manual_moves_state.manual_move_window);
+        ezgl::center_window(draw_state->manual_moves_state.manual_move_window);
         draw_state->manual_moves_state.manual_move_window->setWindowTitle("Manual Moves Generator");
         draw_state->manual_moves_state.manual_move_window->setObjectName("manual_move_window");
 
@@ -74,15 +74,15 @@ void draw_manual_moves_window(const std::string& block_id) {
         gtk_grid_attach((GtkGrid*)grid, calculate_cost_button, 0, 5, 3, 1); //spans three columns
 
         //Set margins
-        widget_set_margin_bottom(grid, 20);
-        widget_set_margin_top(grid, 20);
-        widget_set_margin_start(grid, 20);
-        widget_set_margin_end(grid, 20);
-        widget_set_margin_bottom(block_label, 5);
-        widget_set_margin_bottom(to_label, 5);
-        widget_set_margin_top(calculate_cost_button, 15);
-        widget_set_margin_start(x, 13);
-        widget_set_margin_start(y, 13);
+        ezgl::widget_set_margin_bottom(grid, 20);
+        ezgl::widget_set_margin_top(grid, 20);
+        ezgl::widget_set_margin_start(grid, 20);
+        ezgl::widget_set_margin_end(grid, 20);
+        ezgl::widget_set_margin_bottom(block_label, 5);
+        ezgl::widget_set_margin_bottom(to_label, 5);
+        ezgl::widget_set_margin_top(calculate_cost_button, 15);
+        ezgl::widget_set_margin_start(x, 13);
+        ezgl::widget_set_margin_start(y, 13);
         gtk_widget_set_halign(calculate_cost_button, GTK_ALIGN_CENTER);
 
         //connect signals

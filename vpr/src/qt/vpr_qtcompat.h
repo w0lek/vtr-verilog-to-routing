@@ -27,13 +27,6 @@ void gtk_box_pack_start(QBoxLayout* box,
 
 using GtkGrid = QWidget; //QGridLayout is laying inside the widget
 
-void center_window(QWidget* w);
-
-void widget_set_margin_start(QWidget*, int);
-void widget_set_margin_end(QWidget*, int);
-void widget_set_margin_top(QWidget*, int);
-void widget_set_margin_bottom(QWidget*, int);
-
 #define GTK_COMBO_BOX_TEXT(w) qobject_cast<QComboBox*>(reinterpret_cast<QObject*>(w))
 #define GTK_GRID(w) qobject_cast<QWidget*>(w)
 #define GTK_BOX(l) qobject_cast<QBoxLayout*>(l)
@@ -57,8 +50,6 @@ QDialog* gtk_dialog_new_with_buttons(
 );
 
 QWidget* gtk_dialog_get_content_area(QWidget* dialog);
-
-QList<QWidget*> gtk_container_get_children(QWidget* container);
 
 #define GTK_ALIGN_FILL   0
 #define GTK_ALIGN_START  1

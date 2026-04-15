@@ -238,8 +238,8 @@ void view_button_setup(ezgl::application* app) {
 
             QCheckBox* checkbox = new QCheckBox(label.c_str());
             // Add margins to checkboxes to match the transparency spin button height
-            widget_set_margin_top(checkbox, 7);
-            widget_set_margin_bottom(checkbox, 7);
+            ezgl::widget_set_margin_top(checkbox, 7);
+            ezgl::widget_set_margin_bottom(checkbox, 7);
 
             gtk_box_pack_start(box, checkbox, FALSE, FALSE, 0);
 
@@ -266,8 +266,8 @@ void view_button_setup(ezgl::application* app) {
         std::string trans_label = "CrossLayerConnectionsTransparency";
 
         QCheckBox* checkbox = new QCheckBox(label.c_str());
-        widget_set_margin_top(checkbox, 7);
-        widget_set_margin_bottom(checkbox, 7);
+        ezgl::widget_set_margin_top(checkbox, 7);
+        ezgl::widget_set_margin_bottom(checkbox, 7);
         gtk_box_pack_start(box, checkbox, FALSE, FALSE, 0);
 
         QSpinBox* spin_button = new QSpinBox;
