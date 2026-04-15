@@ -155,17 +155,17 @@ void draw_debug_window() {
         ezgl::grid_attach(mainGrid, advanced,    2, 9, 1, 1);
         ezgl::grid_attach(mainGrid, star,        0, 10, 3, 1);
 
-        QObject::connect(Q_BUTTON(setM), &QAbstractButton::clicked,
+        QObject::connect(setM, &QPushButton::clicked,
                          [mainGrid]() { set_moves_button_callback(nullptr, mainGrid); });
-        QObject::connect(Q_BUTTON(setT), &QAbstractButton::clicked,
+        QObject::connect(setT, &QPushButton::clicked,
                          [mainGrid]() { set_temp_button_callback(nullptr, mainGrid); });
-        QObject::connect(Q_BUTTON(setB), &QAbstractButton::clicked,
+        QObject::connect(setB, &QPushButton::clicked,
                          [mainGrid]() { set_block_button_callback(nullptr, mainGrid); });
-        QObject::connect(Q_BUTTON(setI), &QAbstractButton::clicked,
+        QObject::connect(setI, &QPushButton::clicked,
                          [mainGrid]() { set_router_iter_button_callback(nullptr, mainGrid); });
-        QObject::connect(Q_BUTTON(setN), &QAbstractButton::clicked,
+        QObject::connect(setN, &QPushButton::clicked,
                          [mainGrid]() { set_net_id_button_callback(nullptr, mainGrid); });
-        QObject::connect(Q_BUTTON(advanced), &QAbstractButton::clicked,
+        QObject::connect(advanced, &QPushButton::clicked,
                          []() { advanced_button_callback(); });
         QObject::connect(window, &QObject::destroyed,
                          []() { close_debug_window(); });
@@ -244,7 +244,7 @@ void advanced_button_callback() {
         ezgl::grid_attach(advancedGrid, set,             2, 2, 1, 1);
         ezgl::grid_attach(advancedGrid, expander,        0, 0, 1, 1);
 
-        QObject::connect(Q_BUTTON(set), &QAbstractButton::clicked,
+        QObject::connect(set, &QPushButton::clicked,
                          [advancedGrid]() { set_expression_button_callback(nullptr, advancedGrid); });
         QObject::connect(window, &QObject::destroyed,
                          []() { close_advanced_window(); });
@@ -445,7 +445,7 @@ void invalid_breakpoint_entry_window(std::string error) {
     ezgl::widget_set_margin_end(button, 30);
     ezgl::widget_set_margin_start(button, 30);
     ezgl::grid_attach(grid, button, 0, 1, 1, 1);
-    QObject::connect(Q_BUTTON(button), &QAbstractButton::clicked,
+    QObject::connect(button, &QPushButton::clicked,
                      [window]() { ok_close_window(nullptr, window); });
 
     window->layout()->addWidget(grid);
@@ -543,7 +543,7 @@ void breakpoint_info_window(std::string bpDescription, BreakpointState draw_brea
     ezgl::widget_set_margin_bottom(button, 30);
     ezgl::widget_set_halign(button, Qt::AlignHCenter);
     ezgl::grid_attach(grid, button, 0, 3, 1, 1);
-    QObject::connect(Q_BUTTON(button), &QAbstractButton::clicked,
+    QObject::connect(button, &QPushButton::clicked,
                      [window]() { ok_close_window(nullptr, window); });
 
     window->layout()->addWidget(grid);

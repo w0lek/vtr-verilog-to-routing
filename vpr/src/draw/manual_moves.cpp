@@ -92,7 +92,7 @@ void draw_manual_moves_window(const std::string& block_id) {
         ezgl::widget_set_halign(calculate_cost_button, Qt::AlignHCenter);
 
         //connect signals
-        QObject::connect(Q_BUTTON(calculate_cost_button), &QAbstractButton::clicked,
+        QObject::connect(calculate_cost_button, &QPushButton::clicked,
                          [grid]() { calculate_cost_callback(nullptr, grid); });
         QObject::connect(draw_state->manual_moves_state.manual_move_window, &QObject::destroyed,
                          []() { close_manual_moves_window(); });
