@@ -83,7 +83,7 @@ void draw_manual_moves_window(const std::string& block_id) {
         ezgl::widget_set_margin_top(calculate_cost_button, 15);
         ezgl::widget_set_margin_start(x, 13);
         ezgl::widget_set_margin_start(y, 13);
-        gtk_widget_set_halign(calculate_cost_button, GTK_ALIGN_CENTER);
+        gtk_widget_set_halign(calculate_cost_button, Qt::AlignHCenter);
 
         //connect signals
         QObject::connect(Q_BUTTON(calculate_cost_button), &QAbstractButton::clicked,

@@ -37,6 +37,7 @@ void gtk_grid_attach(QWidget* widget, QWidget* child, int col, int row, int w, i
 void gtk_container_add(QWidget* container, QWidget* w);
 QWidget* gtk_grid_new();
 
+// dialog
 struct GtkDialogButton {
     const char* text;
     int response;
@@ -48,13 +49,9 @@ QDialog* gtk_dialog_new_with_buttons(
     const GtkDialogButton* buttons,
     int button_count
 );
-
 QWidget* gtk_dialog_get_content_area(QWidget* dialog);
+// dialog
 
-#define GTK_ALIGN_FILL   0
-#define GTK_ALIGN_START  1
-#define GTK_ALIGN_END    2
-#define GTK_ALIGN_CENTER 3
-void gtk_widget_set_halign(QWidget* w, int flag);
+void gtk_widget_set_halign(QWidget* w, Qt::AlignmentFlag flag);
 
 #endif // VPR_QTCOMPAT_H

@@ -139,16 +139,11 @@ QWidget* gtk_dialog_get_content_area(QWidget* dialog)
   return dialog;
 }
 
-void gtk_widget_set_halign(QWidget* w, int flag)
+void gtk_widget_set_halign(QWidget* w, Qt::AlignmentFlag flag)
 {
-    Qt::Alignment qtAlign;
-    if (flag == GTK_ALIGN_START) qtAlign = Qt::AlignLeft;
-    else if (flag == GTK_ALIGN_END) qtAlign = Qt::AlignRight;
-    else qtAlign = Qt::AlignHCenter;
-
     if (auto* label = qobject_cast<QLabel*>(w)) {
-        label->setAlignment((label->alignment() & ~Qt::AlignHorizontal_Mask) | qtAlign);
+        label->setAlignment((label->alignment() & ~Qt::AlignHorizontal_Mask) | flag);
     } else if (w->parentWidget() && w->parentWidget()->layout()) {
-        w->parentWidget()->layout()->setAlignment(w, qtAlign);
+        w->parentWidget()->layout()->setAlignment(w, flag);
     }
 }
