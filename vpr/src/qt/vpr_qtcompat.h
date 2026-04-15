@@ -21,8 +21,6 @@ void gtk_box_pack_start(QBoxLayout* box,
 
 
 
-using GtkGrid = QWidget; //QGridLayout is laying inside the widget
-
 #define GTK_COMBO_BOX_TEXT(w) qobject_cast<QComboBox*>(reinterpret_cast<QObject*>(w))
 #define GTK_GRID(w) qobject_cast<QWidget*>(w)
 #define GTK_BOX(l) qobject_cast<QBoxLayout*>(l)
