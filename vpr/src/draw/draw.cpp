@@ -145,7 +145,7 @@ ezgl::application::settings settings(":/ezgl/main.ui", "MainWindow", "MainCanvas
 int argc = 1;
 char appName[] = "vpr";
 char* argv[] = { appName, nullptr };
-ezgl::application application(settings, argc, argv);
+ezgl::application* application = nullptr;
 
 bool window_mode = false;
 bool window_point_1_collected = false;
@@ -177,6 +177,13 @@ void init_graphics_state(bool show_graphics_val,
     draw_state->save_graphics = save_graphics;
     draw_state->graphics_commands = graphics_commands;
     draw_state->is_flat = is_flat;
+
+    // Create the application object here (not at file scope) so that the
+    // QApplication lifetime is bounded by init/close_graphics, not by
+    // static-object construction/destruction order.
+    if (application == nullptr) {
+        application = new ezgl::application(settings, argc, argv);
+    }
 
 #else
     //Suppress unused parameter warnings
@@ -265,7 +272,7 @@ static void draw_main_canvas(ezgl::renderer* g) {
         //Avoid trying to repeatedly exit (which would cause errors in GTK)
         draw_state->auto_proceed = false;
 
-        application.quit(); //Ensure we leave the event loop
+        application->quit(); //Ensure we leave the event loop
     }
 }
 
@@ -341,10 +348,10 @@ void update_screen(ScreenUpdatePriority priority,
 
         if (draw_state->pic_on_screen == e_pic_type::NO_PICTURE) {
             // Only add the canvas the first time we open graphics
-            application.add_canvas("MainCanvas", draw_main_canvas, initial_world);
+            application->add_canvas("MainCanvas", draw_main_canvas, initial_world);
         } else {
             // TODO: will this ever be null?
-            auto canvas = application.get_canvas(application.get_main_canvas_id());
+            auto canvas = application->get_canvas(application->get_main_canvas_id());
             if (canvas != nullptr) {
                 canvas->get_camera().set_world(initial_world);
             }
@@ -372,7 +379,7 @@ void update_screen(ScreenUpdatePriority priority,
             draw_state->forced_pause = false; //Reset pause flag
         }
 
-        application.run(on_stage_change_setup, act_on_mouse_press, act_on_mouse_move,
+        application->run(on_stage_change_setup, act_on_mouse_press, act_on_mouse_move,
                         act_on_key_press);
 
         if (!draw_state->graphics_commands.empty()) {
@@ -381,9 +388,9 @@ void update_screen(ScreenUpdatePriority priority,
     }
 
     if (draw_state->show_graphics) {
-        application.update_message(msg);
-        application.refresh_drawing();
-        application.flush_drawing();
+        application->update_message(msg);
+        application->refresh_drawing();
+        application->flush_drawing();
     }
 
     if (draw_state->save_graphics) {
@@ -465,6 +472,9 @@ void free_draw_structs() {
         vtr::release_memory(draw_coords->tile_x);
         vtr::release_memory(draw_coords->tile_y);
     }
+
+    delete application;
+    application = nullptr;
 
 #else
     ;
@@ -932,18 +942,18 @@ static void draw_router_expansion_costs(ezgl::renderer* g) {
             == DRAW_ROUTER_EXPANSION_COST_TOTAL
         || draw_state->show_router_expansion_cost
                == DRAW_ROUTER_EXPANSION_COST_TOTAL_WITH_EDGES) {
-        application.update_message(
+        application->update_message(
             "Routing Expected Total Cost (known + estimate)");
     } else if (draw_state->show_router_expansion_cost
                    == DRAW_ROUTER_EXPANSION_COST_KNOWN
                || draw_state->show_router_expansion_cost
                       == DRAW_ROUTER_EXPANSION_COST_KNOWN_WITH_EDGES) {
-        application.update_message("Routing Known Cost (from source to node)");
+        application->update_message("Routing Known Cost (from source to node)");
     } else if (draw_state->show_router_expansion_cost
                    == DRAW_ROUTER_EXPANSION_COST_EXPECTED
                || draw_state->show_router_expansion_cost
                       == DRAW_ROUTER_EXPANSION_COST_EXPECTED_WITH_EDGES) {
-        application.update_message(
+        application->update_message(
             "Routing Expected Cost (from node to target)");
     } else {
         VPR_THROW(VPR_ERROR_DRAW, "Invalid Router RR cost drawing type");
@@ -1002,8 +1012,8 @@ static void highlight_blocks(double x, double y) {
         }
     }
 
-    application.update_message(msg);
-    application.refresh_drawing();
+    application->update_message(msg);
+    application->refresh_drawing();
 }
 
 ClusterBlockId get_cluster_block_id_from_xy_loc(double x, double y) {
@@ -1112,8 +1122,8 @@ static void set_block_outline(QCheckBox* checkbox, int /*response_id*/, void* /*
     draw_state->draw_block_outlines = checkbox->isChecked();
 
     //redraw
-    application.update_message(draw_state->default_message);
-    application.refresh_drawing();
+    application->update_message(draw_state->default_message);
+    application->refresh_drawing();
 }
 
 // Callback function for Block Text checkbox
@@ -1124,8 +1134,8 @@ static void set_block_text(QCheckBox* checkbox, int /*response_id*/, void* /*dat
     draw_state->draw_block_text = checkbox->isChecked();
 
     //redraw
-    application.update_message(draw_state->default_message);
-    application.refresh_drawing();
+    application->update_message(draw_state->default_message);
+    application->refresh_drawing();
 }
 
 // Callback function for Clip Routing Util checkbox
@@ -1136,8 +1146,8 @@ static void clip_routing_util(QCheckBox* checkbox, int /*response_id*/, void* /*
     draw_state->clip_routing_util = checkbox->isChecked();
 
     //redraw
-    application.update_message(draw_state->default_message);
-    application.refresh_drawing();
+    application->update_message(draw_state->default_message);
+    application->refresh_drawing();
 }
 
 // Callback function for Draw Partitions checkbox
@@ -1145,7 +1155,7 @@ static void set_draw_partitions(QCheckBox* checkbox, int /*response_id*/, void* 
     t_draw_state* draw_state = get_draw_state_vars();
 
     if (checkbox->isChecked()) {
-        QWidget* window = application.find_widget(application.get_main_window_id().c_str());
+        QWidget* window = application->find_widget(application->get_main_window_id().c_str());
 
         QDialog* dialog = new QDialog(window);
         dialog->setWindowTitle("Floorplanning Legend");
@@ -1172,8 +1182,8 @@ static void set_draw_partitions(QCheckBox* checkbox, int /*response_id*/, void* 
         draw_state->draw_partitions = false;
     }
 
-    application.update_message(draw_state->default_message);
-    application.refresh_drawing();
+    application->update_message(draw_state->default_message);
+    application->refresh_drawing();
 }
 
 static void set_force_pause(QWidget* /*widget*/, int /*response_id*/, void* /*data*/) {

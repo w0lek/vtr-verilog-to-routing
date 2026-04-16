@@ -36,7 +36,7 @@
 #include "vtr_ndoffsetmatrix.h"
 
 extern ezgl::application::settings settings;
-extern ezgl::application application;
+extern ezgl::application* application;
 
 #endif /* NO_GRAPHICS */
 

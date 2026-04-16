@@ -409,7 +409,7 @@ void select_layer_cbk(QWidget* widget, int /*response_id*/, void* /*data*/) {
             index++;
         }
     }
-    application.refresh_drawing();
+    application->refresh_drawing();
 }
 /**
  * @brief Callback function for 3d layer transparency spin buttons
@@ -424,7 +424,7 @@ void transparency_cbk(QWidget* widget, int /*response_id*/, void* /*data*/) {
             index++;
         }
     }
-    application.refresh_drawing();
+    application->refresh_drawing();
 }
 
 /**
@@ -434,7 +434,7 @@ void cross_layer_checkbox_cbk(QCheckBox* checkbox, int /*response_id*/, void* /*
     t_draw_state* draw_state = get_draw_state_vars();
 
     draw_state->cross_layer_display.visible = checkbox->isChecked();
-    application.refresh_drawing();
+    application->refresh_drawing();
 }
 
 /**
@@ -446,6 +446,6 @@ void cross_layer_transparency_cbk(QSpinBox* spinbox, int /*response_id*/, void* 
     int value = spinbox->value();
     draw_state->cross_layer_display.alpha = 255 - value;
 
-    application.refresh_drawing();
+    application->refresh_drawing();
 }
 #endif

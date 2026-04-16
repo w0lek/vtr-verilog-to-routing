@@ -255,7 +255,7 @@ void highlight_selected_partition(QWidget* widget) {
     const auto& constraints = floorplanning_ctx.constraints;
     const int num_partitions = constraints.get_num_partitions();
 
-    ezgl::renderer* g = application.get_renderer();
+    ezgl::renderer* g = application->get_renderer();
     for (int partitionID = 0; partitionID < num_partitions; partitionID++) {
         if (constraints.get_partition((PartitionId)partitionID).get_name() == partition_name) {
             if (highlight_alpha.empty()) return;
@@ -268,7 +268,7 @@ void highlight_selected_partition(QWidget* widget) {
     }
 
     tree->clearSelection();
-    application.refresh_drawing();
+    application->refresh_drawing();
 }
 
 

@@ -211,9 +211,9 @@ bool highlight_rr_nodes(RRNodeId hit_node) {
     char message[250] = "";
 
     if (!hit_node) {
-        application.update_message(draw_state->default_message);
+        application->update_message(draw_state->default_message);
         rr_highlight_message = "";
-        application.refresh_drawing();
+        application->refresh_drawing();
         return false;
     }
 
@@ -253,8 +253,8 @@ bool highlight_rr_nodes(RRNodeId hit_node) {
         draw_highlight_fan_in_fan_out(nodes);
     }
 
-    application.update_message(message);
-    application.refresh_drawing();
+    application->update_message(message);
+    application->refresh_drawing();
 
     return true;
 }
@@ -301,7 +301,7 @@ void auto_zoom_rr_node(RRNodeId rr_node_id) {
     // zoom to the node
     ezgl::point2d offset = {rr_node.width() * 1.5, rr_node.height() * 1.5};
     ezgl::rectangle zoom_view = {rr_node.m_first - offset, rr_node.m_second + offset};
-    (application.get_canvas(application.get_main_canvas_id()))->get_camera().set_world(zoom_view);
+    (application->get_canvas(application->get_main_canvas_id()))->get_camera().set_world(zoom_view);
 }
 
 /**
@@ -335,9 +335,9 @@ void highlight_cluster_block(ClusterBlockId clb_index) {
                 block_locs[clb_index].loc.x, block_locs[clb_index].loc.y);
     }
 
-    application.update_message(msg);
+    application->update_message(msg);
 
-    application.refresh_drawing();
+    application->refresh_drawing();
 }
 
 /**
@@ -381,7 +381,7 @@ void highlight_nets(ClusterNetId net_id) {
 }
 
 void warning_dialog_box(const char* message) {
-    QWidget* main_window = application.find_widget(application.get_main_window_id().c_str());
+    QWidget* main_window = application->find_widget(application->get_main_window_id().c_str());
     QMessageBox* box = new QMessageBox(QMessageBox::Warning,
                                        "Error",
                                        message,

@@ -32,7 +32,7 @@ void save_graphics(std::string extension, std::string file_name) {
         extension = std::string(extension.begin() + 1, extension.end());
     }
 
-    auto canvas = application.get_canvas(application.get_main_canvas_id());
+    auto canvas = application->get_canvas(application->get_main_canvas_id());
 
     bool result = true;
 
@@ -53,7 +53,7 @@ void save_graphics(std::string extension, std::string file_name) {
 }
 
 void save_graphics_dialog_box(QWidget* /*widget*/, ezgl::application* /*app*/) {
-    QWidget* main_window = application.find_widget(application.get_main_window_id().c_str());
+    QWidget* main_window = application->find_widget(application->get_main_window_id().c_str());
     QDialog* dialog = new QDialog(main_window);
     dialog->setWindowTitle("Save Graphics Contents");
     dialog->setAttribute(Qt::WA_DeleteOnClose);

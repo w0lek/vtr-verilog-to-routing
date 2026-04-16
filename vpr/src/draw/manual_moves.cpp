@@ -158,7 +158,7 @@ void calculate_cost_callback(QWidget* /*widget*/, QWidget* grid) {
         deselect_all();
         ClusterBlockId clb_index = ClusterBlockId(draw_state->manual_moves_state.manual_move_info.blockID);
         draw_highlight_blocks_color(cluster_ctx.clb_nlist.block_type(clb_index), clb_index);
-        application.refresh_drawing();
+        application->refresh_drawing();
 
         //Continues to move costs window.
         QWidget* proceed = find_button("ProceedButton");
@@ -218,7 +218,7 @@ bool is_manual_move_legal(ClusterBlockId block_id, t_pl_loc to) {
 
 bool manual_move_is_selected() {
     t_draw_state* draw_state = get_draw_state_vars();
-    QCheckBox* manual_moves = application.find_check_box("manualMove");
+    QCheckBox* manual_moves = application->find_check_box("manualMove");
     draw_state->manual_moves_state.manual_move_enabled = manual_moves->isChecked();
     return draw_state->manual_moves_state.manual_move_enabled;
 }
@@ -277,12 +277,12 @@ void manual_move_cost_summary_dialog() {
         //If the user accepts the manual move
         case QDialog::Accepted:
             draw_state->manual_moves_state.manual_move_info.user_move_outcome = e_move_result::ACCEPTED;
-            application.update_message(msg);
+            application->update_message(msg);
             break;
         //If the user rejects the manual move
         case QDialog::Rejected:
             draw_state->manual_moves_state.manual_move_info.user_move_outcome = e_move_result::REJECTED;
-            application.update_message("Manual move was rejected");
+            application->update_message("Manual move was rejected");
             break;
         default:
             draw_state->manual_moves_state.manual_move_info.user_move_outcome = e_move_result::ABORTED;
@@ -301,7 +301,7 @@ void manual_move_highlight_new_block_location() {
     //Highlighting the block
     ClusterBlockId clb_index = ClusterBlockId(draw_state->manual_moves_state.manual_move_info.blockID);
     draw_highlight_blocks_color(cluster_ctx.clb_nlist.block_type(clb_index), clb_index);
-    application.refresh_drawing();
+    application->refresh_drawing();
 }
 
 //Manual move window turns false, the window is destroyed.
