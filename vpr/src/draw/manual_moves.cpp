@@ -114,8 +114,7 @@ void calculate_cost_callback(QWidget* /*widget*/, QWidget* grid) {
     const ClusteringContext& cluster_ctx = g_vpr_ctx.clustering();
 
     //Getting entry values
-    QWidget* block_entry_widget = ezgl::grid_get_child_at(grid, 0, 1);
-    QLineEdit* block_entry = ezgl::to_lineedit(block_entry_widget);
+    QLineEdit* block_entry = ezgl::grid_get_child_at<QLineEdit>(grid, 0, 1);
     std::string block_id_string = block_entry->text().toStdString();
 
     if (string_is_a_number(block_id_string)) { //for block ID
@@ -124,15 +123,10 @@ void calculate_cost_callback(QWidget* /*widget*/, QWidget* grid) {
         block_id = size_t(cluster_ctx.clb_nlist.find_block(block_id_string));
     }
 
-    QWidget* x_position_entry_widget = ezgl::grid_get_child_at(grid, 2, 1);
-    QWidget* y_position_entry_widget = ezgl::grid_get_child_at(grid, 2, 2);
-    QWidget* layer_position_entry_widget = ezgl::grid_get_child_at(grid, 2, 3);
-    QWidget* subtile_position_entry_widget = ezgl::grid_get_child_at(grid, 2, 4);
-
-    QLineEdit* x_position_entry = ezgl::to_lineedit(x_position_entry_widget);
-    QLineEdit* y_position_entry = ezgl::to_lineedit(y_position_entry_widget);
-    QLineEdit* layer_position_entry = ezgl::to_lineedit(layer_position_entry_widget);
-    QLineEdit* subtile_position_entry = ezgl::to_lineedit(subtile_position_entry_widget);
+    QLineEdit* x_position_entry = ezgl::grid_get_child_at<QLineEdit>(grid, 2, 1);
+    QLineEdit* y_position_entry = ezgl::grid_get_child_at<QLineEdit>(grid, 2, 2);
+    QLineEdit* layer_position_entry = ezgl::grid_get_child_at<QLineEdit>(grid, 2, 3);
+    QLineEdit* subtile_position_entry = ezgl::grid_get_child_at<QLineEdit>(grid, 2, 4);
 
     int x_location = x_position_entry->text().toInt();
     int y_location = y_position_entry->text().toInt();

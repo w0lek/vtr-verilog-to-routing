@@ -10,8 +10,9 @@
 
 #include <QLineEdit>
 #include <QLabel>
-#include <QVBoxLayout>
+#include <QDialog>
 #include <QDialogButtonBox>
+#include <QVBoxLayout>
 
 extern ezgl::rectangle initial_world;
 
