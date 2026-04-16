@@ -10,7 +10,7 @@
 #include "serverupdate.h"
 #include "ezgl/application.hpp"
 
-extern ezgl::application application;
+extern ezgl::application* application;
 
 namespace server {
 
@@ -168,7 +168,7 @@ GateIO::GateIO() {
     m_is_running.store(false);
     m_updateTimer.setInterval(SERVER_UPDATE_INTERVAL_MS);
     QObject::connect(&m_updateTimer, &QTimer::timeout, &m_updateTimer, [](){
-        server::update(&application);
+        server::update(application);
     });
     m_updateTimer.start();
 }
