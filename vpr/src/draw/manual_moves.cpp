@@ -23,6 +23,8 @@
 #include "buttons.h"
 #include "physical_types_util.h"
 
+#include <ezgl/qt/qtutils.hpp>
+
 #include <QDialog>
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
@@ -113,7 +115,7 @@ void calculate_cost_callback(QWidget* /*widget*/, QWidget* grid) {
 
     //Getting entry values
     QWidget* block_entry_widget = ezgl::grid_get_child_at(grid, 0, 1);
-    QLineEdit* block_entry = Q_LINEEDIT(block_entry_widget);
+    QLineEdit* block_entry = ezgl::to_lineedit(block_entry_widget);
     std::string block_id_string = block_entry->text().toStdString();
 
     if (string_is_a_number(block_id_string)) { //for block ID
@@ -127,10 +129,10 @@ void calculate_cost_callback(QWidget* /*widget*/, QWidget* grid) {
     QWidget* layer_position_entry_widget = ezgl::grid_get_child_at(grid, 2, 3);
     QWidget* subtile_position_entry_widget = ezgl::grid_get_child_at(grid, 2, 4);
 
-    QLineEdit* x_position_entry = Q_LINEEDIT(x_position_entry_widget);
-    QLineEdit* y_position_entry = Q_LINEEDIT(y_position_entry_widget);
-    QLineEdit* layer_position_entry = Q_LINEEDIT(layer_position_entry_widget);
-    QLineEdit* subtile_position_entry = Q_LINEEDIT(subtile_position_entry_widget);
+    QLineEdit* x_position_entry = ezgl::to_lineedit(x_position_entry_widget);
+    QLineEdit* y_position_entry = ezgl::to_lineedit(y_position_entry_widget);
+    QLineEdit* layer_position_entry = ezgl::to_lineedit(layer_position_entry_widget);
+    QLineEdit* subtile_position_entry = ezgl::to_lineedit(subtile_position_entry_widget);
 
     int x_location = x_position_entry->text().toInt();
     int y_location = y_position_entry->text().toInt();

@@ -4,6 +4,8 @@
 #include "draw_global.h"
 #include "vtr_expr_eval.h"
 
+#include <ezgl/qt/qtutils.hpp>
+
 #include <QGroupBox>
 #include <QLineEdit>
 #include <QPushButton>
@@ -339,7 +341,7 @@ void delete_bp_callback(QWidget* widget) {
 void set_moves_button_callback(QWidget* /*widget*/, QWidget* grid) {
     t_draw_state* draw_state = get_draw_state_vars();
     QWidget* entry_widget = ezgl::grid_get_child_at(grid, 1, 1);
-    QLineEdit* entry = Q_LINEEDIT(entry_widget);
+    QLineEdit* entry = ezgl::to_lineedit(entry_widget);
 
     //check for input validity
     int moves = entry->text().toInt();
@@ -355,7 +357,7 @@ void set_moves_button_callback(QWidget* /*widget*/, QWidget* grid) {
 void set_temp_button_callback(QWidget* /*widget*/, QWidget* grid) {
     t_draw_state* draw_state = get_draw_state_vars();
     QWidget* entry_widget = ezgl::grid_get_child_at(grid, 1, 2);
-    QLineEdit* entry = Q_LINEEDIT(entry_widget);
+    QLineEdit* entry = ezgl::to_lineedit(entry_widget);
 
     //input validity
     int temps = entry->text().toInt();
@@ -371,7 +373,7 @@ void set_temp_button_callback(QWidget* /*widget*/, QWidget* grid) {
 void set_block_button_callback(QWidget* /*widget*/, QWidget* grid) {
     t_draw_state* draw_state = get_draw_state_vars();
     QWidget* entry_widget = ezgl::grid_get_child_at(grid, 1, 3);
-    QLineEdit* entry = Q_LINEEDIT(entry_widget);
+    QLineEdit* entry = ezgl::to_lineedit(entry_widget);
 
     std::string s(entry->text().toStdString());
     draw_state->list_of_breakpoints.push_back(Breakpoint(BT_FROM_BLOCK, entry->text().toInt()));
@@ -383,7 +385,7 @@ void set_block_button_callback(QWidget* /*widget*/, QWidget* grid) {
 void set_router_iter_button_callback(QWidget* /*widget*/, QWidget* grid) {
     t_draw_state* draw_state = get_draw_state_vars();
     QWidget* entry_widget = ezgl::grid_get_child_at(grid, 1, 5);
-    QLineEdit* entry = Q_LINEEDIT(entry_widget);
+    QLineEdit* entry = ezgl::to_lineedit(entry_widget);
 
     //check for input validity
     int iters = entry->text().toInt();
@@ -399,7 +401,7 @@ void set_router_iter_button_callback(QWidget* /*widget*/, QWidget* grid) {
 void set_net_id_button_callback(QWidget* /*widget*/, QWidget* grid) {
     t_draw_state* draw_state = get_draw_state_vars();
     QWidget* entry_widget = ezgl::grid_get_child_at(grid, 1, 6);
-    QLineEdit* entry = Q_LINEEDIT(entry_widget);
+    QLineEdit* entry = ezgl::to_lineedit(entry_widget);
 
     draw_state->list_of_breakpoints.push_back(Breakpoint(BT_ROUTE_NET_ID, entry->text().toInt()));
     std::string s(entry->text().toStdString());
@@ -411,7 +413,7 @@ void set_net_id_button_callback(QWidget* /*widget*/, QWidget* grid) {
 void set_expression_button_callback(QWidget* /*widget*/, QWidget* grid) {
     t_draw_state* draw_state = get_draw_state_vars();
     QWidget* entry_widget = ezgl::grid_get_child_at(grid, 1, 2);
-    QLineEdit* entry = Q_LINEEDIT(entry_widget);
+    QLineEdit* entry = ezgl::to_lineedit(entry_widget);
 
     //check input validity
     std::string expr = entry->text().toStdString();

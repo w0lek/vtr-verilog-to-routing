@@ -6,6 +6,8 @@
 #include "save_graphics.h"
 #include "search_bar.h"
 
+#include <ezgl/qt/qtutils.hpp>
+
 #include <QLineEdit>
 #include <QLabel>
 #include <QVBoxLayout>
@@ -13,8 +15,7 @@
 
 extern ezgl::rectangle initial_world;
 
-void save_graphics_from_button(QWidget* /*widget*/, [[maybe_unused]] int response_id, void* data) {
-    QDialog* dialog = Q_DIALOG(static_cast<QObject*>(data));
+void save_graphics_from_button(QDialog* dialog) {
     QLineEdit* text_entry = dialog->findChild<QLineEdit*>("file_name_text_entry");
     QComboBox* combo_box = dialog->findChild<QComboBox*>("file_name_combo_box");
     if (text_entry && combo_box) {
@@ -85,7 +86,7 @@ void save_graphics_dialog_box(QWidget* /*widget*/, ezgl::application* /*app*/) {
         QDialogButtonBox::Save | QDialogButtonBox::Cancel, dialog);
     layout->addWidget(buttonBox);
     QObject::connect(buttonBox, &QDialogButtonBox::accepted, dialog, [dialog]() {
-        save_graphics_from_button(dialog, 0, dialog);
+        save_graphics_from_button(dialog);
         dialog->accept();
     });
     QObject::connect(buttonBox, &QDialogButtonBox::rejected, dialog, &QDialog::reject);
