@@ -22,7 +22,6 @@ int label_left_start_col = 0;
 int box_left_start_col = 0;
 int button_row = 2; // 2 is the row num of the window button in main.ui, add buttons starting from this row
 
-[[deprecated("todo: move to ezgl")]]
 void delete_button(const std::string& button_name) {
     QWidget* main_window_grid = application->find_widget("InnerGrid");
     QList<QWidget*> list_of_widgets = ezgl::widget_get_direct_children(main_window_grid);
@@ -41,7 +40,6 @@ void delete_button(const std::string& button_name) {
         target_button->deleteLater();
 }
 
-[[deprecated("todo: move to ezgl")]]
 QWidget* find_button(const std::string& button_name) {
     QWidget* main_window_grid = application->find_widget("InnerGrid");
     QList<QWidget*> list_of_widgets = ezgl::widget_get_direct_children(main_window_grid);

@@ -291,12 +291,12 @@ static void on_stage_change_setup(ezgl::application* app, bool is_new_window) {
     t_draw_state* draw_state = get_draw_state_vars();
 
     if (draw_state->pic_on_screen == e_pic_type::PLACEMENT) {
-        hide_widget("RoutingMenuButton", app);
+        app->hide_widget("RoutingMenuButton");
 
         draw_state->save_graphics_file_base = "vpr_placement";
 
     } else if (draw_state->pic_on_screen == e_pic_type::ROUTING) {
-        show_widget("RoutingMenuButton", app);
+        app->show_widget("RoutingMenuButton");
 
         draw_state->save_graphics_file_base = "vpr_routing";
     }

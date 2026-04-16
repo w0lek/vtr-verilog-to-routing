@@ -147,8 +147,8 @@ void block_button_setup(ezgl::application* app) {
 
     //Toggle NoC Display (based on startup cmd --noc on)
     if (!draw_state->show_noc_button) {
-        hide_widget("NocLabel", app);
-        hide_widget("ToggleNocBox", app);
+        app->hide_widget("NocLabel");
+        app->hide_widget("ToggleNocBox");
     } else {
         QComboBox* toggleNocBox = app->find_combo_box("ToggleNocBox");
         QObject::connect(toggleNocBox, &QComboBox::currentIndexChanged, toggleNocBox, [toggleNocBox, app]() {
@@ -216,7 +216,7 @@ void routing_button_setup(ezgl::application* app) {
     QObject::connect(toggle_router_util, &QComboBox::currentIndexChanged, toggle_router_util, [toggle_router_util, app]() {
         toggle_router_util_cbk(toggle_router_util, app);
     });
-    show_widget("RoutingMenuButton", app);
+    app->show_widget("RoutingMenuButton");
 }
 
 void view_button_setup(ezgl::application* app) {
@@ -227,7 +227,7 @@ void view_button_setup(ezgl::application* app) {
 
     // Hide the button if we only have one layer
     if (num_layers == 1) {
-        hide_widget("3DMenuButton", app);
+        app->hide_widget("3DMenuButton");
     } else {
         QWidget* box_widget = app->find_widget("LayerBox");
         QWidget* trans_box_widget = app->find_widget("TransparencyBox");
@@ -349,25 +349,6 @@ void hide_draw_routing(ezgl::application* app) {
             toggle_nets->addItem("Routing", "2");
         }
     }
-}
-
-/*
- * @brief Hides the widget with the given name
- *
- * @param widgetName string of widget name in main.ui
- * @param app ezgl app
- */
-void hide_widget(std::string widgetName, ezgl::application* app) {
-    QWidget* widget = app->find_widget(widgetName.c_str());
-    widget->hide();
-}
-
-/**
- * @brief Hides the widget with the given name
- */
-void show_widget(std::string widgetName, ezgl::application* app) {
-    QWidget* widget = app->find_widget(widgetName.c_str());
-    widget->show();
 }
 
 /**
