@@ -32,7 +32,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 #ifndef VPR_MAIN_UI_PATH
-#define VPR_MAIN_UI_PATH ":/ezgl/main.ui"
+#define VPR_MAIN_UI_PATH ":/ezgl/main_glade.ui"
 #endif
 
 #include <memory>

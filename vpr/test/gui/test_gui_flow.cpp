@@ -14,7 +14,7 @@
 #include <memory>
 
 #ifndef VPR_MAIN_UI_PATH
-#define VPR_MAIN_UI_PATH ":/ezgl/main.ui"
+#define VPR_MAIN_UI_PATH ":/ezgl/main_glade.ui"
 #endif
 
 #include <QMainWindow>

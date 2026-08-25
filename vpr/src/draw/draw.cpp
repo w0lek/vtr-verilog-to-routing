@@ -144,7 +144,7 @@ const std::vector<ezgl::color> kelly_max_contrast_colors = {
     ezgl::color(43, 61, 38)     //olive green
 };
 
-ezgl::application::settings settings(":/ezgl/main.ui", "MainWindow", "MainCanvas", "org.verilogtorouting.vpr.PID" + std::to_string(vtr::get_pid()), setup_default_ezgl_callbacks);
+ezgl::application::settings settings(":/ezgl/main_glade.ui", "MainWindow", "MainCanvas", "org.verilogtorouting.vpr.PID" + std::to_string(vtr::get_pid()), setup_default_ezgl_callbacks);
 // provide fake argc and argv required for QApplication initialization
 int argc = 1;
 char appName[] = "vpr";

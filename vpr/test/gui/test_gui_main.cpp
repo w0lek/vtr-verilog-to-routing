@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
     // resource nor the canvas/window identifiers are consumed unless
     // application::run() is called. The test binary never calls run().
     ezgl::application::settings settings(
-        /*m_resource=*/"/ezgl/main.ui",
+        /*m_resource=*/"/ezgl/main_glade.ui",
         /*w_identifier=*/"MainWindow",
         /*c_identifier=*/"MainCanvas",
         /*a_identifier=*/"ezgl.app.test",
