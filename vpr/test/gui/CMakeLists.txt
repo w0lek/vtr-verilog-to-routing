@@ -18,6 +18,7 @@ set(VPR_GUI_TEST_SOURCES
     test_draw_state.cpp
     test_renderer.cpp
     test_ui_contract.cpp        # GUI-T-018 — main.ui ↔ ui_setup.cpp contract
+    test_layout_contract.cpp    # layout geometry contract (grid slots, stretch, margins)
     test_search_null_guard.cpp  # GUI-T-019 — search subsystem null-guard symmetry
     test_runstage_fixture.cpp   # GUI-T-017 — VPR run-stage Catch2 fixture
     test_ezgl_app_fixture.cpp   # GUI-T-017 — Layer-4 ezgl::application + main.ui fixture
