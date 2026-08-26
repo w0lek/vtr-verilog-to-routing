@@ -10,7 +10,7 @@ enable_testing()
 
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Xml Svg Test)
 
-add_executable(test_vpr_gui
+set(VPR_GUI_TEST_SOURCES
     test_gui_main.cpp
     test_widget_hierarchy.cpp
     test_gui_flow.cpp
@@ -35,6 +35,8 @@ add_executable(test_vpr_gui
     test_toggle_callbacks.cpp   # GUI-T-021 — draw_toggle_functions.cpp callback contracts
     ${CMAKE_CURRENT_SOURCE_DIR}/../../vpr.qrc
 )
+
+add_executable(test_vpr_gui ${VPR_GUI_TEST_SOURCES})
 
 # GUI-T-017 — compile-time bench / arch resolution. Hardcoded relative to
 # the source tree so the fixture has no working-directory dependency
@@ -61,6 +63,51 @@ set_target_properties(test_vpr_gui PROPERTIES
     CXX_STANDARD 20
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
+)
+
+# ---------------------------------------------------------------------------
+# Native Qt form leg — the same sources and the same assertions, compiled
+# against main.ui (Qt Designer) instead of main_glade.ui (Glade).
+#
+# This is the equivalence gate for the Glade-to-Qt form migration: if every
+# case passes in both legs, the native form satisfies every property the
+# Glade form does. Path and format are overridden together; see
+# test_main_ui.hpp for why they must not drift apart.
+# ---------------------------------------------------------------------------
+add_executable(test_vpr_gui_qtform ${VPR_GUI_TEST_SOURCES})
+
+target_compile_definitions(test_vpr_gui_qtform PRIVATE
+    VPR_TEST_ARCH_XML="${CMAKE_SOURCE_DIR}/vtr_flow/arch/timing/k6_N10_40nm.xml"
+    VPR_TEST_BLIF_AND_LATCH="${CMAKE_SOURCE_DIR}/vtr_flow/benchmarks/microbenchmarks/and_latch.blif"
+    VPR_MAIN_UI_PATH=":/ezgl/main.ui"
+    VPR_MAIN_UI_FORMAT=ezgl::ui_format::qt
+)
+
+target_link_libraries(test_vpr_gui_qtform PRIVATE
+    libvpr
+    ezgl
+    Catch2::Catch2
+    Qt6::Test
+    Qt6::Widgets
+)
+
+target_include_directories(test_vpr_gui_qtform PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../src/draw
+)
+
+set_target_properties(test_vpr_gui_qtform PROPERTIES
+    CXX_STANDARD 20
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
+
+add_test(
+    NAME test_vpr_gui_qtform
+    COMMAND test_vpr_gui_qtform --colour-mode ansi
+)
+set_tests_properties(test_vpr_gui_qtform PROPERTIES
+    ENVIRONMENT "QT_QPA_PLATFORM=offscreen"
+    LABELS "gui;unit;layer3;qtform"
 )
 
 add_test(
