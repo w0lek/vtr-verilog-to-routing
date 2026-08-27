@@ -7,14 +7,9 @@
  * a canvas in the wrong grid cell, a panel that no longer stretches, a switch
  * that became elastic. This file closes that gap.
  *
- * It matters most because the suite is compiled twice, once per UI format
- * (see test_main_ui.hpp). Layout is exactly where the Glade form and the
- * native Qt form can silently disagree, since the Glade loader derives grid
- * stretch from GTK expand flags via a heuristic that a .ui file states
- * explicitly instead.
- *
- * Every expectation below was read off the *Glade* form's rendered tree, so
- * the native form has to reproduce it rather than the other way round.
+ * The expectations below were read off the form's rendered tree at the time
+ * the UI was converted from Glade, so they also pin the geometry against
+ * accidental drift when the form is edited.
  *
  * Tag: [layer3][layout-contract][vpr_gui]
  */
@@ -175,11 +170,10 @@ TEST_CASE("LayoutContract: switches keep their own fixed size policy",
     QMainWindow* win = mw.window();
     REQUIRE(win != nullptr);
 
-    // SwitchButton sets Fixed/Fixed for itself. The native form declares each
-    // switch as a placeholder widget that ezgl::UiLoader swaps out, and an
-    // earlier version of that swap copied the placeholder's default Preferred
-    // policy over the real one -- every switch silently became stretchable.
-    // Guard it, in both formats.
+    // SwitchButton sets Fixed/Fixed for itself. The form declares each switch
+    // as a placeholder widget that ezgl::UiLoader swaps out, and an early
+    // version of that swap copied the placeholder's default Preferred policy
+    // over the real one -- every switch silently became stretchable.
     const std::vector<const char*> switches = {
         "ToggleNets", "ToggleRR", "ToggleCritPath", "ProceedByStep"};
 
@@ -198,8 +192,7 @@ TEST_CASE("LayoutContract: menu buttons share the bottom bar width",
     QMainWindow* win = mw.window();
     REQUIRE(win != nullptr);
 
-    // These carry hexpand in the Glade form, so they stretch to fill the bar
-    // instead of hugging their labels.
+    // These stretch to fill the bar instead of hugging their labels.
     const std::vector<const char*> menu_buttons = {
         "BlockMenuButton", "NetMenuButton", "RoutingMenuButton",
         "MiscMenuButton", "3DMenuButton"};

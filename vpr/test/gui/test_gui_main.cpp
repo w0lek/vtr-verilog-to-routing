@@ -37,8 +37,6 @@ int main(int argc, char* argv[]) {
         /*a_identifier=*/"ezgl.app.test",
         /*s_callbacks=*/nullptr);
 
-    settings.ui_resource_format = VPR_MAIN_UI_FORMAT;
-
     ezgl::application app(settings, argc, argv);
     g_test_app = &app;
 

@@ -8,7 +8,7 @@
 
 enable_testing()
 
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Xml Svg Test)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Svg Test)
 
 set(VPR_GUI_TEST_SOURCES
     test_gui_main.cpp
@@ -66,50 +66,6 @@ set_target_properties(test_vpr_gui PROPERTIES
     CXX_EXTENSIONS OFF
 )
 
-# ---------------------------------------------------------------------------
-# Glade form leg — the same sources and the same assertions, compiled against
-# main_glade.ui (Glade) instead of main.ui (Qt Designer).
-#
-# VPR ships the native form, so the default target above covers production and
-# this one keeps the Glade path honest until it is removed. Passing in both is
-# the equivalence gate: the two forms describe the same window. Path and format
-# are overridden together; see test_main_ui.hpp for why they must not drift.
-# ---------------------------------------------------------------------------
-add_executable(test_vpr_gui_gladeform ${VPR_GUI_TEST_SOURCES})
-
-target_compile_definitions(test_vpr_gui_gladeform PRIVATE
-    VPR_TEST_ARCH_XML="${CMAKE_SOURCE_DIR}/vtr_flow/arch/timing/k6_N10_40nm.xml"
-    VPR_TEST_BLIF_AND_LATCH="${CMAKE_SOURCE_DIR}/vtr_flow/benchmarks/microbenchmarks/and_latch.blif"
-    VPR_MAIN_UI_PATH=":/ezgl/main_glade.ui"
-    VPR_MAIN_UI_FORMAT=ezgl::ui_format::glade
-)
-
-target_link_libraries(test_vpr_gui_gladeform PRIVATE
-    libvpr
-    ezgl
-    Catch2::Catch2
-    Qt6::Test
-    Qt6::Widgets
-)
-
-target_include_directories(test_vpr_gui_gladeform PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../src/draw
-)
-
-set_target_properties(test_vpr_gui_gladeform PROPERTIES
-    CXX_STANDARD 20
-    CXX_STANDARD_REQUIRED ON
-    CXX_EXTENSIONS OFF
-)
-
-add_test(
-    NAME test_vpr_gui_gladeform
-    COMMAND test_vpr_gui_gladeform --colour-mode ansi
-)
-set_tests_properties(test_vpr_gui_gladeform PROPERTIES
-    ENVIRONMENT "QT_QPA_PLATFORM=offscreen"
-    LABELS "gui;unit;layer3;gladeform"
-)
 
 add_test(
     NAME test_vpr_gui
