@@ -144,7 +144,7 @@ const std::vector<ezgl::color> kelly_max_contrast_colors = {
     ezgl::color(43, 61, 38)     //olive green
 };
 
-ezgl::application::settings settings(":/ezgl/main_glade.ui", "MainWindow", "MainCanvas", "org.verilogtorouting.vpr.PID" + std::to_string(vtr::get_pid()), setup_default_ezgl_callbacks);
+ezgl::application::settings settings(":/ezgl/main.ui", "MainWindow", "MainCanvas", "org.verilogtorouting.vpr.PID" + std::to_string(vtr::get_pid()), setup_default_ezgl_callbacks);
 // provide fake argc and argv required for QApplication initialization
 int argc = 1;
 char appName[] = "vpr";
@@ -216,6 +216,10 @@ void init_graphics_state(bool show_graphics_val,
     // QApplication lifetime is bounded by init/close_graphics, not by
     // static-object construction/destruction order.
     if (application == nullptr) {
+        // main.ui is a native Qt Designer form. settings' constructor predates
+        // the format option and still defaults to Glade, so state it here; the
+        // path and the format have to agree or the wrong parser runs.
+        settings.ui_resource_format = ezgl::ui_format::qt;
         application = new ezgl::application(settings, argc, argv);
     }
 

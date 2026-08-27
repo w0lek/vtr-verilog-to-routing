@@ -22,12 +22,15 @@
 
 #include <optional>
 
+// Defaults mirror what VPR actually ships (draw.cpp), so the default build
+// tests the production configuration. The second target overrides both to keep
+// the Glade form covered until it is removed.
 #ifndef VPR_MAIN_UI_PATH
-#define VPR_MAIN_UI_PATH ":/ezgl/main_glade.ui"
+#define VPR_MAIN_UI_PATH ":/ezgl/main.ui"
 #endif
 
 #ifndef VPR_MAIN_UI_FORMAT
-#define VPR_MAIN_UI_FORMAT ezgl::ui_format::glade
+#define VPR_MAIN_UI_FORMAT ezgl::ui_format::qt
 #endif
 
 namespace vpr_gui_test {
