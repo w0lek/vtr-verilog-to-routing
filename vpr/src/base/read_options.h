@@ -63,6 +63,7 @@ struct t_options {
     // Graphics Options
     argparse::ArgValue<bool> show_graphics; ///<Enable argparse::ArgValue<int>eractive graphics?
     argparse::ArgValue<int> GraphPause;
+    argparse::ArgValue<bool> skip_intermediate_show;
     argparse::ArgValue<bool> save_graphics;
     argparse::ArgValue<std::string> graphics_commands;
     argparse::ArgValue<std::string> graphics_renderer;

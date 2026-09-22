@@ -60,6 +60,17 @@ void update_screen(ScreenUpdatePriority priority,
  */
 void notify_stage_complete(e_pic_type stage);
 
+/**
+ * @brief Applies --skip_intermediate_show: records whether it is on and the
+ * last drawn stage of the requested flow, derived from the stage actions.
+ *
+ * When on, update_screen() skips the interactive window, --save_graphics and
+ * --graphics_commands until that stage has been marked complete via
+ * notify_stage_complete(). Flows whose last stage is not routing or placement
+ * are unaffected. A `wait_for_stage` on any other stage is a fatal error.
+ */
+void init_skip_intermediate_show(const t_vpr_setup& vpr_setup);
+
 //FIXME: Currently broken if no rr-graph is loaded
 /**
  * @brief Load the arrays containing the left and bottom coordinates of the clbs.

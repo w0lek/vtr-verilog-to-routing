@@ -154,6 +154,15 @@ Graphics Options
 
     **Default:** ``1``
 
+.. option:: --skip_intermediate_show {on | off}
+
+    If set to on, graphics are skipped at intermediate stages and act only once the last requested stage completes: routing if it is run or loaded (e.g. with :option:`--route` or :option:`--analysis`), otherwise placement.
+    This applies to the interactive window, :option:`--save_graphics` and :option:`--graphics_commands` alike.
+    Pausing at that stage still follows :option:`--auto`.
+    A ``wait_for_stage`` command for any other stage is an error.
+
+    **Default:** ``off``
+
 .. option:: --save_graphics {on | off}
 
     If set to on, this option will save an image of the final placement and the final routing created by vpr to pdf files on disk, with no need for any user interaction. The files are named vpr_placement.pdf and vpr_routing.pdf.

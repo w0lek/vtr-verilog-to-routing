@@ -121,6 +121,9 @@ static void set_block_text(bool checked);
 static void set_draw_partitions(bool checked);
 static void clip_routing_util(bool checked);
 static void run_graphics_commands(const std::string& commands);
+static void parse_wait_for_stage_arg(const std::string& arg,
+                                     e_pic_type& want,
+                                     bool& wait_for_done);
 
 /************************** File Scope Variables ****************************/
 
@@ -177,6 +180,10 @@ std::string rr_highlight_message;
 // `wait_for_stage <stage>_initial` / `<stage>_done` script barriers.
 std::set<e_pic_type> initial_stages;
 std::set<e_pic_type> completed_stages;
+
+// Set from --skip_intermediate_show; see init_skip_intermediate_show().
+static bool skip_intermediate_show = false;
+static e_pic_type final_stage = e_pic_type::NO_PICTURE;
 
 // Used for scripted graphics (rendered to files via --graphics_commands).
 // `exit N` from --graphics_commands is processed deferredly: the
@@ -246,6 +253,40 @@ void notify_stage_complete(e_pic_type stage) {
     completed_stages.insert(stage);
 #else
     (void)stage;
+#endif
+}
+
+void init_skip_intermediate_show(const t_vpr_setup& vpr_setup) {
+#ifndef NO_GRAPHICS
+    skip_intermediate_show = vpr_setup.SkipIntermediateShow;
+    if (vpr_setup.RouterOpts.doRouting != e_stage_action::SKIP) {
+        final_stage = e_pic_type::ROUTING;
+    } else if (vpr_setup.PlacerOpts.do_placement != e_stage_action::SKIP) {
+        final_stage = e_pic_type::PLACEMENT;
+    } else {
+        final_stage = e_pic_type::NO_PICTURE;
+    }
+
+    // Only the final stage is ever reached, so a barrier on any other stage
+    // would silently stop the script there.
+    if (skip_intermediate_show && final_stage != e_pic_type::NO_PICTURE) {
+        for (const std::string& raw_cmd : vtr::StringToken(vpr_setup.GraphicsCommands).split(";")) {
+            std::vector<std::string> cmd = vtr::StringToken(raw_cmd).split(" \t\n");
+            if (cmd.size() != 2 || cmd[0] != "wait_for_stage")
+                continue;
+            e_pic_type want = e_pic_type::NO_PICTURE;
+            bool wait_for_done = false;
+            parse_wait_for_stage_arg(cmd[1], want, wait_for_done);
+            if (want != final_stage) {
+                VPR_FATAL_ERROR(VPR_ERROR_DRAW,
+                                "--graphics_commands 'wait_for_stage %s' can never be reached with "
+                                "--skip_intermediate_show on: only the final stage of this flow is drawn.\n",
+                                cmd[1].c_str());
+            }
+        }
+    }
+#else
+    (void)vpr_setup;
 #endif
 }
 
@@ -584,9 +625,14 @@ void update_screen(ScreenUpdatePriority priority,
     t_proceed_by_step& proceed_by_step = draw_state->proceed_by_step;
     bool steps_reached = proceed_by_step.enabled && (proceed_by_step.step_counter == proceed_by_step.steps_to_proceed);
 
-    if (state_change          // Must update buttons.
-        || pause_for_priority // The priority means graphics should pause at the current view for user interaction.
-        || steps_reached) {   // The number of steps set by the user is reached.
+    const bool hide_intermediate = skip_intermediate_show
+                                   && final_stage != e_pic_type::NO_PICTURE
+                                   && !(pic_on_screen_val == final_stage && completed_stages.count(final_stage) != 0);
+
+    if (!hide_intermediate
+        && (state_change          // Must update buttons.
+            || pause_for_priority // The priority means graphics should pause at the current view for user interaction.
+            || steps_reached)) {  // The number of steps set by the user is reached.
 
         // Reset the step counter if Proceed by Step is on.
         // Note that, other causes that pause the graphics (e.g. a state change)
@@ -625,13 +671,13 @@ void update_screen(ScreenUpdatePriority priority,
         }
     }
 
-    if (draw_state->show_graphics) {
+    if (draw_state->show_graphics && !hide_intermediate) {
         application->update_message(msg);
         application->refresh_drawing();
         application->flush_drawing();
     }
 
-    if (draw_state->save_graphics) {
+    if (draw_state->save_graphics && !hide_intermediate) {
         std::string extension = "pdf";
         save_graphics(extension, draw_state->save_graphics_file_base);
     }

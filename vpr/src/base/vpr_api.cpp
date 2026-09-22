@@ -311,6 +311,7 @@ void vpr_init_with_options(const t_options* options, t_vpr_setup* vpr_setup, t_a
              &vpr_setup->Timing,
              &vpr_setup->ShowGraphics,
              &vpr_setup->GraphPause,
+             &vpr_setup->SkipIntermediateShow,
              &vpr_setup->SaveGraphics,
              &vpr_setup->GraphicsCommands,
              &vpr_setup->RendererType,
@@ -1320,6 +1321,7 @@ void vpr_init_graphics(const t_vpr_setup& vpr_setup, const t_arch& arch, bool is
     init_graphics_state(vpr_setup.ShowGraphics, vpr_setup.GraphPause,
                         vpr_setup.RouterOpts.route_type, vpr_setup.SaveGraphics,
                         vpr_setup.GraphicsCommands, vpr_setup.RendererType, is_flat);
+    init_skip_intermediate_show(vpr_setup);
     if (vpr_setup.ShowGraphics || vpr_setup.SaveGraphics || !vpr_setup.GraphicsCommands.empty())
         alloc_draw_structs(&arch);
 }
@@ -1492,6 +1494,7 @@ void vpr_setup_vpr(t_options* Options,
              Timing,
              ShowGraphics,
              GraphPause,
+             &vpr_setup->SkipIntermediateShow,
              SaveGraphics,
              GraphicsCommands,
              RendererType,

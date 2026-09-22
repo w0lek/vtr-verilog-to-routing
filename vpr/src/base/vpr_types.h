@@ -1625,6 +1625,7 @@ struct t_vpr_setup {
     float constant_net_delay;            ///<timing information when place and route not run
     bool ShowGraphics;                   ///<option to show graphics
     int GraphPause;                      ///<user interactiveness graphics option
+    bool SkipIntermediateShow;           ///<show graphics only once the last requested stage completes
     bool SaveGraphics;                   ///<option to save graphical contents to pdf, png, or svg
     std::string GraphicsCommands;        ///<commands to control graphics settings
     std::string RendererType;            ///<rendering backend: "immediate" (SW QPainter, no batching; most

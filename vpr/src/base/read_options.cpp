@@ -1683,6 +1683,15 @@ argparse::ArgumentParser create_arg_parser(const std::string& prog_name, t_optio
         .choices({"0", "1", "2"})
         .show_in(argparse::ShowIn::HELP_ONLY);
 
+    gfx_grp.add_argument<bool, ParseOnOff>(args.skip_intermediate_show, "--skip_intermediate_show")
+        .help(
+            "Skip graphics at intermediate stages: the interactive window,"
+            " --save_graphics and --graphics_commands act only once the last"
+            " requested stage (routing if run or loaded, otherwise placement)"
+            " completes.")
+        .default_value("off")
+        .show_in(argparse::ShowIn::HELP_ONLY);
+
     gfx_grp.add_argument<bool, ParseOnOff>(args.save_graphics, "--save_graphics")
         .help("Save all graphical contents to PDF files")
         .default_value("off");

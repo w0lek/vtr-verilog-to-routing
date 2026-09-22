@@ -135,6 +135,7 @@ void SetupVPR(const t_options* options,
               t_timing_inf* timing,
               bool* showGraphics,
               int* graphPause,
+              bool* skipIntermediateShow,
               bool* saveGraphics,
               std::string* graphicsCommands,
               std::string* rendererType,
@@ -370,6 +371,7 @@ void SetupVPR(const t_options* options,
     }
 
     *graphPause = options->GraphPause;
+    *skipIntermediateShow = options->skip_intermediate_show;
 
     *showGraphics = options->show_graphics;
 
